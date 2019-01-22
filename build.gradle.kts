@@ -23,7 +23,7 @@ repositories {
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     implementation("com.google.guava:guava:26.0-jre")
-
+    compile(files("libs/mixin-java-sdk-unspecified.jar"))
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
 }
