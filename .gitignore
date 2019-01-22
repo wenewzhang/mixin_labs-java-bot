@@ -1,6 +1,15 @@
-gradle-helloworld/build
-gradle-helloworld/gradlew
-gradle-helloworld/gradlew.bat
-gradle-helloworld/gradle
+# Ignore Gradle project-specific cache directory
+.gradle
 gradle-helloworld/.gradle
 
+# Ignore Gradle build output directory
+build
+gradle-helloworld/build
+gradle
+gradle-helloworld/gradle
+gradlew
+gradle-helloworld/gradlew
+gradle-helloworld/.git
+.git
+gradle-helloworld/gradlew.bat
+gradlew.bat
