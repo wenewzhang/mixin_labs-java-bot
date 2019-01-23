@@ -13,3 +13,5 @@ gradle-helloworld/.git
 .git
 gradle-helloworld/gradlew.bat
 gradlew.bat
+mixin_labs-java-bot.iml
+.idea/

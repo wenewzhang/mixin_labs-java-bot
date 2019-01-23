@@ -23,7 +23,11 @@ repositories {
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     implementation("com.google.guava:guava:26.0-jre")
+    // dependent on mixin-java-sdk, copy it to libs directory
     compile(files("libs/mixin-java-sdk-unspecified.jar"))
+
+    implementation("com.squareup.okhttp3:okhttp:3.12.1")
+    implementation("com.google.code.gson:gson:2.8.5")
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
 }
