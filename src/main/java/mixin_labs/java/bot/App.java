@@ -6,7 +6,7 @@ import mixin.java.sdk.MixinBot;
 import mixin.java.sdk.MixinUtil;
 import mixin.java.sdk.MIXIN_Category;
 import mixin.java.sdk.MIXIN_Action;
-import mixin.java.sdk.Library;
+
 import java.security.PrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import com.google.gson.JsonObject;
@@ -17,6 +17,7 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
+
 
 public class App {
 
@@ -52,19 +53,44 @@ public class App {
             System.out.println(category);
             if (action == MIXIN_Action.CREATE_MESSAGE && obj.get("data") != null &&
                 category != null ) {
-              String messageId =
-                    obj.get("data").getAsJsonObject().get("message_id").getAsString();
-              MixinBot.sendMessageAck(webSocket, messageId);
+              String userId;
+              String messageId = obj.get("data").getAsJsonObject().get("message_id").getAsString();
+              // MixinBot.sendMessageAck(webSocket, messageId);
               switch (category) {
                 case PLAIN_TEXT:
                     String conversationId =
                       obj.get("data").getAsJsonObject().get("conversation_id").getAsString();
-                    String userId =
+                    userId =
                       obj.get("data").getAsJsonObject().get("user_id").getAsString();
                     byte[] msgData = Base64.decodeBase64(obj.get("data").getAsJsonObject().get("data").getAsString());
                     MixinBot.sendText(webSocket,conversationId,userId,new String(msgData,"UTF-8"));
                     break;
-                  default:
+                case SYSTEM_ACCOUNT_SNAPSHOT:
+                    userId =
+                      obj.get("data").getAsJsonObject().get("user_id").getAsString();
+                    byte[] JsData = Base64.decodeBase64(obj.get("data").getAsJsonObject().get("data").getAsString());
+                    String JsStr = new String(JsData);
+                    System.out.println("SYSTEM_ACCOUNT_SNAPSHOT json: " + JsStr);
+                    JsonObject jsObj = new JsonParser().parse(JsStr).getAsJsonObject();
+                    System.out.println(jsObj.get("amount").getAsFloat());
+                    System.out.println(jsObj.get("asset_id").getAsString());
+                    // JsonObject JsObj = new JsonParser().parse(JsStr).getAsJsonObject();
+                    // System.out.println(JsObj.get("asset_id").getAsString());
+                    // System.out.println(JsObj.get("amount").getAsString());
+                    if (jsObj.get("amount").getAsFloat() > 0) {
+                      // MixinBot.transfer(
+                      //     jsObj.get("asset_id").getAsString(),
+                      //     jsObj.get("opponent_id").getAsString(),
+                      //     jsObj.get("amount").getAsFloat(),
+                      //     Config.PIN,
+                      //     Config.PAY_KEY,
+                      //     Config.RSA_PRIVATE_KEY,
+                      //     Config.CLIENT_ID,
+                      //     Config.SESSION_ID
+                      // );
+                    }
+                    break;
+                default:
                     System.out.println("Category: " + category);
               }
               // switch (category) {
