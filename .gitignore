@@ -15,3 +15,5 @@ gradle-helloworld/gradlew.bat
 gradlew.bat
 mixin_labs-java-bot.iml
 .idea/
+src/main/java/mixin_labs/java/bot/Config.java
+src/main/resources/rsa_private_key.txt
