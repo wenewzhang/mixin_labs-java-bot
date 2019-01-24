@@ -4,8 +4,8 @@
 package mixin_labs.java.bot;
 import mixin.java.sdk.MixinBot;
 import mixin.java.sdk.MixinUtil;
-import mixin.java.sdk.Category;
-import mixin.java.sdk.Action;
+import mixin.java.sdk.MIXIN_Category;
+import mixin.java.sdk.MIXIN_Action;
 import mixin.java.sdk.Library;
 import java.security.PrivateKey;
 import java.security.interfaces.RSAPrivateKey;
@@ -18,15 +18,8 @@ import okhttp3.WebSocketListener;
 import okio.ByteString;
 
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-        Library libMixin = new Library();
-        if (libMixin.someLibraryMethod())  System.out.println("true"); else System.out.println("false");
-        System.out.println(Config.RSA_PRIVATE_KEY);
         MixinBot.connectToRemoteMixin(new WebSocketListener() {
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
@@ -52,9 +45,9 @@ public class App {
             String msgIn = MixinUtil.bytesToJsonStr(bytes);
             System.out.println("json: " + msgIn);
             JsonObject obj = new JsonParser().parse(msgIn).getAsJsonObject();
-            Action action = Action.parseFrom(obj);
-            Category category = Category.parseFrom(obj);
-            if (action == Action.CREATE_MESSAGE && category != null) {
+            MIXIN_Action action = MIXIN_Action.parseFrom(obj);
+            MIXIN_Category category = MIXIN_Category.parseFrom(obj);
+            if (action == MIXIN_Action.CREATE_MESSAGE && category != null) {
               switch (category) {
                 case PLAIN_TEXT:
                 case PLAIN_STICKER:
@@ -127,6 +120,6 @@ public class App {
           System.out.println("throwable: " + t);
           System.out.println("response: " + response);
         }
-      }, Config.RSA_PRIVATE_KEY, Config.APP_ID, Config.SESSION_ID);
+      }, Config.RSA_PRIVATE_KEY, Config.CLIENT_ID, Config.SESSION_ID);
     }
 }
