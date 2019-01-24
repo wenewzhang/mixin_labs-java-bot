@@ -25,7 +25,8 @@ dependencies {
     implementation("com.google.guava:guava:26.0-jre")
     // dependent on mixin-java-sdk, copy it to libs directory
     compile(files("libs/mixin-java-sdk-unspecified.jar"))
-
+    implementation("commons-codec:commons-codec:1.11")
+    implementation("com.auth0:java-jwt:3.5.0")
     implementation("com.squareup.okhttp3:okhttp:3.12.1")
     implementation("com.google.code.gson:gson:2.8.5")
     // Use JUnit test framework
