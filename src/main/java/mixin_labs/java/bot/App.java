@@ -78,16 +78,18 @@ public class App {
                     // System.out.println(JsObj.get("asset_id").getAsString());
                     // System.out.println(JsObj.get("amount").getAsString());
                     if (jsObj.get("amount").getAsFloat() > 0) {
-                      // MixinBot.transfer(
-                      //     jsObj.get("asset_id").getAsString(),
-                      //     jsObj.get("opponent_id").getAsString(),
-                      //     jsObj.get("amount").getAsFloat(),
-                      //     Config.PIN,
-                      //     Config.PAY_KEY,
-                      //     Config.RSA_PRIVATE_KEY,
-                      //     Config.CLIENT_ID,
-                      //     Config.SESSION_ID
-                      // );
+                      String aesKey = new String (Base64.encodeBase64(Config.PAY_KEY));
+                      System.out.println(aesKey);
+                      String encryptPin = MixinUtil.encryptPayKey(Config.PIN,Config.PAY_KEY);
+                      MixinBot.transfer(
+                          jsObj.get("asset_id").getAsString(),
+                          jsObj.get("opponent_id").getAsString(),
+                          jsObj.get("amount").getAsFloat(),
+                          encryptPin,
+                          Config.RSA_PRIVATE_KEY,
+                          Config.CLIENT_ID,
+                          Config.SESSION_ID
+                      );
                     }
                     break;
                 default:

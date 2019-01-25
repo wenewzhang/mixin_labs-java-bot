@@ -17,3 +17,4 @@ mixin_labs-java-bot.iml
 .idea/
 src/main/java/mixin_labs/java/bot/Config.java
 src/main/resources/rsa_private_key.txt
+./src/main/java/mixin_labs/java/bot/Config.java
