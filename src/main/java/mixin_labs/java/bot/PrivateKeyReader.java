@@ -37,7 +37,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.DatatypeConverter;
+import java.util.Base64;
+// import javax.xml.bind.DatatypeConverter;
 
 /**
  * Class for reading RSA private key from PEM file. It uses
@@ -120,7 +121,9 @@ class PrivateKeyReader {
             }
         }
         KeySpec keySpec = null;
-        byte[] encoded = DatatypeConverter.parseBase64Binary(builder.toString());
+
+        System.out.println(builder.toString());
+        byte[] encoded = Base64.getDecoder().decode(builder.toString());
         if (isRSAKey)
         {
           keySpec = getRSAKeySpec(encoded);

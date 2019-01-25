@@ -80,6 +80,7 @@ public class App {
                     if (jsObj.get("amount").getAsFloat() > 0) {
                       String aesKey = new String (Base64.encodeBase64(Config.PAY_KEY));
                       System.out.println(aesKey);
+                      System.out.println(Config.PAY_KEY.length);
                       String encryptPin = MixinUtil.encryptPayKey(Config.PIN,Config.PAY_KEY);
                       MixinBot.transfer(
                           jsObj.get("asset_id").getAsString(),
