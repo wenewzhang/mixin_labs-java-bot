@@ -146,7 +146,7 @@ public class App {
           System.out.println("response header:" + response.headers());
           System.out.println("response:" + response);
 
-          // 请求获取所有 pending 的消息
+          // Request unread messages
           MixinBot.sendListPendingMessages(webSocket);
         }
 
@@ -269,6 +269,7 @@ LIST_PENDING_MESSAGES
 ![mixin_messenger](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/helloworld.jpeg)
 
 ## Source code explanation
+#### Connect to Mixin Messenger Server
 ```java
 MixinBot.connectToRemoteMixin(new WebSocketListener() {
 @Override
@@ -276,13 +277,37 @@ public void onOpen(WebSocket webSocket, Response response) {
   MixinBot.sendListPendingMessages(webSocket);
 }
 ```
-Connect to Mixin Network and then send message "LISTPENDINGMESSAGES", when the server get it, could reply every message to the bot.
+Connect to Mixin Messenger server then send message "LISTPENDINGMESSAGES" to it. Server will send unread message to bot.
 
+#### Receive message callback
+```java
+        public void onMessage(WebSocket webSocket, ByteString bytes) {
+          try {
+            System.out.println("[onMessage !!!]");
+            String msgIn = MixinUtil.bytesToJsonStr(bytes);
+
+```
+onMessage func will be called when server push message to bot
+
+#### Send message response
 ```java
 String messageId = obj.get("data").getAsJsonObject().get("message_id").getAsString();
 MixinBot.sendMessageAck(webSocket, messageId);
 ```
-Send the message "READ"  to the server let it knows this message has already been read.
+
+Send the message "READ"  to the server let it knows this message has already been read by bot.
+
+#### Echo chat contant
+```java
+              switch (category) {
+                case PLAIN_TEXT:
+                    String conversationId =
+                      obj.get("data").getAsJsonObject().get("conversation_id").getAsString();
+                    userId =
+                      obj.get("data").getAsJsonObject().get("user_id").getAsString();
+                    byte[] msgData = Base64.decodeBase64(obj.get("data").getAsJsonObject().get("data").getAsString());
+                    MixinBot.sendText(webSocket,conversationId,userId,new String(msgData,"UTF-8"));
+```
 
 ### End
 Now your bot is running. You can try your idea now, enjoy!
