@@ -1,7 +1,7 @@
 # Ignore Gradle project-specific cache directory
 .gradle
 gradle-helloworld/.gradle
-
+.DS_Store
 # Ignore Gradle build output directory
 build
 gradle-helloworld/build

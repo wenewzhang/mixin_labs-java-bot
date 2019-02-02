@@ -55,7 +55,7 @@ public class App {
                 category != null ) {
               String userId;
               String messageId = obj.get("data").getAsJsonObject().get("message_id").getAsString();
-              // MixinBot.sendMessageAck(webSocket, messageId);
+              MixinBot.sendMessageAck(webSocket, messageId);
               switch (category) {
                 case PLAIN_TEXT:
                     String conversationId =

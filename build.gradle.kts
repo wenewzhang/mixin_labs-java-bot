@@ -24,11 +24,14 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     implementation("com.google.guava:guava:26.0-jre")
     // dependent on mixin-java-sdk, copy it to libs directory
-    compile(files("libs/mixin-java-sdk-unspecified.jar"))
+    compile(files("libs/mixin-java-sdk.jar"))
     implementation("commons-codec:commons-codec:1.11")
     implementation("com.auth0:java-jwt:3.5.0")
+    implementation("com.squareup.okio:okio:2.2.1")
     implementation("com.squareup.okhttp3:okhttp:3.12.1")
     implementation("com.google.code.gson:gson:2.8.5")
+    implementation("com.madgag.spongycastle:core:1.58.0.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.20")
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
 }
