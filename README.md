@@ -1,12 +1,11 @@
 # Mixin Messenger application development tutorial in java
 ## Install java on your OS
-on macOS
-Download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, and then in the pop window click JDK 11.0.2.pkg, follow the prompt finish the installation, the java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH,
+On macOS, download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, and then in the pop window click JDK 11.0.2.pkg, follow the prompt finish the installation, the java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH,
 ```bash
 echo 'export PATH=/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/:$PATH' >> ~/.bash_profile
 source ~/.bash_profile
 ```
-if installed successfully, execute **java --version** will get message like below.
+If installed successfully, execute **java --version** will get message like below.
 ```bash
 wenewzha:mixin_labs-java-bot wenewzhang$ java --version
 java 11.0.2 2019-01-15 LTS
