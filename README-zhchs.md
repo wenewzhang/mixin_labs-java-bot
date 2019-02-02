@@ -1,56 +1,58 @@
-# Mixin Messenger application development tutorial in java
-This tutorial will let you know how to write a Mixin Messenger bot in Java. The bot can receive and response to user's message. User can pay Bitcoin to bot and bot can transfer Bitcoin to user immediately.
+# Mixin Messenger 小程序开发之 Java
+[Mixin Network](https://mixin.one) 是一个免费的 极速的端对端加密数字货币交易系统.
+在本章中，你可以按教程在Mixin Messenger中创建一个bot来接收用户消息, 学到如何给机器人转**比特币** 或者 让机器人给你转**比特币**.
 
-## Index
-1. [Create bot and receive message from user](https://github.com/wenewzhang/mixin_labs-java-bot)
-2. [Receive and send Bitcoin](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/README2.md)
+## 课程简介
+1. [创建一个接受消息的机器人](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md)
 
-## Install java on your OS
-On macOS, download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, and then click on JDK 11.0.2.pkg in the pop window, follow the prompt to finish the installation, the java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH,
+## 安装Java
+如果你运行的是macOS, 手动到此[下载JDK12](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html), 下载完成后，双击 jdk-11.0.2_osx-x64_bin.dmg, 在弹出的新窗口中，点击 JDK 11.0.2.pkg文件，依提示一步一步完成安装， Java会安装在 /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ 目录中，将这个路径加入到$PATH
+
 ```bash
 echo 'export PATH=/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/:$PATH' >> ~/.bash_profile
 source ~/.bash_profile
 ```
-If installed successfully, execute command of **java --version** that will get message like below:
+安装成功后，执行 **java --version** 将得到如下信息:
+
 ```bash
 wenewzha:mixin_labs-java-bot wenewzhang$ java --version
 java 11.0.2 2019-01-15 LTS
 Java(TM) SE Runtime Environment 18.9 (build 11.0.2+9-LTS)
 Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.2+9-LTS, mixed mode)
 ```
-on Ubuntu
+Ubuntu
 ```bash
 apt update
 apt upgrade
 apt install unzip
 java --version
 ```
-On Ubuntu 16.04, the openjdk edition java has been installed default with OS, execute command of **java --version** that will get message like below:
+以Ubuntu 16.04为例， openjdk版本的Java已经安装好了， 执行 **java --version**来验证安装情况。
 ```bash
 root@ubuntu:~# java --version
 openjdk 10.0.2 2018-07-17
 OpenJDK Runtime Environment (build 10.0.2+13-Ubuntu-1ubuntu0.18.04.4)
 OpenJDK 64-Bit Server VM (build 10.0.2+13-Ubuntu-1ubuntu0.18.04.4, mixed mode)
 ```
-## Install Gradle on your OS
-This tutorial use Gradle to build, you can download the latest gradle [here](https://gradle.org/install/#manually)
-on macOS
+## 在操作系统中安装最新版本的Gradle
+本教程采用Gradle来构建，你可从下面的地址来下载安装！[Gradle下载](https://gradle.org/install/#manually)
+macOS
 ```bash
 brew update
 brew install gradle
 ```
-on Ubuntu, The gradle is too old, so we need to download it by manual.
+Ubuntu下的Gradle太旧，我们手动安装它:
 ```bash
 cd ~/Downloads
 wget https://services.gradle.org/distributions/gradle-5.1.1-bin.zip
 unzip gradle-5.1.1-bin.zip
 ```
-After unzip the gradle-5.1.1-bin.zip, Let's add the path to $PATH environment variable
+解压gradle-5.1.1-bin.zip后，增加安装目录到$PATH中：
 ```bash
 echo 'export PATH=/root/gradle-5.1.1/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
-When gradle installed, execute command of  **gradle -v** could output message like below:
+当Gradle安装成功后， 执行**gradle -v**来验证安装情况：
 ```bash
 root@ubuntu:~# gradle -v
 ------------------------------------------------------------
@@ -58,22 +60,22 @@ Gradle 5.1.1
 ------------------------------------------------------------
 ...
 ```
-### Create you first app in developer dashboard
-Create an app by following [tutorial](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account).
 
-### Generate parameter for your app
-Remember to [generate parameter](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account#generate-secure-parameter-for-your-app)
-and write down required information, they are required in config.java file soon.
+### 创建第一个机器人APP
+按下面的提示，到mixin.one创建一个APP[tutorial](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account).
+
+### 生成相应的参数
+记下这些[生成的参数](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account#generate-secure-parameter-for-your-app)
+它们将用于Config.java中.
 
 ![mixin_network-keys](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/mixin_network-keys.jpg)
 
 ## Hello,World!
-Go to your workspace, create the project mixin_labs-java-bot directory, execute command of **gradle init** which to generate the project basic information.
+进入到你的工作目录，创建mixin_labs-java-bot目录, 执行**gradle init**来生成基本信息资料.
 ```bash
 gradle init --dsl kotlin --type java-application --test-framework junit --project-name mixin_labs-java-bot
 ```
-
-Go into src/main/java/mixin_labs/java/bot, create a file: Config.java. fill the following content in it.
+进入src/main/java/mixin_labs/java/bot目录，新建一个Config.java, 填写如下内容：
 > Config.java
 ```java
 package mixin_labs.java.bot;
@@ -110,8 +112,9 @@ public static final String PIN_TOKEN     = "ajJJngHmWgIfH3S2mgH4bAsoPeoXV6hI1KoT
 }
 
 ```
-Replace the value with **YOUR APP**'s  CLIENT_ID, client_id, CLIENT_SECRET, and the PIN, PIN_TOKEN, SESSION_ID,
-Create App.java, fill the below content in it
+用你创建的APP的参数，替换文件中的内容: CLIENT_ID, client_id, CLIENT_SECRET, and the PIN, PIN_TOKEN, SESSION_ID.
+
+创建App.java文件，内容如下：
 > App.java
 ```java
 /*
@@ -215,22 +218,22 @@ public class App {
 }
 
 ```
-Go into src/main/resources, create a file: rsa_private_key.txt, Fill the private key which you have already generated in dashboard.
+进入src/main/resources, 新建文件：rsa_private_key.txt, 填写私钥信息:
 > rsa_private_key.txt
 ```java
 -----BEGIN RSA PRIVATE KEY-----
 ...
 -----END RSA PRIVATE KEY-----
 ```
-
-Go back to the project directory, download the mixin-java-sdk from github,
+本教程依赖 [mixin-java-sdk](https://github.com/wenewzhang/mixin-java-sdk)
+现在回到项目目录，从github下载mixin-java-sdk
 
 ```bash
 mkdir libs
 cd libs
 wget https://github.com/wenewzhang/mixin-java-sdk/releases/download/v2/mixin-java-sdk.jar
 ```
-Add dependencies package info into build.gradle.kts
+增加依赖到build.gradle.kts，增加编译文件compile(files("libs/mixin-java-sdk.jar")), 完整的依赖包如下：
 ```kotlin
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
@@ -242,22 +245,21 @@ dependencies {
     implementation("com.squareup.okio:okio:2.2.1")
     implementation("com.squareup.okhttp3:okhttp:3.12.1")
     implementation("com.google.code.gson:gson:2.8.5")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.20")
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
 }
 ```
-Go to the directory src/test/java/mixin_labs/java/bot, comment the test code,
+进入到 src/test/java/mixin_labs/java/bot, 注释掉下面的代码
 > AppTest.java
 ```java
         // assertNotNull("app should have a greeting", classUnderTest.getGreeting());
 ```
-The last step, go back in mixin_labs-java-bot directory, build it and run,
+最后一步，回到项目目录mixin_labs-java-bot, 编译并运行.
 ```bash
 gradle build
 gradle run
 ```
-If you look message like below, well done. Congratulations!
+如果你看到如下信息，表示已经连接成功了，机器人小程序已经就绪，你可以发信息给他了！
 
 ```bash
 response:Response{protocol=http/1.1, code=101, message=Switching Protocols, url=https://blaze.mixin.one/}
@@ -265,10 +267,10 @@ response:Response{protocol=http/1.1, code=101, message=Switching Protocols, url=
 json: {"id":"4ee01b68-817e-4f29-bcb4-b40f7c163f61","action":"LIST_PENDING_MESSAGES"}
 LIST_PENDING_MESSAGES
 ```
-
 ![mixin_messenger](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/helloworld.jpeg)
+信息如上图所示！
 
-## Source code explanation
+## 源代码解释
 ```java
 MixinBot.connectToRemoteMixin(new WebSocketListener() {
 @Override
@@ -276,15 +278,13 @@ public void onOpen(WebSocket webSocket, Response response) {
   MixinBot.sendListPendingMessages(webSocket);
 }
 ```
-Connect to Mixin Network and then send message "LISTPENDINGMESSAGES", when the server get it, could reply every message to the bot.
+连接到Mixin Network并发送"LISTPENDINGMESSAGES"消息，服务器以后会将收到的消息转发给此程序!
 
 ```java
 String messageId = obj.get("data").getAsJsonObject().get("message_id").getAsString();
 MixinBot.sendMessageAck(webSocket, messageId);
 ```
-Send the message "READ"  to the server let it knows this message has already been read.
+收到消息后，发送Ack消息给服务器，将此消息标记为已读！
+好了，你的第一个机器人小程序已经运行起来了， 你有什么新的想法，来试试吧！
 
-### End
-Now your bot is running. You can try your idea now, enjoy!
-
-A full code is [here](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/src/main/java/mixin_labs/java/bot/App.java)
+完整的代码 [这儿](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/src/main/java/mixin_labs/java/bot/App.java)
