@@ -50,7 +50,7 @@ public class App {
             MIXIN_Action action = MIXIN_Action.parseFrom(obj);
             System.out.println(action);
             MIXIN_Category category = MIXIN_Category.parseFrom(obj);
-            System.out.println(category);
+            // System.out.println(category);
             if (action == MIXIN_Action.CREATE_MESSAGE && obj.get("data") != null &&
                 category != null ) {
               String userId;

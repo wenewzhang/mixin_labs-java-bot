@@ -30,7 +30,7 @@ dependencies {
     implementation("com.squareup.okio:okio:2.2.1")
     implementation("com.squareup.okhttp3:okhttp:3.12.1")
     implementation("com.google.code.gson:gson:2.8.5")
-    implementation("com.madgag.spongycastle:core:1.58.0.0")
+    /* implementation("com.madgag.spongycastle:core:1.58.0.0") */
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.20")
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
