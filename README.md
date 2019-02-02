@@ -1,11 +1,11 @@
 # Mixin Messenger application development tutorial in java
 ## Install java on your OS
-On macOS, download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, and then in the pop window click JDK 11.0.2.pkg, follow the prompt finish the installation, the java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH,
+On macOS, download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, and then click on JDK 11.0.2.pkg in the pop window, follow the prompt to finish the installation, the java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH,
 ```bash
 echo 'export PATH=/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/:$PATH' >> ~/.bash_profile
 source ~/.bash_profile
 ```
-If installed successfully, execute **java --version** will get message like below.
+If installed successfully, execute command of **java --version** that will get message like below:
 ```bash
 wenewzha:mixin_labs-java-bot wenewzhang$ java --version
 java 11.0.2 2019-01-15 LTS
@@ -19,7 +19,7 @@ apt upgrade
 apt install unzip
 java --version
 ```
-On ubuntu 16.04, the openjdk java has been installed default with OS, execute **java --version** will get message like below.
+On Ubuntu 16.04, the openjdk edition java has been installed default with OS, execute command of **java --version** that will get message like below:
 ```bash
 root@ubuntu:~# java --version
 openjdk 10.0.2 2018-07-17
@@ -33,8 +33,7 @@ on macOS
 brew update
 brew install gradle
 ```
-on Ubuntu
-The gradle is too old for ubuntu, so we need download it ourself.
+on Ubuntu, The gradle is too old, so we need to download it by manual.
 ```bash
 cd ~/Downloads
 wget https://services.gradle.org/distributions/gradle-5.1.1-bin.zip
@@ -45,7 +44,7 @@ After unzip the gradle-5.1.1-bin.zip, Let's add the path to $PATH environment va
 echo 'export PATH=/root/gradle-5.1.1/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
-When gradle installed, execute **gradle -v** could output message like below:
+When gradle installed, execute command of  **gradle -v** could output message like below:
 ```bash
 root@ubuntu:~# gradle -v
 ------------------------------------------------------------
@@ -63,12 +62,12 @@ and write down required information, they are required in config.java file soon.
 ![mixin_network-keys](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/mixin_network-keys.jpg)
 
 ## Hello,World!
-Create the project mixin_labs-java-bot, Go to your workspace, execute **gradle init** to generate the project base information.
+Create the project mixin_labs-java-bot, Go to your workspace, execute command of **gradle init** which to generate the project basic information.
 ```bash
 gradle init --dsl kotlin --type java-application --test-framework junit --project-name mixin_labs-java-bot
 ```
 
-Go into src/main/java/mixin_labs/java/bot, create a file: Config.java. Copy the following content into it.
+Go into src/main/java/mixin_labs/java/bot, create a file: Config.java. fill the following content in it.
 > Config.java
 ```java
 package mixin_labs.java.bot;
@@ -105,8 +104,8 @@ public static final String PIN_TOKEN     = "ajJJngHmWgIfH3S2mgH4bAsoPeoXV6hI1KoT
 }
 
 ```
-Replace the value with **YOUR APP** CLIENT_ID, client_id, CLIENT_SECRET, and the PIN, PIN_TOKEN, SESSION_ID,
-Create App.java, fill the below content in
+Replace the value with **YOUR APP**'s  CLIENT_ID, client_id, CLIENT_SECRET, and the PIN, PIN_TOKEN, SESSION_ID,
+Create App.java, fill the below content in it
 > App.java
 ```java
 /*
@@ -210,14 +209,14 @@ public class App {
 }
 
 ```
-Go into src/main/resources, create a file: rsa_private_key.txt,Fill the private key you have already generated them in dashboard.
+Go into src/main/resources, create a file: rsa_private_key.txt, Fill the private key which you have already generated in dashboard.
 ```java
 -----BEGIN RSA PRIVATE KEY-----
 ...
 -----END RSA PRIVATE KEY-----
 ```
 
-Go back to the project directory, Download the mixin-java-jdk from github,
+Go back to the project directory, download the mixin-java-jdk from github,
 > rsa_private_key.txt
 ```bash
 mkdir libs
@@ -241,17 +240,18 @@ dependencies {
     testImplementation("junit:junit:4.12")
 }
 ```
-Comment the test code, go src/test/java/mixin_labs/java/bot,
+Go to the directory src/test/java/mixin_labs/java/bot, comment the test code,
 > AppTest.java
 ```java
         // assertNotNull("app should have a greeting", classUnderTest.getGreeting());
 ```
-The last step, go into mixin_labs-java-bot directory, build it and run,
+The last step, go back in mixin_labs-java-bot directory, build it and run,
 ```bash
 gradle build
 gradle run
 ```
-If you look message like below, congratulations, well done!
+If you look message like below, well done. Congratulations!
+
 ```bash
 response:Response{protocol=http/1.1, code=101, message=Switching Protocols, url=https://blaze.mixin.one/}
 [onMessage !!!]
@@ -278,6 +278,6 @@ MixinBot.sendMessageAck(webSocket, messageId);
 Send the message "READ"  to the server let it knows this message has already been read.
 
 ### End
-Now your bot is running. You can try your idea now,enjoy!
+Now your bot is running. You can try your idea now, enjoy!
 
 A full code is [here](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/src/main/java/mixin_labs/java/bot/App.java)
