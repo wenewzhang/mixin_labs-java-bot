@@ -210,6 +210,7 @@ public class App {
 
 ```
 Go into src/main/resources, create a file: rsa_private_key.txt, Fill the private key which you have already generated in dashboard.
+> rsa_private_key.txt
 ```java
 -----BEGIN RSA PRIVATE KEY-----
 ...
@@ -217,7 +218,7 @@ Go into src/main/resources, create a file: rsa_private_key.txt, Fill the private
 ```
 
 Go back to the project directory, download the mixin-java-jdk from github,
-> rsa_private_key.txt
+
 ```bash
 mkdir libs
 cd libs
