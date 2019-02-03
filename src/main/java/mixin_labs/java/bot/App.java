@@ -72,7 +72,7 @@ public class App {
                     String JsStr = new String(JsData);
                     System.out.println("SYSTEM_ACCOUNT_SNAPSHOT json: " + JsStr);
                     JsonObject jsObj = new JsonParser().parse(JsStr).getAsJsonObject();
-                    System.out.println(jsObj.get("amount").getAsFloat());
+                    System.out.println(jsObj.get("amount").getAsString());
                     System.out.println(jsObj.get("asset_id").getAsString());
                     // JsonObject JsObj = new JsonParser().parse(JsStr).getAsJsonObject();
                     // System.out.println(JsObj.get("asset_id").getAsString());
@@ -85,7 +85,7 @@ public class App {
                       MixinBot.transfer(
                           jsObj.get("asset_id").getAsString(),
                           jsObj.get("opponent_id").getAsString(),
-                          jsObj.get("amount").getAsFloat(),
+                          jsObj.get("amount").getAsString(),
                           encryptPin,
                           Config.RSA_PRIVATE_KEY,
                           Config.CLIENT_ID,
