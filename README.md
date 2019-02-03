@@ -3,7 +3,7 @@ This tutorial will let you know how to write a Mixin Messenger bot in Java. The 
 
 ## Index
 1. [Create bot and receive message from user](https://github.com/wenewzhang/mixin_labs-java-bot)
-2. [Receive and send Bitcoin](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/README2.md)
+2. [Receive and send Bitcoin](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md)
 
 ## Install java on your OS
 On macOS, download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, and then click on JDK 11.0.2.pkg in the pop window, follow the prompt to finish the installation, the java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH,

@@ -72,15 +72,7 @@ public class App {
                     String JsStr = new String(JsData);
                     System.out.println("SYSTEM_ACCOUNT_SNAPSHOT json: " + JsStr);
                     JsonObject jsObj = new JsonParser().parse(JsStr).getAsJsonObject();
-                    System.out.println(jsObj.get("amount").getAsString());
-                    System.out.println(jsObj.get("asset_id").getAsString());
-                    // JsonObject JsObj = new JsonParser().parse(JsStr).getAsJsonObject();
-                    // System.out.println(JsObj.get("asset_id").getAsString());
-                    // System.out.println(JsObj.get("amount").getAsString());
                     if (jsObj.get("amount").getAsFloat() > 0) {
-                      String aesKey = new String (Base64.encodeBase64(Config.PAY_KEY));
-                      System.out.println(aesKey);
-                      System.out.println(Config.PAY_KEY.length);
                       String encryptPin = MixinUtil.encryptPayKey(Config.PIN,Config.PAY_KEY);
                       MixinBot.transfer(
                           jsObj.get("asset_id").getAsString(),
