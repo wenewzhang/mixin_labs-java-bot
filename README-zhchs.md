@@ -279,12 +279,35 @@ public void onOpen(WebSocket webSocket, Response response) {
 }
 ```
 连接到Mixin Network并发送"LISTPENDINGMESSAGES"消息，服务器以后会将收到的消息转发给此程序!
+#### 消息处理回调函数
+```java
+        public void onMessage(WebSocket webSocket, ByteString bytes) {
+          try {
+            System.out.println("[onMessage !!!]");
+            String msgIn = MixinUtil.bytesToJsonStr(bytes);
 
+```
+当服务器给机器人推送消息的时候，机器人的onMessage函数会被调用
+
+#### 发送消息响应
 ```java
 String messageId = obj.get("data").getAsJsonObject().get("message_id").getAsString();
 MixinBot.sendMessageAck(webSocket, messageId);
 ```
-收到消息后，发送Ack消息给服务器，将此消息标记为已读！
+机器人收到消息后需要发送响应给服务器，这样服务器就知道消息已经收到，不会再发一遍
+
+#### 内容反弹
+```java
+              switch (category) {
+                case PLAIN_TEXT:
+                    String conversationId =
+                      obj.get("data").getAsJsonObject().get("conversation_id").getAsString();
+                    userId =
+                      obj.get("data").getAsJsonObject().get("user_id").getAsString();
+                    byte[] msgData = Base64.decodeBase64(obj.get("data").getAsJsonObject().get("data").getAsString());
+                    MixinBot.sendText(webSocket,conversationId,userId,new String(msgData,"UTF-8"));
+```
+
 好了，你的第一个机器人小程序已经运行起来了， 你有什么新的想法，来试试吧！
 
 完整的代码 [这儿](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/src/main/java/mixin_labs/java/bot/App.java)
