@@ -4,6 +4,7 @@
 
 ## 课程简介
 1. [创建一个接受消息的机器人](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md)
+2. [机器人接受比特币并立即退还用户](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2-zhchs.md)
 
 ## 安装Java
 如果你运行的是macOS, 手动到此[下载JDK12](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html), 下载完成后，双击 jdk-11.0.2_osx-x64_bin.dmg, 在弹出的新窗口中，点击 JDK 11.0.2.pkg文件，依提示一步一步完成安装， Java会安装在 /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ 目录中，将这个路径加入到$PATH
