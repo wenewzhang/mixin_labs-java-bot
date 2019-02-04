@@ -3,7 +3,7 @@
 
 # 第二课: 机器人接受比特币并立即退还用户
 按本篇教程后学习后完成后，你的机器人将会接受用户发送过来的加密货币，然后立即转回用户。
-在App.java中，找到switch条件，加入新的"CASE",内容如下：
+在App.java中，找到"switch"，加入新的"CASE",内容如下：
 > App.java
 ```java
 switch (category) {
