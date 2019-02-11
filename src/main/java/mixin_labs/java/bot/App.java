@@ -6,11 +6,14 @@ import mixin.java.sdk.MixinBot;
 import mixin.java.sdk.MixinUtil;
 import mixin.java.sdk.MIXIN_Category;
 import mixin.java.sdk.MIXIN_Action;
+import java.util.UUID;
 
 import java.security.PrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
+
 // import java.util.Base64;
 import org.apache.commons.codec.binary.Base64;
 import okhttp3.Response;
@@ -64,19 +67,62 @@ public class App {
                       obj.get("data").getAsJsonObject().get("user_id").getAsString();
                     byte[] msgData = Base64.decodeBase64(obj.get("data").getAsJsonObject().get("data").getAsString());
                     String msgP = new String(msgData,"UTF-8");
-                    if (msgP.equals("pay")) {
+                    System.out.println(msgP);
+                    if (msgP.toLowerCase().equals("pay")) {
                       System.out.println("---------------------pay card output!");
                       MixinBot.sendAppCard(webSocket,
                                           Config.CLIENT_ID,
                                           "6cfe566e-4aad-470b-8c9a-2fd35b49c68d",
                                           "0.0001",
                                           conversationId);
-                    } else if (msgP.equals("contact")) {
+                    } else if (msgP.toLowerCase().equals("contact")) {
                       MixinBot.sendContact(
                         webSocket,
                         conversationId,
                         userId,
                         "0c21b607-5e5b-461b-963f-95708346c21d");
+                    } else if (msgP.toLowerCase().equals("sticker")) {
+                          MixinBot.sendSticker(
+                            webSocket,
+                            conversationId,
+                            userId,
+                            "eyJhbGJ1bV9pZCI6IjM2ZTk5NzdjLTJiYWItNDNjYS1hMmI2LTdlMDFmNWViNjhkZSIsIm5hbWUiOiJpbGx1c2lvbiJ9");
+                    } else if (msgP.toLowerCase().equals("appsgroup")) {
+                      String payLinkEOS = "https://mixin.one/pay?recipient=" +
+                                     Config.CLIENT_ID  + "&asset=" +
+                                     "6cfe566e-4aad-470b-8c9a-2fd35b49c68d"   +
+                                     "&amount=" + "0.1" +
+                                     "&trace="  + UUID.randomUUID().toString() +
+                                     "&memo=";
+                      JsonObject msgJsEOS = new JsonObject();
+                      msgJsEOS.addProperty("label", "Pay 0.1 EOS");
+                      msgJsEOS.addProperty("color", "#0080FF");
+                      msgJsEOS.addProperty("action",payLinkEOS);
+
+
+                      String payLinkBTC = "https://mixin.one/pay?recipient=" +
+                                     Config.CLIENT_ID  + "&asset=" +
+                                     "c6d0c728-2624-429b-8e0d-d9d19b6592fa"   +
+                                     "&amount=" + "0.001" +
+                                     "&trace="  + UUID.randomUUID().toString() +
+                                     "&memo=";
+                      JsonObject msgJsBTC = new JsonObject();
+                      msgJsBTC.addProperty("label", "Pay 0.001 BTC");
+                      msgJsBTC.addProperty("color", "#FF8000");
+                      msgJsBTC.addProperty("action",payLinkBTC);
+
+                      JsonArray msgArr = new JsonArray();
+                      msgArr.add(msgJsEOS);//button for EOS
+                      msgArr.add(msgJsBTC);//button for Bitcoin
+
+                      JsonObject msgParams = new JsonObject();
+                      msgParams.addProperty("conversation_id",conversationId);
+                      msgParams.addProperty("category","APP_BUTTON_GROUP");
+                      msgParams.addProperty("status","SENT");
+                      msgParams.addProperty("message_id",UUID.randomUUID().toString());
+                      msgParams.addProperty("data",new String(Base64.encodeBase64(msgArr.toString().getBytes())));
+
+                      MixinBot.send(webSocket, MIXIN_Action.CREATE_MESSAGE, msgParams.toString());
                     } else MixinBot.sendText(webSocket,conversationId,userId,msgP);
                     break;
                 case SYSTEM_ACCOUNT_SNAPSHOT:
@@ -102,52 +148,6 @@ public class App {
                 default:
                     System.out.println("Category: " + category);
               }
-              // switch (category) {
-              //   case PLAIN_TEXT:
-              //   case PLAIN_STICKER:
-              //   case PLAIN_IMAGE:
-              //   case PLAIN_CONTACT:
-              //     // 确认收到的消息，使得对方界面的消息状态，由单钩变双钩
-              //     String messageId =
-              //       obj.get("data").getAsJsonObject().get("message_id").getAsString();
-              //     MixinBot.sendMessageAck(webSocket, messageId);
-              //
-              //     // 回复给对方消息
-              //     String conversationId =
-              //       obj.get("data").getAsJsonObject().get("conversation_id").getAsString();
-              //     String userId =
-              //       obj.get("data").getAsJsonObject().get("user_id").getAsString();
-              //     System.out.println("conversationId = " + conversationId);
-              //     System.out.println("userId = " + userId);
-              //
-              //     MixinBot.sendText(
-              //       webSocket,
-              //       conversationId,
-              //       userId,
-              //       "很高兴见到你！");
-              //
-              //     MixinBot.sendSticker(
-              //       webSocket,
-              //       conversationId,
-              //       userId,
-              //       "eyJhbGJ1bV9pZCI6IjM2ZTk5NzdjLTJiYWItNDNjYS1hMmI2LTdlMDFmNWViNjhkZSIsIm5hbWUiOiJpbGx1c2lvbiJ9");
-              //
-              //     MixinBot.sendContact(
-              //       webSocket,
-              //       conversationId,
-              //       userId,
-              //       "0c21b607-5e5b-461b-963f-95708346c21d");
-              //
-              //     // MixinBot.transferTo(
-              //     //   "965e5c6e-434c-3fa9-b780-c50f43cd955c", // CNB
-              //     //   userId,
-              //     //   1.0
-              //     // );
-              //
-              //     break;
-              //   default:
-              //     System.out.println("Category: " + category);
-              // }
             }
           } catch (Exception e) {
             e.printStackTrace();

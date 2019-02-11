@@ -35,7 +35,7 @@ case SYSTEM_ACCOUNT_SNAPSHOT:
 ...
 ```
 ### Hello Bitcoin!
-Execute **gradle run ** in the project directory.
+Execute **gradle run** in the project directory.
 ```bash
 response:Response{protocol=http/1.1, code=101, message=Switching Protocols, url=https://blaze.mixin.one/}
 [onMessage !!!]
@@ -68,3 +68,60 @@ if (jsObj.get("amount").getAsFloat() > 0) {
 When bot send Bitcoin to user successfully, the jsObj.get("amount") is negative.
 When user send Bitcoin to bot, the jsObj.get("amount") is positive.
 The last, call MixinBot.transfer to refund the coins back to user.
+
+## Advanced usage.
+In some situations, you want guild user to pay coins to bot, Mixin Network provide many method for that.
+
+### sendAppCard
+Send a icon with title and description, user click the icon to pay coins to bot
+```java
+if (msgP.toLowerCase().equals("pay")) {
+  MixinBot.sendAppCard(webSocket,
+                      Config.CLIENT_ID,
+                      "6cfe566e-4aad-470b-8c9a-2fd35b49c68d",
+                      "0.0001",
+                      conversationId);
+}
+```
+### send Button Group
+Create a group of buttons for user, user pick one button to pay coins to bot.
+```java
+else if (msgP.toLowerCase().equals("appsgroup")) {
+  String payLinkEOS = "https://mixin.one/pay?recipient=" +
+                 Config.CLIENT_ID  + "&asset=" +
+                 "6cfe566e-4aad-470b-8c9a-2fd35b49c68d"   +
+                 "&amount=" + "0.1" +
+                 "&trace="  + UUID.randomUUID().toString() +
+                 "&memo=";
+  JsonObject msgJsEOS = new JsonObject();
+  msgJsEOS.addProperty("label", "Pay 0.1 EOS");
+  msgJsEOS.addProperty("color", "#0080FF");
+  msgJsEOS.addProperty("action",payLinkEOS);
+
+
+  String payLinkBTC = "https://mixin.one/pay?recipient=" +
+                 Config.CLIENT_ID  + "&asset=" +
+                 "c6d0c728-2624-429b-8e0d-d9d19b6592fa"   +
+                 "&amount=" + "0.001" +
+                 "&trace="  + UUID.randomUUID().toString() +
+                 "&memo=";
+  JsonObject msgJsBTC = new JsonObject();
+  msgJsBTC.addProperty("label", "Pay 0.001 BTC");
+  msgJsBTC.addProperty("color", "#FF8000");
+  msgJsBTC.addProperty("action",payLinkBTC);
+
+  JsonArray msgArr = new JsonArray();
+  msgArr.add(msgJsEOS);//button for EOS
+  msgArr.add(msgJsBTC);//button for Bitcoin
+
+  JsonObject msgParams = new JsonObject();
+  msgParams.addProperty("conversation_id",conversationId);
+  msgParams.addProperty("category","APP_BUTTON_GROUP");
+  msgParams.addProperty("status","SENT");
+  msgParams.addProperty("message_id",UUID.randomUUID().toString());
+  msgParams.addProperty("data",new String(Base64.encodeBase64(msgArr.toString().getBytes())));
+
+  MixinBot.send(webSocket, MIXIN_Action.CREATE_MESSAGE, msgParams.toString());
+}
+```
+![pay-link](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/appcard.jpeg)

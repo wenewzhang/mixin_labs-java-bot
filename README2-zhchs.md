@@ -68,3 +68,61 @@ if (jsObj.get("amount").getAsFloat() > 0) {
 ```
 如果机器人收到币，jsObj.get("amount") 大于零；如果机器人支付币给用户，接收到的消息是一样的，唯一不同的是jsObj.get("amount")是一个负数.
 最后一步，调用SDK的MixinBot.transfer将币返还用户！
+
+
+## 高级用法
+在某些应用场景，开发者想引导用户来支付币给机器人，Mixin Network提供了很多种方法。
+### sendAppCard
+发送一张带有标题，描述的图标，用户点击图标然后支付给机器人。
+Send a icon with title and description, user click the icon to pay coins to bot
+```java
+if (msgP.toLowerCase().equals("pay")) {
+  MixinBot.sendAppCard(webSocket,
+                      Config.CLIENT_ID,
+                      "6cfe566e-4aad-470b-8c9a-2fd35b49c68d",
+                      "0.0001",
+                      conversationId);
+}
+```
+### send Button Group
+创建一组按钮，用户点击任意一个按钮然后支付给机器人。
+```java
+else if (msgP.toLowerCase().equals("appsgroup")) {
+  String payLinkEOS = "https://mixin.one/pay?recipient=" +
+                 Config.CLIENT_ID  + "&asset=" +
+                 "6cfe566e-4aad-470b-8c9a-2fd35b49c68d"   +
+                 "&amount=" + "0.1" +
+                 "&trace="  + UUID.randomUUID().toString() +
+                 "&memo=";
+  JsonObject msgJsEOS = new JsonObject();
+  msgJsEOS.addProperty("label", "Pay 0.1 EOS");
+  msgJsEOS.addProperty("color", "#0080FF");
+  msgJsEOS.addProperty("action",payLinkEOS);
+
+
+  String payLinkBTC = "https://mixin.one/pay?recipient=" +
+                 Config.CLIENT_ID  + "&asset=" +
+                 "c6d0c728-2624-429b-8e0d-d9d19b6592fa"   +
+                 "&amount=" + "0.001" +
+                 "&trace="  + UUID.randomUUID().toString() +
+                 "&memo=";
+  JsonObject msgJsBTC = new JsonObject();
+  msgJsBTC.addProperty("label", "Pay 0.001 BTC");
+  msgJsBTC.addProperty("color", "#FF8000");
+  msgJsBTC.addProperty("action",payLinkBTC);
+
+  JsonArray msgArr = new JsonArray();
+  msgArr.add(msgJsEOS);//button for EOS
+  msgArr.add(msgJsBTC);//button for Bitcoin
+
+  JsonObject msgParams = new JsonObject();
+  msgParams.addProperty("conversation_id",conversationId);
+  msgParams.addProperty("category","APP_BUTTON_GROUP");
+  msgParams.addProperty("status","SENT");
+  msgParams.addProperty("message_id",UUID.randomUUID().toString());
+  msgParams.addProperty("data",new String(Base64.encodeBase64(msgArr.toString().getBytes())));
+
+  MixinBot.send(webSocket, MIXIN_Action.CREATE_MESSAGE, msgParams.toString());
+}
+```
+![pay-link](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/appcard.jpeg)

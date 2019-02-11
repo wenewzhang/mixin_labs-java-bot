@@ -228,7 +228,7 @@ Go back to the project directory, download the mixin-java-sdk from github,
 ```bash
 mkdir libs
 cd libs
-wget https://github.com/wenewzhang/mixin-java-sdk/releases/download/v2/mixin-java-sdk.jar
+wget https://github.com/wenewzhang/mixin-java-sdk/releases/download/v3/mixin-java-sdk.jar
 ```
 Add dependencies package info into build.gradle.kts
 ```kotlin
