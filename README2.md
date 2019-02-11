@@ -47,7 +47,7 @@ LIST_PENDING_MESSAGES
 Developer can send Bitcoin to their bots in message panel. The bot receive the Bitcoin and then send back immediately.
 ![transfer and tokens](https://github.com/wenewzhang/mixin_network-nodejs-bot2/blob/master/transfer-any-tokens.jpg)
 
-User can pay 0.001 Bitcoin to bot by click the button and the 0.001 Bitcoin will be refunded in 1 seconds,In fact, user can pay any coins either.
+User can pay 0.001 Bitcoin to bot by click the button and the 0.001 Bitcoin will be refunded in 1 second,In fact, user can pay any coin either.
 ![pay-link](https://github.com/wenewzhang/mixin_network-nodejs-bot2/blob/master/Pay_and_refund_quickly.jpg)
 
 ## Source code explanation
@@ -65,15 +65,15 @@ if (jsObj.get("amount").getAsFloat() > 0) {
   );
 }
 ```
-When bot send Bitcoin to user successfully, the jsObj.get("amount") is negative.
-When user send Bitcoin to bot, the jsObj.get("amount") is positive.
+When bot sends Bitcoin to user successfully, the jsObj.get("amount") is negative.
+When users send Bitcoin to bot, the jsObj.get("amount") is positive.
 The last, call MixinBot.transfer to refund the coins back to user.
 
-## Advanced usage.
-In some situations, you want guild user to pay coins to bot, Mixin Network provide many method for that.
+## Advanced usage
+In some situations, you want guild user to pay coins to bot, Mixin Network provides many methods for that.
 
-### sendAppCard
-Send a icon with title and description, user click the icon to pay coins to bot
+### Send AppCard
+Send a icon with title and description, users click the icon to pay coins to bot
 ```java
 if (msgP.toLowerCase().equals("pay")) {
   MixinBot.sendAppCard(webSocket,
@@ -83,8 +83,8 @@ if (msgP.toLowerCase().equals("pay")) {
                       conversationId);
 }
 ```
-### send Button Group
-Create a group of buttons for user, user pick one button to pay coins to bot.
+### Send Button Group
+Create a group of buttons for user, users pick one button to pay coins to bot.
 ```java
 else if (msgP.toLowerCase().equals("appsgroup")) {
   String payLinkEOS = "https://mixin.one/pay?recipient=" +
