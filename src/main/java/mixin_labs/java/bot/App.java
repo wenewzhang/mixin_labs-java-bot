@@ -43,7 +43,7 @@ public class App {
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes) {
           try {
-            System.out.println("[onMessage !!!]");
+            System.out.println("[onMessage:]");
             String msgIn = MixinUtil.bytesToJsonStr(bytes);
             System.out.println("json: " + msgIn);
             JsonObject obj = new JsonParser().parse(msgIn).getAsJsonObject();
@@ -63,7 +63,21 @@ public class App {
                     userId =
                       obj.get("data").getAsJsonObject().get("user_id").getAsString();
                     byte[] msgData = Base64.decodeBase64(obj.get("data").getAsJsonObject().get("data").getAsString());
-                    MixinBot.sendText(webSocket,conversationId,userId,new String(msgData,"UTF-8"));
+                    String msgP = new String(msgData,"UTF-8");
+                    if (msgP.equals("pay")) {
+                      System.out.println("---------------------pay card output!");
+                      MixinBot.sendAppCard(webSocket,
+                                          Config.CLIENT_ID,
+                                          "6cfe566e-4aad-470b-8c9a-2fd35b49c68d",
+                                          "0.0001",
+                                          conversationId);
+                    } else if (msgP.equals("contact")) {
+                      MixinBot.sendContact(
+                        webSocket,
+                        conversationId,
+                        userId,
+                        "0c21b607-5e5b-461b-963f-95708346c21d");
+                    } else MixinBot.sendText(webSocket,conversationId,userId,msgP);
                     break;
                 case SYSTEM_ACCOUNT_SNAPSHOT:
                     userId =
