@@ -297,16 +297,16 @@ MixinBot.sendMessageAck(webSocket, messageId);
 ```
 机器人收到消息后需要发送响应给服务器，这样服务器就知道消息已经收到，不会再发一遍
 
-#### 内容反弹
+#### 消息回应
 ```java
-              switch (category) {
-                case PLAIN_TEXT:
-                    String conversationId =
-                      obj.get("data").getAsJsonObject().get("conversation_id").getAsString();
-                    userId =
-                      obj.get("data").getAsJsonObject().get("user_id").getAsString();
-                    byte[] msgData = Base64.decodeBase64(obj.get("data").getAsJsonObject().get("data").getAsString());
-                    MixinBot.sendText(webSocket,conversationId,userId,new String(msgData,"UTF-8"));
+switch (category) {
+  case PLAIN_TEXT:
+      String conversationId =
+        obj.get("data").getAsJsonObject().get("conversation_id").getAsString();
+      userId =
+        obj.get("data").getAsJsonObject().get("user_id").getAsString();
+      byte[] msgData = Base64.decodeBase64(obj.get("data").getAsJsonObject().get("data").getAsString());
+      MixinBot.sendText(webSocket,conversationId,userId,new String(msgData,"UTF-8"));
 ```
 
 好了，你的第一个机器人小程序已经运行起来了， 你有什么新的想法，来试试吧！
