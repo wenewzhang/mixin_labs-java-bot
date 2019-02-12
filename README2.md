@@ -73,7 +73,7 @@ The last, call MixinBot.transfer to refund the coins back to user.
 In some situations, you want guild user to pay coins to bot, Mixin Network provides many methods for that.
 
 ### Send AppCard
-Send a icon with title and description, users click the icon to pay coins to bot
+Send a link which contains icon, title and description, users click the icon to pay coins to bot
 ```java
 if (msgP.toLowerCase().equals("pay")) {
   MixinBot.sendAppCard(webSocket,
