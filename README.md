@@ -34,6 +34,7 @@ OpenJDK 64-Bit Server VM (build 10.0.2+13-Ubuntu-1ubuntu0.18.04.4, mixed mode)
 ```
 ## Install Gradle on your OS
 This tutorial use Gradle to build, you can download the latest gradle [here](https://gradle.org/install/#manually)
+
 on macOS
 ```bash
 brew update
