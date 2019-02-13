@@ -37,6 +37,7 @@ OpenJDK 64-Bit Server VM (build 10.0.2+13-Ubuntu-1ubuntu0.18.04.4, mixed mode)
 ```
 ## 在操作系统中安装最新版本的Gradle
 本教程采用Gradle来构建，你可从下面的地址来下载安装！[Gradle下载](https://gradle.org/install/#manually)
+
 macOS
 ```bash
 brew update
