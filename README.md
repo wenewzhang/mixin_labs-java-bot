@@ -1,19 +1,18 @@
-# Mixin Messenger application development tutorial in java
-This tutorial will let you know how to write a Mixin Messenger bot in Java. The bot can receive and response to user's message. User can pay Bitcoin to bot and bot can transfer Bitcoin to user immediately.
+# Java Mixin Messenger application development tutorial
+A Mixin messenger bot will be created in this tutorial. The bot is powered by Java and echo message and Bitcoin from user.
+[Mixin network resource index](https://github.com/awesome-mixin-network/index_of_Mixin_Network_resource)
 
-[Mixin network resource](https://github.com/awesome-mixin-network/index_of_Mixin_Network_resource)
-
-## Index
-1. [Create bot and receive message from user](https://github.com/wenewzhang/mixin_labs-java-bot)
-2. [Receive and send Bitcoin](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md)
+## What you will learn from this tutorial
+1. [How to create bot in Mixin messenger and reply message to user](https://github.com/wenewzhang/mixin_labs-java-bot)
+2. [How to receive Bitcoin and send Bitcoin in Mixin Messenger](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md)
 
 ## Install java on your OS
-On macOS, download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, and then click on JDK 11.0.2.pkg in the pop window, follow the prompt to finish the installation, the java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH,
+On macOS, download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, then click on JDK 11.0.2.pkg in popup window, follow the instruction to install java, java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH
 ```bash
 echo 'export PATH=/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/:$PATH' >> ~/.bash_profile
 source ~/.bash_profile
 ```
-If installed successfully, execute command of **java --version** that will get message like below:
+Run command **java --version** to check the installation
 ```bash
 wenewzha:mixin_labs-java-bot wenewzhang$ java --version
 java 11.0.2 2019-01-15 LTS
@@ -27,15 +26,15 @@ apt upgrade
 apt install unzip
 java --version
 ```
-On Ubuntu 16.04, the openjdk edition java has been installed default with OS, execute command of **java --version** that will get message like below:
+On Ubuntu 16.04, the openjdk java has been installed. run command  **java --version** to check installation
 ```bash
 root@ubuntu:~# java --version
 openjdk 10.0.2 2018-07-17
 OpenJDK Runtime Environment (build 10.0.2+13-Ubuntu-1ubuntu0.18.04.4)
 OpenJDK 64-Bit Server VM (build 10.0.2+13-Ubuntu-1ubuntu0.18.04.4, mixed mode)
 ```
-## Install Gradle on your OS
-This tutorial use Gradle to build, you can download the latest gradle [here](https://gradle.org/install/#manually)
+## Install Gradle
+This tutorial use Gradle to build whole project. You can download the latest gradle [here](https://gradle.org/install/#manually)
 
 on macOS
 ```bash
@@ -48,12 +47,12 @@ cd ~/Downloads
 wget https://services.gradle.org/distributions/gradle-5.1.1-bin.zip
 unzip gradle-5.1.1-bin.zip
 ```
-After unzip the gradle-5.1.1-bin.zip, Let's add the path to $PATH environment variable
+After unzip the gradle-5.1.1-bin.zip, Add the path to $PATH environment variable
 ```bash
 echo 'export PATH=/root/gradle-5.1.1/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 ```
-When gradle installed, execute command of  **gradle -v** could output message like below:
+Run **gradle -v** to check gradle installation
 ```bash
 root@ubuntu:~# gradle -v
 ------------------------------------------------------------
@@ -61,22 +60,21 @@ Gradle 5.1.1
 ------------------------------------------------------------
 ...
 ```
-### Create you first app in developer dashboard
-Create an app by following [tutorial](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account).
+### Create you first app in Mixin Network developer dashboard
+You need to create an app in dashboard. This [tutorial](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account) can help you.
 
-### Generate parameter for your app
-Remember to [generate parameter](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account#generate-secure-parameter-for-your-app)
-and write down required information, they are required in config.java file soon.
+### Generate parameter of your app in dashboard
+After app is created in dashboard, you still need to [generate parameter](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account#generate-secure-parameter-for-your-app)
+and write down required content, these content will be written into config.java file.
 
-![mixin_network-keys](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/mixin_network-keys.jpg)
 
-## Hello,World!
-Go to your workspace, create the project mixin_labs-java-bot directory, execute command of **gradle init** which to generate the project basic information.
+## Hello, world in java
+Go to your workspace, create the project mixin_labs-java-bot directory by running **gradle init**.
 ```bash
 gradle init --dsl kotlin --type java-application --test-framework junit --project-name mixin_labs-java-bot
 ```
 
-Go into src/main/java/mixin_labs/java/bot, create a file: Config.java. fill the following content in it.
+Goto src/main/java/mixin_labs/java/bot, create a file called Config.java. Copy the following content into it.
 > Config.java
 ```java
 package mixin_labs.java.bot;
@@ -113,8 +111,7 @@ public static final String PIN_TOKEN     = "ajJJngHmWgIfH3S2mgH4bAsoPeoXV6hI1KoT
 }
 
 ```
-Replace the value with **YOUR APP**'s  CLIENT_ID, client_id, CLIENT_SECRET, and the PIN, PIN_TOKEN, SESSION_ID,
-Create App.java, fill the below content in it
+Replace the value with content generated in dashboard.
 > App.java
 ```java
 /*
@@ -218,7 +215,7 @@ public class App {
 }
 
 ```
-Go into src/main/resources, create a file: rsa_private_key.txt, Fill the private key which you have already generated in dashboard.
+Goto src/main/resources, create a file: rsa_private_key.txt, fill the private key content which you have already generated in dashboard.
 > rsa_private_key.txt
 ```java
 -----BEGIN RSA PRIVATE KEY-----
@@ -226,7 +223,7 @@ Go into src/main/resources, create a file: rsa_private_key.txt, Fill the private
 -----END RSA PRIVATE KEY-----
 ```
 
-Go back to the project directory, download the mixin-java-sdk from github,
+Go to the project directory, download the mixin-java-sdk from github,
 
 ```bash
 mkdir libs
@@ -250,7 +247,7 @@ dependencies {
     testImplementation("junit:junit:4.12")
 }
 ```
-Go to the directory src/test/java/mixin_labs/java/bot, comment the test code,
+Goto the directory src/test/java/mixin_labs/java/bot, comment the test code,
 > AppTest.java
 ```java
         // assertNotNull("app should have a greeting", classUnderTest.getGreeting());
@@ -260,7 +257,7 @@ The last step, go back in mixin_labs-java-bot directory, build it and run,
 gradle build
 gradle run
 ```
-If you look message like below, well done. Congratulations!
+If console output following message, congratulations.
 
 ```bash
 response:Response{protocol=http/1.1, code=101, message=Switching Protocols, url=https://blaze.mixin.one/}
@@ -271,8 +268,8 @@ LIST_PENDING_MESSAGES
 
 ![mixin_messenger](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/helloworld.jpeg)
 
-## Source code explanation
-#### Connect to Mixin Messenger Server
+## Source code summary
+#### Create websocket and connect to Mixin Messenger Server
 ```java
 MixinBot.connectToRemoteMixin(new WebSocketListener() {
 @Override
@@ -280,7 +277,7 @@ public void onOpen(WebSocket webSocket, Response response) {
   MixinBot.sendListPendingMessages(webSocket);
 }
 ```
-Connect to Mixin Messenger server then send message "LISTPENDINGMESSAGES" to it. Server will send unread message to bot.
+Send message "LISTPENDINGMESSAGES" to server and server will send unread message to bot.
 
 #### Receive message callback
 ```java
@@ -313,6 +310,6 @@ Send the message "READ"  to the server let it knows this message has already bee
 ```
 
 ### End
-Now your bot is running. You can try your idea now, enjoy!
+Now your bot worked. You can hack on it now.
 
-A full code is [here](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/src/main/java/mixin_labs/java/bot/App.java)
+Full code is [here](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/src/main/java/mixin_labs/java/bot/App.java)
