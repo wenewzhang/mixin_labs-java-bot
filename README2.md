@@ -1,7 +1,6 @@
-In [the previous chapter](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README.md), we created our first app, when user sends "Hello,world!", the bot reply the same message.
+In [the previous chapter](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README.md), your first bot just worked. The bot echo message from user.
 
-# Receive and send Bitcoin
-This chapter will show you that your bot can receive coin from user and then pay it back to the user immediately.
+# Receive and send Bitcoin in Mixin Messenger
 Add new "Case-condition" in switch block of the App.java
 > App.java
 ```java
@@ -44,13 +43,13 @@ LIST_PENDING_MESSAGES
 <=========----> 75% EXECUTING [13s]
 > :run
 ```
-Developer can send Bitcoin to their bots in message panel. The bot receive the Bitcoin and then send back immediately.
+Developer can send Bitcoin to their bots in chatting page. The bot will send Bitcoin back immediately after receive it.
 ![transfer and tokens](https://github.com/wenewzhang/mixin_network-nodejs-bot2/blob/master/transfer-any-tokens.jpg)
 
-User can pay 0.001 Bitcoin to bot by click the button and the 0.001 Bitcoin will be refunded in 1 second,In fact, user can pay any coin either.
+User can pay 0.001 Bitcoin to bot by click the button and the 0.001 Bitcoin will be refunded in 1 second. In fact, user can pay any coin.
 ![pay-link](https://github.com/wenewzhang/mixin_network-nodejs-bot2/blob/master/Pay_and_refund_quickly.jpg)
 
-## Source code explanation
+## Source code summary
 ```java
 if (jsObj.get("amount").getAsFloat() > 0) {
   String encryptPin = MixinUtil.encryptPayKey(Config.PIN,Config.PAY_KEY);
@@ -65,15 +64,15 @@ if (jsObj.get("amount").getAsFloat() > 0) {
   );
 }
 ```
-When bot sends Bitcoin to user successfully, the jsObj.get("amount") is negative.
-When users send Bitcoin to bot, the jsObj.get("amount") is positive.
-The last, call MixinBot.transfer to refund the coins back to user.
+The jsObj.get("amount") is negative if bot send Bitcoin to user successfully.
+The jsObj.get("amount") is positive if bot received Bitcoin from user.
+Call MixinBot.transfer to refund the coins back to user.
 
 ## Advanced usage
-In some situations, you want guild user to pay coins to bot, Mixin Network provides many methods for that.
+Mixin Messenger provide many API so you can enable user to pay coins to bot. 
 
 ### Send AppCard
-Send a link which contains icon, title and description, users click the icon to pay coins to bot
+Send a link which contains icon, title and description, users click the icon to pay.
 ```java
 if (msgP.toLowerCase().equals("pay")) {
   MixinBot.sendAppCard(webSocket,
@@ -84,7 +83,7 @@ if (msgP.toLowerCase().equals("pay")) {
 }
 ```
 ### Send Button Group
-Create a group of buttons for user, users pick one button to pay coins to bot.
+Create a group of buttons for user, users click one button to pay.
 ```java
 else if (msgP.toLowerCase().equals("appsgroup")) {
   String payLinkEOS = "https://mixin.one/pay?recipient=" +
