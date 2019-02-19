@@ -1,6 +1,7 @@
 # Java Mixin Messenger application development tutorial
 A Mixin messenger bot will be created in this tutorial. The bot is powered by Java and echo message and Bitcoin from user.
-[Mixin network resource index](https://github.com/awesome-mixin-network/index_of_Mixin_Network_resource)
+
+Full Mixin network resource [index](https://github.com/awesome-mixin-network/index_of_Mixin_Network_resource)
 
 ## What you will learn from this tutorial
 1. [How to create bot in Mixin messenger and reply message to user](https://github.com/wenewzhang/mixin_labs-java-bot)
