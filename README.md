@@ -37,12 +37,12 @@ OpenJDK 64-Bit Server VM (build 10.0.2+13-Ubuntu-1ubuntu0.18.04.4, mixed mode)
 ## Install Gradle
 This tutorial use Gradle to build whole project. You can download the latest gradle [here](https://gradle.org/install/#manually)
 
-on macOS
+macOS
 ```bash
 brew update
 brew install gradle
 ```
-on Ubuntu, The gradle is too old, so we need to download it by manual.
+Ubuntu: The gradle is too old, we need to update it.
 ```bash
 cd ~/Downloads
 wget https://services.gradle.org/distributions/gradle-5.1.1-bin.zip
@@ -65,7 +65,7 @@ Gradle 5.1.1
 You need to create an app in dashboard. This [tutorial](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account) can help you.
 
 ### Generate parameter of your app in dashboard
-After app is created in dashboard, you still need to [generate parameter](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account#generate-secure-parameter-for-your-app)
+After app is created in dashboard, you need to [generate parameter](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account#generate-secure-parameter-for-your-app)
 and write down required content, these content will be written into config.java file.
 
 
