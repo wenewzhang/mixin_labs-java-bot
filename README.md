@@ -296,7 +296,7 @@ String messageId = obj.get("data").getAsJsonObject().get("message_id").getAsStri
 MixinBot.sendMessageAck(webSocket, messageId);
 ```
 
-Send the message "READ"  to the server let it knows this message has already been read by bot.
+Send the message "READ"  to the server let it knows this message has been read by bot.
 
 #### Echo chat contant
 ```java
