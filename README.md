@@ -61,7 +61,7 @@ Gradle 5.1.1
 ------------------------------------------------------------
 ...
 ```
-### Create you first app in Mixin Network developer dashboard
+### Create your first app in Mixin Network developer dashboard
 You need to create an app in dashboard. This [tutorial](https://mixin-network.gitbook.io/mixin-network/mixin-messenger-app/create-bot-account) can help you.
 
 ### Generate parameter of your app in dashboard
@@ -258,7 +258,7 @@ The last step, go back in mixin_labs-java-bot directory, build it and run,
 gradle build
 gradle run
 ```
-If console output following message, congratulations.
+Console will output:
 
 ```bash
 response:Response{protocol=http/1.1, code=101, message=Switching Protocols, url=https://blaze.mixin.one/}
