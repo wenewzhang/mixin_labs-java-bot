@@ -266,7 +266,7 @@ response:Response{protocol=http/1.1, code=101, message=Switching Protocols, url=
 json: {"id":"4ee01b68-817e-4f29-bcb4-b40f7c163f61","action":"LIST_PENDING_MESSAGES"}
 LIST_PENDING_MESSAGES
 ```
-
+Add the bot(for example, this bot id is 7000101639) as your friend in [Mixin Messenger](https://mixin.one/messenger) and send your messages.
 ![mixin_messenger](https://github.com/wenewzhang/mixin_labs-php-bot/blob/master/helloworld.jpeg)
 
 ## Source code summary
