@@ -278,7 +278,7 @@ public void onOpen(WebSocket webSocket, Response response) {
   MixinBot.sendListPendingMessages(webSocket);
 }
 ```
-Send message "LISTPENDINGMESSAGES" to server and server will send unread message to bot.
+Send message "LISTPENDINGMESSAGES" to Mixin Messenger server and server will send unread messages to your bot.
 
 #### Receive message callback
 ```java
@@ -296,7 +296,7 @@ String messageId = obj.get("data").getAsJsonObject().get("message_id").getAsStri
 MixinBot.sendMessageAck(webSocket, messageId);
 ```
 
-Send the message "READ"  to the server let it knows this message has been read by bot.
+Send a READ operation message to the server let it knows this message has been read. The bot will receive the duplicated message when the bot connected to server again if bot don't send response.
 
 #### Echo chat contant
 ```java
@@ -310,7 +310,8 @@ Send the message "READ"  to the server let it knows this message has been read b
                     MixinBot.sendText(webSocket,conversationId,userId,new String(msgData,"UTF-8"));
 ```
 
+Not only texts, images and other type message will be pushed to your bot. You can find more [details](https://developers.mixin.one/api/beta-mixin-message/websocket-messages/) about Messenger message.
 ### End
-Now your bot worked. You can hack on it now.
+Now your bot worked. You can hack it now.
 
 Full code is [here](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/src/main/java/mixin_labs/java/bot/App.java)
