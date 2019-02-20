@@ -312,6 +312,6 @@ Send a READ operation message to the server let it knows this message has been r
 
 Not only texts, images and other type message will be pushed to your bot. You can find more [details](https://developers.mixin.one/api/beta-mixin-message/websocket-messages/) about Messenger message.
 ### End
-Now your bot worked. You can hack it now.
+Now your bot worked. You can hack it.
 
 Full code is [here](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/src/main/java/mixin_labs/java/bot/App.java)
