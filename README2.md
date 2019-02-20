@@ -64,8 +64,8 @@ if (jsObj.get("amount").getAsFloat() > 0) {
   );
 }
 ```
-The jsObj.get("amount") is negative if bot send Bitcoin to user successfully.
-The jsObj.get("amount") is positive if bot received Bitcoin from user.
+* jsObj.get("amount") is negative if bot sends Bitcoin to user successfully.
+* jsObj.get("amount") is positive if bot receives Bitcoin from user.
 Call MixinBot.transfer to refund the coins back to user.
 
 ## Advanced usage
