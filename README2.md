@@ -69,7 +69,7 @@ if (jsObj.get("amount").getAsFloat() > 0) {
 Call MixinBot.transfer to refund the coins back to user.
 
 ## Advanced usage
-Mixin Messenger provide many API so you can enable user to pay coins to bot. 
+Mixin Messenger provides many APIs so you can enable user to pay coins to bot. 
 
 ### Send AppCard
 Send a link which contains icon, title and description, users click the icon to pay.
