@@ -1,4 +1,4 @@
-# Java Bitcoin tutorial based on Mixin SDK
+# Java Bitcoin tutorial based on Mixin Network
 A Mixin messenger bot will be created in this tutorial. The bot is powered by Java and echo message and Bitcoin from user.
 
 Full Mixin network resource [index](https://github.com/awesome-mixin-network/index_of_Mixin_Network_resource)
