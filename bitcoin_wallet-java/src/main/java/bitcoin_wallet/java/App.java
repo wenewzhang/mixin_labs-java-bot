@@ -14,12 +14,12 @@ import com.google.gson.JsonElement;
 
 public class App {
 
-    public static final String EXIN_BOT        = "61103d28-3ac2-44a2-ae34-bd956070dab1";
-    public static final String BTC_ASSET_ID    = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
-    public static final String EOS_ASSET_ID    = "6cfe566e-4aad-470b-8c9a-2fd35b49c68d";
-    public static final String USDT_ASSET_ID   = "815b0b1a-2764-3736-8faa-42d694fa620a";
-    public static final String BTC_WALLET_ADDR = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
-
+    public static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
+    public static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
+    public static final String EOS_ASSET_ID     = "6cfe566e-4aad-470b-8c9a-2fd35b49c68d";
+    public static final String USDT_ASSET_ID    = "815b0b1a-2764-3736-8faa-42d694fa620a";
+    public static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
+    public static final String MASTER_UUID      = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
     public static void main(String[] args) {
         MixinAPI mixinApi = new MixinAPI(Config.CLIENT_ID, Config.CLIENT_SECRET,
                                          Config.PIN, Config.SESSION_ID, Config.PIN_TOKEN,
@@ -33,5 +33,8 @@ public class App {
         });
         JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
         System.out.println(asset);
+
+        JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"1","hi");
+        System.out.println(transInfo);
     }
 }
