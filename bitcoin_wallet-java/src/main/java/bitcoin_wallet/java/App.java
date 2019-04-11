@@ -22,23 +22,23 @@ public class App {
         MixinAPI mixinApi = new MixinAPI(Config.CLIENT_ID, Config.CLIENT_SECRET,
                                          Config.PIN, Config.SESSION_ID, Config.PIN_TOKEN,
                                          Config.RSA_PRIVATE_KEY);
-        String assets = mixinApi.getAssets();
+        JsonObject assets = mixinApi.getAssets();
         // String assets = MixinHttpUtil.getAssets(Config.RSA_PRIVATE_KEY, Config.CLIENT_ID, Config.SESSION_ID);
-        System.out.println(assets);
-        JsonParser parser = new JsonParser();
-        JsonElement jsonTree = parser.parse(assets);
-        if(jsonTree.isJsonObject()) {
-         JsonObject jsonObject = jsonTree.getAsJsonObject();
-         System.out.println(jsonObject.get("data"));
-         System.out.println(jsonObject.get("data").isJsonArray());
+        // System.out.println(assets);
+        // JsonParser parser = new JsonParser();
+        // JsonElement jsonTree = parser.parse(assets);
+        // if(jsonTree.isJsonObject()) {
+         // JsonObject jsonObject = jsonTree.getAsJsonObject();
+         // System.out.println(jsonObject.get("data"));
+         // System.out.println(jsonObject.get("data").isJsonArray());
          // JsonArray jsonAry = jsonObject.get("data").
-         jsonObject.get("data").getAsJsonArray().forEach((element) ->  {
+         assets.get("data").getAsJsonArray().forEach((element) ->  {
            JsonObject jsonObj = element.getAsJsonObject();
            System.out.println(jsonObj.get("asset_id").getAsString() + " " +
                               jsonObj.get("symbol").getAsString() + " " +
                               jsonObj.get("balance").getAsString() );
            // System.out.println(element);
          });
-       }
+       // }
     }
 }
