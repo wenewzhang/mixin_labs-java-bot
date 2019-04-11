@@ -10,6 +10,7 @@ import java.security.interfaces.RSAPrivateKey;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 
 public class App {
     public String getGreeting() {
@@ -24,5 +25,20 @@ public class App {
         String assets = mixinApi.getAssets();
         // String assets = MixinHttpUtil.getAssets(Config.RSA_PRIVATE_KEY, Config.CLIENT_ID, Config.SESSION_ID);
         System.out.println(assets);
+        JsonParser parser = new JsonParser();
+        JsonElement jsonTree = parser.parse(assets);
+        if(jsonTree.isJsonObject()) {
+         JsonObject jsonObject = jsonTree.getAsJsonObject();
+         System.out.println(jsonObject.get("data"));
+         System.out.println(jsonObject.get("data").isJsonArray());
+         // JsonArray jsonAry = jsonObject.get("data").
+         jsonObject.get("data").getAsJsonArray().forEach((element) ->  {
+           JsonObject jsonObj = element.getAsJsonObject();
+           System.out.println(jsonObj.get("asset_id").getAsString() + " " +
+                              jsonObj.get("symbol").getAsString() + " " +
+                              jsonObj.get("balance").getAsString() );
+           // System.out.println(element);
+         });
+       }
     }
 }
