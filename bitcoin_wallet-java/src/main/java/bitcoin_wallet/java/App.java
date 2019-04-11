@@ -4,6 +4,7 @@
 package bitcoin_wallet.java;
 
 import mixin.java.sdk.MixinHttpUtil;
+import mixin.java.sdk.MixinAPI;
 import java.security.PrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import com.google.gson.JsonObject;
@@ -17,7 +18,11 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
-        String assets = MixinHttpUtil.getAssets(Config.RSA_PRIVATE_KEY, Config.CLIENT_ID, Config.SESSION_ID);
+        MixinAPI mixinApi = new MixinAPI(Config.CLIENT_ID, Config.CLIENT_SECRET,
+                                         Config.PIN, Config.SESSION_ID, Config.PIN_TOKEN,
+                                         Config.RSA_PRIVATE_KEY);
+        String assets = mixinApi.getAssets();
+        // String assets = MixinHttpUtil.getAssets(Config.RSA_PRIVATE_KEY, Config.CLIENT_ID, Config.SESSION_ID);
         System.out.println(assets);
     }
 }
