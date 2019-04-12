@@ -53,7 +53,7 @@ public class App {
         JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
         System.out.println(transInfo);
 
-        JsonObject vInfo = mixinApi.verifyPin();
+        JsonObject vInfo = mixinApi.verifyPin(Config.PIN);
         System.out.println(vInfo);
         try {
           KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
