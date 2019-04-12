@@ -28,6 +28,7 @@ dependencies {
     compile(files("libs/mixin-java-sdk.jar"))
     implementation("com.squareup.okhttp3:okhttp:3.12.1")
     implementation("com.google.code.gson:gson:2.8.5")
+    implementation("org.bouncycastle:bcprov-jdk16:1.46")
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
 }

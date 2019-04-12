@@ -6,7 +6,6 @@ package bitcoin_wallet.java;
 import mixin.java.sdk.MixinHttpUtil;
 import mixin.java.sdk.MixinAPI;
 import java.security.PrivateKey;
-import java.security.interfaces.RSAPrivateKey;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
@@ -20,9 +19,14 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.util.Base64;
+import java.security.Key;
+import java.io.FileNotFoundException;
+// import java.io.FileOutputStream;
+import java.io.IOException;
 // import java.security.NoSuchAlgorithmException;
 
 public class App {
@@ -60,18 +64,28 @@ public class App {
           kpg.initialize(1024);
           KeyPair kp = kpg.genKeyPair();
 
-          KeyFactory fact = KeyFactory.getInstance("RSA");
-          RSAPublicKeySpec pub = fact.getKeySpec(kp.getPublic(),
-                  RSAPublicKeySpec.class);
-          RSAPrivateKeySpec priv = fact.getKeySpec(kp.getPrivate(),
-                  RSAPrivateKeySpec.class);
-
-          publicKey = fact.generatePublic(pub);
-          privateKey = fact.generatePrivate(priv);
-          System.out.println(publicKey);
-          System.out.println(privateKey);
+          // KeyFactory fact = KeyFactory.getInstance("RSA");
+          // RSAPublicKeySpec pub = fact.getKeySpec(kp.getPublic(),
+          //         RSAPublicKeySpec.class);
+          // RSAPrivateKeySpec priv = fact.getKeySpec(kp.getPrivate(),
+          //         RSAPrivateKeySpec.class);
+          RSAPrivateKey priv = (RSAPrivateKey) kp.getPrivate();
+          RSAPublicKey pub = (RSAPublicKey) kp.getPublic();
+          // publicKey = fact.generatePublic(pub);
+          // privateKey = fact.generatePrivate(priv);
+          // System.out.println(publicKey);
+          // System.out.println(privateKey);
+          writePemFile(priv, "RSA PRIVATE KEY", "id_rsa");
+          writePemFile(pub, "RSA PUBLIC KEY", "id_rsa.pub");
       } catch(Exception e) {
                e.printStackTrace();
       }
+    }
+    private static void writePemFile(Key key, String description, String filename)
+    throws FileNotFoundException, IOException {
+      PemFile pemFile = new PemFile(key, description);
+      pemFile.write(filename);
+
+      // System.out.println("%s successfully writen in file %s.", description, filename);
     }
 }
