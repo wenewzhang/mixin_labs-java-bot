@@ -29,6 +29,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 // import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
 public class App {
 
     public static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
@@ -37,8 +45,7 @@ public class App {
     public static final String USDT_ASSET_ID    = "815b0b1a-2764-3736-8faa-42d694fa620a";
     public static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
     public static final String MASTER_UUID      = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
-    private static PublicKey publicKey;
-    private static PrivateKey privateKey;
+    private static final String WALLET_FILANAME = "./mybitcoin_wallet.csv";
 
     public static void main(String[] args) {
         MixinAPI mixinApi = new MixinAPI(Config.CLIENT_ID, Config.CLIENT_SECRET,
@@ -57,27 +64,30 @@ public class App {
         // JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
         // System.out.println(transInfo);
 
-        JsonObject vInfo = mixinApi.verifyPin(Config.PIN);
-        System.out.println(vInfo);
+        // JsonObject vInfo = mixinApi.verifyPin(Config.PIN);
+        // System.out.println(vInfo);
+
         try {
           KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
           kpg.initialize(1024);
           KeyPair kp = kpg.genKeyPair();
 
-          // KeyFactory fact = KeyFactory.getInstance("RSA");
-          // RSAPublicKeySpec pub = fact.getKeySpec(kp.getPublic(),
-          //         RSAPublicKeySpec.class);
-          // RSAPrivateKeySpec priv = fact.getKeySpec(kp.getPrivate(),
-          //         RSAPrivateKeySpec.class);
           RSAPrivateKey priv = (RSAPrivateKey) kp.getPrivate();
           RSAPublicKey pub = (RSAPublicKey) kp.getPublic();
-          // publicKey = fact.generatePublic(pub);
-          // privateKey = fact.generatePrivate(priv);
-          // System.out.println(publicKey);
-          // System.out.println(privateKey);
+
           writePemFile(priv, "RSA PRIVATE KEY", "id_rsa");
           writePemFile(pub, "RSA PUBLIC KEY", "id_rsa.pub");
-          System.out.println(Base64.getEncoder().encodeToString(pub.getEncoded()));
+          String SessionSecret = Base64.getEncoder().encodeToString(pub.getEncoded());
+          JsonObject walletInfo = mixinApi.createUser("java wallet",SessionSecret);
+          System.out.println(walletInfo.get("session_id").getAsString());
+
+          BufferedWriter writer = Files.newBufferedWriter(Paths.get(WALLET_FILANAME));
+          CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withDelimiter(','));
+          csvPrinter.printRecord(Arrays.asList(Base64.getEncoder().encodeToString(priv.getEncoded()),
+                                walletInfo.get("pin_token").getAsString(),
+                                walletInfo.get("session_id").getAsString(),
+                                walletInfo.get("user_id").getAsString()));
+          csvPrinter.flush();
       } catch(Exception e) {
                e.printStackTrace();
       }
