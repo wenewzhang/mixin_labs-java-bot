@@ -54,8 +54,8 @@ public class App {
         JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
         System.out.println(asset);
 
-        JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
-        System.out.println(transInfo);
+        // JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
+        // System.out.println(transInfo);
 
         JsonObject vInfo = mixinApi.verifyPin(Config.PIN);
         System.out.println(vInfo);
@@ -77,6 +77,7 @@ public class App {
           // System.out.println(privateKey);
           writePemFile(priv, "RSA PRIVATE KEY", "id_rsa");
           writePemFile(pub, "RSA PUBLIC KEY", "id_rsa.pub");
+          System.out.println(Base64.getEncoder().encodeToString(pub.getEncoded()));
       } catch(Exception e) {
                e.printStackTrace();
       }
