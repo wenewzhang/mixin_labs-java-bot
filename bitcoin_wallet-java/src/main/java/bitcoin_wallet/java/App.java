@@ -12,6 +12,19 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
+import javax.crypto.Cipher;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.Base64;
+// import java.security.NoSuchAlgorithmException;
+
 public class App {
 
     public static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
@@ -20,6 +33,9 @@ public class App {
     public static final String USDT_ASSET_ID    = "815b0b1a-2764-3736-8faa-42d694fa620a";
     public static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
     public static final String MASTER_UUID      = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
+    private static PublicKey publicKey;
+    private static PrivateKey privateKey;
+
     public static void main(String[] args) {
         MixinAPI mixinApi = new MixinAPI(Config.CLIENT_ID, Config.CLIENT_SECRET,
                                          Config.PIN, Config.SESSION_ID, Config.PIN_TOKEN,
@@ -34,7 +50,28 @@ public class App {
         JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
         System.out.println(asset);
 
-        JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"1","hi");
+        JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
         System.out.println(transInfo);
+
+        JsonObject vInfo = mixinApi.verifyPin();
+        System.out.println(vInfo);
+        try {
+          KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+          kpg.initialize(1024);
+          KeyPair kp = kpg.genKeyPair();
+
+          KeyFactory fact = KeyFactory.getInstance("RSA");
+          RSAPublicKeySpec pub = fact.getKeySpec(kp.getPublic(),
+                  RSAPublicKeySpec.class);
+          RSAPrivateKeySpec priv = fact.getKeySpec(kp.getPrivate(),
+                  RSAPrivateKeySpec.class);
+
+          publicKey = fact.generatePublic(pub);
+          privateKey = fact.generatePrivate(priv);
+          System.out.println(publicKey);
+          System.out.println(privateKey);
+      } catch(Exception e) {
+               e.printStackTrace();
+      }
     }
 }
