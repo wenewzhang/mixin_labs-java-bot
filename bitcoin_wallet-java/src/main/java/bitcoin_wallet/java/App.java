@@ -48,14 +48,17 @@ import java.nio.file.StandardOpenOption;
 
 public class App {
 
-    public static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
-    public static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
-    public static final String EOS_ASSET_ID     = "6cfe566e-4aad-470b-8c9a-2fd35b49c68d";
-    public static final String USDT_ASSET_ID    = "815b0b1a-2764-3736-8faa-42d694fa620a";
-    public static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
-    public static final String MASTER_UUID      = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
-    private static final String WALLET_FILANAME = "./mybitcoin_wallet.csv";
-
+    private static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
+    private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
+    private static final String EOS_ASSET_ID     = "6cfe566e-4aad-470b-8c9a-2fd35b49c68d";
+    private static final String USDT_ASSET_ID    = "815b0b1a-2764-3736-8faa-42d694fa620a";
+    private static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
+    private static final String MASTER_UUID      = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
+    private static final String WALLET_FILANAME  = "./mybitcoin_wallet.csv";
+    private static final String EOS_THIRD_EXCHANGE_NAME
+                                                = "huobideposit";
+    private static final String EOS_THIRD_EXCHANGE_TAG
+                                                = "1872050";
     public static void main(String[] args) {
         MixinAPI mixinApi = new MixinAPI(Config.CLIENT_ID, Config.CLIENT_SECRET,
                                          Config.PIN, Config.SESSION_ID, Config.PIN_TOKEN,
@@ -65,7 +68,7 @@ public class App {
           String PromptMsg;
           PromptMsg  = "1: Create Bitcoin Wallet and update PIN\n2: Read Bitcoin balance & address \n3: Read USDT balance & address\n4: Read EOS balance & address\n";
           PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
-          PromptMsg += "v: Verify Wallet Pin\n";
+          PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\n";
           PromptMsg += "q: Exit \nMake your choose:";
           System.out.print(PromptMsg);
           String input = System.console().readLine();
@@ -102,7 +105,8 @@ public class App {
             System.out.println(walletInfo.get("session_id").getAsString());
 
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(WALLET_FILANAME),
-            StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                                                            StandardOpenOption.CREATE,
+                                                            StandardOpenOption.APPEND);
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withDelimiter(','));
             csvPrinter.printRecord(Arrays.asList(Base64.getEncoder().encodeToString(priv.getEncoded()),
                                   walletInfo.get("pin_token").getAsString(),
@@ -140,6 +144,29 @@ public class App {
          System.out.println("The EOS wallet Name is " + asset.get("account_name").getAsString() +
                             " Tag is " + asset.get("account_tag").getAsString());
          System.out.println("The EOS wallet balance is " + asset.get("balance").getAsString());
+         System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("wb") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject addrInfo = mixinApiUser.createWithdrawAddress(BTC_ASSET_ID,
+                                                                BTC_WALLET_ADDR,"","","123456","hi");
+         System.out.println(addrInfo);
+         System.out.println("------------------------BTC---Withdrawal---Information---------------------------");
+         System.out.println("The BTC Witchdrawal address is " + addrInfo.get("public_key").getAsString());
+         System.out.println("The BTC withdraw fee  is " + addrInfo.get("fee").getAsString());
+         System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("we") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject addrInfo = mixinApiUser.createWithdrawAddress(EOS_ASSET_ID,"",
+                                                                EOS_THIRD_EXCHANGE_NAME,
+                                                                EOS_THIRD_EXCHANGE_TAG,
+                                                                "123456","hi");
+         System.out.println(addrInfo);
+         System.out.println("------------------------EOS---Withdrawal---Information---------------------------");
+         System.out.println("The EOS wallet name is " + addrInfo.get("account_name").getAsString() + " " +
+                            addrInfo.get("account_tag").getAsString());
+         System.out.println("The EOS withdraw fee  is " + addrInfo.get("fee").getAsString());
          System.out.println("-----------------------------------------------------------------------");
         }
         if ( input.equals("v") ) {
