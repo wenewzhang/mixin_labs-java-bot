@@ -45,7 +45,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.io.Console;
 import java.nio.file.StandardOpenOption;
- 
+
 public class App {
 
     public static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
@@ -62,21 +62,26 @@ public class App {
                                          Config.RSA_PRIVATE_KEY);
 
         do {
-          System.out.print("Enter something:");
+          String PromptMsg;
+          PromptMsg  = "1: Create Bitcoin Wallet and update PIN\n2: Read Bitcoin balance & address \n3: Read USDT balance & address\n4: Read EOS balance & address\n";
+          PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
+          PromptMsg += "v: Verify Wallet Pin\n";
+          PromptMsg += "q: Exit \nMake your choose:";
+          System.out.print(PromptMsg);
           String input = System.console().readLine();
           System.out.print(input);
           if ( input.equals("q") ) { System.exit(0); }
           if ( input.equals("1") ) {
 
-          JsonArray assets = mixinApi.getAssets();
-          assets.forEach((element) ->  {
-             JsonObject jsonObj = element.getAsJsonObject();
-             System.out.println(jsonObj.get("asset_id").getAsString() + " " +
-                                jsonObj.get("symbol").getAsString() + " " +
-                                jsonObj.get("balance").getAsString() );
-          });
-          JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
-          System.out.println(asset);
+          // JsonArray assets = mixinApi.getAssets();
+          // assets.forEach((element) ->  {
+          //    JsonObject jsonObj = element.getAsJsonObject();
+          //    System.out.println(jsonObj.get("asset_id").getAsString() + " " +
+          //                       jsonObj.get("symbol").getAsString() + " " +
+          //                       jsonObj.get("balance").getAsString() );
+          // });
+          // JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
+          // System.out.println(asset);
 
           // JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
           // System.out.println(transInfo);
@@ -104,12 +109,19 @@ public class App {
                                   walletInfo.get("session_id").getAsString(),
                                   walletInfo.get("user_id").getAsString()));
             csvPrinter.flush();
-
+            MixinAPI mixinApiUser = generateAPI_FromCSV();
+            JsonObject asset = mixinApiUser.updatePin("","123456");
+            System.out.println(asset);
           } catch(Exception e) { e.printStackTrace(); }
         }
         if ( input.equals("2") ) {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
          JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
+         System.out.println(asset);
+        }
+        if ( input.equals("v") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.verifyPin("123456");
          System.out.println(asset);
         }
       }while ( true );
@@ -122,11 +134,7 @@ public class App {
        for (CSVRecord csvRecord : csvParser) {
          System.out.println("Name : " + csvRecord.get(0));
          byte[] encoded = Base64.getDecoder().decode(csvRecord.get(0));
-         System.out.println(encoded);
-         // boolean isRSAKey = true;
          PKCS8EncodedKeySpec keySpec = null;
-
-            // keySpec = PrivateKeyReader.getRSAKeySpec(encoded);
          keySpec = new PKCS8EncodedKeySpec(encoded);
 
          KeyFactory kf = KeyFactory.getInstance("RSA");
@@ -134,8 +142,6 @@ public class App {
          return new MixinAPI(csvRecord.get(3), "do not need",
                                            "123456", csvRecord.get(2), csvRecord.get(1),
                                            (RSAPrivateKey) privKey);
-         // JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
-         // System.out.println(asset);
        }
      } catch(Exception e) { e.printStackTrace(); }
      return null;
