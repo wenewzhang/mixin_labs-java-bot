@@ -155,6 +155,8 @@ public class App {
          System.out.println("The BTC Witchdrawal address is " + addrInfo.get("public_key").getAsString());
          System.out.println("The BTC withdraw fee  is " + addrInfo.get("fee").getAsString());
          System.out.println("-----------------------------------------------------------------------");
+         JsonObject addrInfo2 = mixinApiUser.getAddress(addrInfo.get("address_id").getAsString());
+         System.out.println(addrInfo2);
         }
         if ( input.equals("we") ) {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
