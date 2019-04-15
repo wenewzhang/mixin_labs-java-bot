@@ -67,6 +67,8 @@ public class App {
         do {
           String PromptMsg;
           PromptMsg  = "1: Create Bitcoin Wallet and update PIN\n2: Read Bitcoin balance & address \n3: Read USDT balance & address\n4: Read EOS balance & address\n";
+          PromptMsg += "tbb:Transfer BTC from Bot to Wallet\ntbm:Transfer BTC from Wallet to Master\n";
+          PromptMsg += "teb:Transfer EOS from Bot to Wallet\ntem:Transfer EOS from Wallet to Master\n";
           PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
           PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\n";
           PromptMsg += "q: Exit \nMake your choose:";
@@ -155,8 +157,10 @@ public class App {
          System.out.println("The BTC Witchdrawal address is " + addrInfo.get("public_key").getAsString());
          System.out.println("The BTC withdraw fee  is " + addrInfo.get("fee").getAsString());
          System.out.println("-----------------------------------------------------------------------");
-         JsonObject addrInfo2 = mixinApiUser.getAddress(addrInfo.get("address_id").getAsString());
+         JsonObject addrInfo2 = mixinApiUser.delAddress(addrInfo.get("address_id").getAsString(),"123456");
          System.out.println(addrInfo2);
+         JsonObject addrInfo3 = mixinApiUser.getAddress(addrInfo.get("address_id").getAsString());
+         System.out.println(addrInfo3);
         }
         if ( input.equals("we") ) {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
@@ -170,6 +174,30 @@ public class App {
                             addrInfo.get("account_tag").getAsString());
          System.out.println("The EOS withdraw fee  is " + addrInfo.get("fee").getAsString());
          System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("tbb") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApi.transfer(BTC_ASSET_ID,mixinApiUser.getClientID(),
+                                                      asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------BTC Transfer from Bot Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
+        if ( input.equals("tbm") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApiUser.transfer(BTC_ASSET_ID, MASTER_UUID,
+                                                        asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------BTC Transfer To Master Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
         }
         if ( input.equals("v") ) {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
