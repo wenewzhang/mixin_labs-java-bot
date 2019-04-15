@@ -44,7 +44,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.io.Console;
-
+import java.nio.file.StandardOpenOption;
+ 
 public class App {
 
     public static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
@@ -95,7 +96,8 @@ public class App {
             JsonObject walletInfo = mixinApi.createUser("java wallet",SessionSecret);
             System.out.println(walletInfo.get("session_id").getAsString());
 
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get(WALLET_FILANAME));
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(WALLET_FILANAME),
+            StandardOpenOption.CREATE, StandardOpenOption.APPEND);
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withDelimiter(','));
             csvPrinter.printRecord(Arrays.asList(Base64.getEncoder().encodeToString(priv.getEncoded()),
                                   walletInfo.get("pin_token").getAsString(),
