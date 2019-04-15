@@ -36,6 +36,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.io.Console;
 
 public class App {
 
@@ -51,52 +52,51 @@ public class App {
         MixinAPI mixinApi = new MixinAPI(Config.CLIENT_ID, Config.CLIENT_SECRET,
                                          Config.PIN, Config.SESSION_ID, Config.PIN_TOKEN,
                                          Config.RSA_PRIVATE_KEY);
-        JsonArray assets = mixinApi.getAssets();
-        assets.forEach((element) ->  {
-           JsonObject jsonObj = element.getAsJsonObject();
-           System.out.println(jsonObj.get("asset_id").getAsString() + " " +
-                              jsonObj.get("symbol").getAsString() + " " +
-                              jsonObj.get("balance").getAsString() );
-        });
-        JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
-        System.out.println(asset);
 
-        // JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
-        // System.out.println(transInfo);
+        do {
+          System.out.print("Enter something:");
+          String input = System.console().readLine();
+          System.out.print(input);
+          if ( input.equals("1") ) {
 
-        // JsonObject vInfo = mixinApi.verifyPin(Config.PIN);
-        // System.out.println(vInfo);
+          JsonArray assets = mixinApi.getAssets();
+          assets.forEach((element) ->  {
+             JsonObject jsonObj = element.getAsJsonObject();
+             System.out.println(jsonObj.get("asset_id").getAsString() + " " +
+                                jsonObj.get("symbol").getAsString() + " " +
+                                jsonObj.get("balance").getAsString() );
+          });
+          JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
+          System.out.println(asset);
 
-        try {
-          KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-          kpg.initialize(1024);
-          KeyPair kp = kpg.genKeyPair();
+          // JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
+          // System.out.println(transInfo);
 
-          RSAPrivateKey priv = (RSAPrivateKey) kp.getPrivate();
-          RSAPublicKey pub = (RSAPublicKey) kp.getPublic();
+          // JsonObject vInfo = mixinApi.verifyPin(Config.PIN);
+          // System.out.println(vInfo);
 
-          writePemFile(priv, "RSA PRIVATE KEY", "id_rsa");
-          writePemFile(pub, "RSA PUBLIC KEY", "id_rsa.pub");
-          String SessionSecret = Base64.getEncoder().encodeToString(pub.getEncoded());
-          JsonObject walletInfo = mixinApi.createUser("java wallet",SessionSecret);
-          System.out.println(walletInfo.get("session_id").getAsString());
+          try {
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+            kpg.initialize(1024);
+            KeyPair kp = kpg.genKeyPair();
 
-          BufferedWriter writer = Files.newBufferedWriter(Paths.get(WALLET_FILANAME));
-          CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withDelimiter(','));
-          csvPrinter.printRecord(Arrays.asList(Base64.getEncoder().encodeToString(priv.getEncoded()),
-                                walletInfo.get("pin_token").getAsString(),
-                                walletInfo.get("session_id").getAsString(),
-                                walletInfo.get("user_id").getAsString()));
-          csvPrinter.flush();
-      } catch(Exception e) {
-               e.printStackTrace();
-      }
+            RSAPrivateKey priv = (RSAPrivateKey) kp.getPrivate();
+            RSAPublicKey pub = (RSAPublicKey) kp.getPublic();
+
+            String SessionSecret = Base64.getEncoder().encodeToString(pub.getEncoded());
+            JsonObject walletInfo = mixinApi.createUser("java wallet",SessionSecret);
+            System.out.println(walletInfo.get("session_id").getAsString());
+
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(WALLET_FILANAME));
+            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withDelimiter(','));
+            csvPrinter.printRecord(Arrays.asList(Base64.getEncoder().encodeToString(priv.getEncoded()),
+                                  walletInfo.get("pin_token").getAsString(),
+                                  walletInfo.get("session_id").getAsString(),
+                                  walletInfo.get("user_id").getAsString()));
+            csvPrinter.flush();
+          } catch(Exception e) { e.printStackTrace(); }
+        }
+      }while ( true );
     }
-    private static void writePemFile(Key key, String description, String filename)
-    throws FileNotFoundException, IOException {
-      PemFile pemFile = new PemFile(key, description);
-      pemFile.write(filename);
 
-      // System.out.println("%s successfully writen in file %s.", description, filename);
-    }
 }
