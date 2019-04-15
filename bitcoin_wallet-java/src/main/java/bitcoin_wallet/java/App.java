@@ -121,6 +121,11 @@ public class App {
 
               KeyFactory kf = KeyFactory.getInstance("RSA");
               privKey = kf.generatePrivate(keySpec);
+              MixinAPI mixinApiUser = new MixinAPI(csvRecord.get(3), "do not need",
+                                               "123456", csvRecord.get(2), csvRecord.get(1),
+                                               (RSAPrivateKey) privKey);
+             JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
+             System.out.println(asset);
            }
          } catch(Exception e) { e.printStackTrace(); }
         }
