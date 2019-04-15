@@ -69,7 +69,7 @@ public class App {
           PromptMsg += "q: Exit \nMake your choose:";
           System.out.print(PromptMsg);
           String input = System.console().readLine();
-          System.out.print(input);
+          System.out.println(input);
           if ( input.equals("q") ) { System.exit(0); }
           if ( input.equals("1") ) {
 
@@ -118,6 +118,29 @@ public class App {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
          JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
          System.out.println(asset);
+         System.out.println("------------------------BTC------Information---------------------------");
+         System.out.println("The BTC wallet address is " + asset.get("public_key").getAsString());
+         System.out.println("The BTC wallet balance is " + asset.get("balance").getAsString());
+         System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("3") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.getAsset(USDT_ASSET_ID);
+         System.out.println(asset);
+         System.out.println("------------------------USDT------Information---------------------------");
+         System.out.println("The USDT wallet address is " + asset.get("public_key").getAsString());
+         System.out.println("The USDT wallet balance is " + asset.get("balance").getAsString());
+         System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("4") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.getAsset(EOS_ASSET_ID);
+         System.out.println(asset);
+         System.out.println("------------------------EOS------Information---------------------------");
+         System.out.println("The EOS wallet Name is " + asset.get("account_name").getAsString() +
+                            " Tag is " + asset.get("account_tag").getAsString());
+         System.out.println("The EOS wallet balance is " + asset.get("balance").getAsString());
+         System.out.println("-----------------------------------------------------------------------");
         }
         if ( input.equals("v") ) {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
@@ -132,7 +155,7 @@ public class App {
        CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
        PrivateKey privKey = null;
        for (CSVRecord csvRecord : csvParser) {
-         System.out.println("Name : " + csvRecord.get(0));
+         // System.out.println("Name : " + csvRecord.get(0));
          byte[] encoded = Base64.getDecoder().decode(csvRecord.get(0));
          PKCS8EncodedKeySpec keySpec = null;
          keySpec = new PKCS8EncodedKeySpec(encoded);
