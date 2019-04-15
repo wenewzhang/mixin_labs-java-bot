@@ -102,34 +102,40 @@ public class App {
                                   walletInfo.get("session_id").getAsString(),
                                   walletInfo.get("user_id").getAsString()));
             csvPrinter.flush();
+
           } catch(Exception e) { e.printStackTrace(); }
         }
         if ( input.equals("2") ) {
-          try {
-           Reader reader = Files.newBufferedReader(Paths.get(WALLET_FILANAME));
-           CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
-           PrivateKey privKey = null;
-           for (CSVRecord csvRecord : csvParser) {
-             System.out.println("Name : " + csvRecord.get(0));
-             byte[] encoded = Base64.getDecoder().decode(csvRecord.get(0));
-             System.out.println(encoded);
-             // boolean isRSAKey = true;
-             PKCS8EncodedKeySpec keySpec = null;
-
-                // keySpec = PrivateKeyReader.getRSAKeySpec(encoded);
-                keySpec = new PKCS8EncodedKeySpec(encoded);
-
-              KeyFactory kf = KeyFactory.getInstance("RSA");
-              privKey = kf.generatePrivate(keySpec);
-              MixinAPI mixinApiUser = new MixinAPI(csvRecord.get(3), "do not need",
-                                               "123456", csvRecord.get(2), csvRecord.get(1),
-                                               (RSAPrivateKey) privKey);
-             JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
-             System.out.println(asset);
-           }
-         } catch(Exception e) { e.printStackTrace(); }
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
+         System.out.println(asset);
         }
       }while ( true );
     }
+    private static MixinAPI generateAPI_FromCSV() {
+      try {
+       Reader reader = Files.newBufferedReader(Paths.get(WALLET_FILANAME));
+       CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
+       PrivateKey privKey = null;
+       for (CSVRecord csvRecord : csvParser) {
+         System.out.println("Name : " + csvRecord.get(0));
+         byte[] encoded = Base64.getDecoder().decode(csvRecord.get(0));
+         System.out.println(encoded);
+         // boolean isRSAKey = true;
+         PKCS8EncodedKeySpec keySpec = null;
 
+            // keySpec = PrivateKeyReader.getRSAKeySpec(encoded);
+         keySpec = new PKCS8EncodedKeySpec(encoded);
+
+         KeyFactory kf = KeyFactory.getInstance("RSA");
+         privKey = kf.generatePrivate(keySpec);
+         return new MixinAPI(csvRecord.get(3), "do not need",
+                                           "123456", csvRecord.get(2), csvRecord.get(1),
+                                           (RSAPrivateKey) privKey);
+         // JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
+         // System.out.println(asset);
+       }
+     } catch(Exception e) { e.printStackTrace(); }
+     return null;
+   }
 }
