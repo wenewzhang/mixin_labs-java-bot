@@ -19,7 +19,7 @@ public class Config {
       PrivateKey key =
         new PrivateKeyReader(Config.class.getClassLoader().getResourceAsStream("rsa_private_key.txt"))
           .getPrivateKey();
-      System.out.println(key);
+      // System.out.println(key);
       return (RSAPrivateKey) key;
     } catch (Exception e) {
       e.printStackTrace();

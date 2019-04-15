@@ -21,7 +21,12 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPrivateCrtKeySpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import mixin.java.sdk.PrivateKeyReader;
+
 import java.util.Base64;
 import java.security.Key;
 import java.io.FileNotFoundException;
@@ -31,6 +36,8 @@ import java.io.IOException;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -57,6 +64,7 @@ public class App {
           System.out.print("Enter something:");
           String input = System.console().readLine();
           System.out.print(input);
+          if ( input.equals("q") ) { System.exit(0); }
           if ( input.equals("1") ) {
 
           JsonArray assets = mixinApi.getAssets();
@@ -95,6 +103,26 @@ public class App {
                                   walletInfo.get("user_id").getAsString()));
             csvPrinter.flush();
           } catch(Exception e) { e.printStackTrace(); }
+        }
+        if ( input.equals("2") ) {
+          try {
+           Reader reader = Files.newBufferedReader(Paths.get(WALLET_FILANAME));
+           CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
+           PrivateKey privKey = null;
+           for (CSVRecord csvRecord : csvParser) {
+             System.out.println("Name : " + csvRecord.get(0));
+             byte[] encoded = Base64.getDecoder().decode(csvRecord.get(0));
+             System.out.println(encoded);
+             // boolean isRSAKey = true;
+             PKCS8EncodedKeySpec keySpec = null;
+
+                // keySpec = PrivateKeyReader.getRSAKeySpec(encoded);
+                keySpec = new PKCS8EncodedKeySpec(encoded);
+
+              KeyFactory kf = KeyFactory.getInstance("RSA");
+              privKey = kf.generatePrivate(keySpec);
+           }
+         } catch(Exception e) { e.printStackTrace(); }
         }
       }while ( true );
     }
