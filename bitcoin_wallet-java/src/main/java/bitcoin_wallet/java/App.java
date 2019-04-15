@@ -69,6 +69,7 @@ public class App {
           PromptMsg  = "1: Create Bitcoin Wallet and update PIN\n2: Read Bitcoin balance & address \n3: Read USDT balance & address\n4: Read EOS balance & address\n";
           PromptMsg += "tbb:Transfer BTC from Bot to Wallet\ntbm:Transfer BTC from Wallet to Master\n";
           PromptMsg += "teb:Transfer EOS from Bot to Wallet\ntem:Transfer EOS from Wallet to Master\n";
+          PromptMsg += "tub:Transfer USDT from Bot to Wallet\ntum:Transfer USDT from Wallet to Master\n";
           PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
           PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\n";
           PromptMsg += "q: Exit \nMake your choose:";
@@ -195,6 +196,54 @@ public class App {
              JsonObject transInfo = mixinApiUser.transfer(BTC_ASSET_ID, MASTER_UUID,
                                                         asset.get("balance").getAsString(),"hi");
              System.out.println("------------------------BTC Transfer To Master Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
+        if ( input.equals("teb") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApi.getAsset(EOS_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApi.transfer(EOS_ASSET_ID,mixinApiUser.getClientID(),
+                                                      asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------EOS Transfer from Bot Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
+        if ( input.equals("tem") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.getAsset(EOS_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApiUser.transfer(EOS_ASSET_ID, MASTER_UUID,
+                                                        asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------EOS Transfer To Master Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
+        if ( input.equals("tub") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApi.getAsset(USDT_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApi.transfer(USDT_ASSET_ID,mixinApiUser.getClientID(),
+                                                      asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------USDT Transfer from Bot Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
+        if ( input.equals("tum") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.getAsset(USDT_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApiUser.transfer(USDT_ASSET_ID, MASTER_UUID,
+                                                        asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------USDT Transfer To Master Information---------------------------");
              System.out.println(transInfo);
              System.out.println("-----------------------------------------------------------------------");
           }
