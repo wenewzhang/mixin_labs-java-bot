@@ -1,5 +1,5 @@
 # Java Bitcoin tutorial based on Mixin Network III: Create Bitcoin wallet, read balance and send Bitcoin
-![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/Bitcoin_node.jpg)
+![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
 We have created a bot to [echo message](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README.md) and [echo Bitcoin](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md).
 
