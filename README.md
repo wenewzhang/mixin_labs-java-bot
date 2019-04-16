@@ -4,8 +4,8 @@ A Mixin messenger bot will be created in this tutorial. The bot is powered by Ja
 Full Mixin network resource [index](https://github.com/awesome-mixin-network/index_of_Mixin_Network_resource)
 
 ## What you will learn from this tutorial
-1. [How to create bot in Mixin messenger and reply message to user](https://github.com/wenewzhang/mixin_labs-java-bot)
-2. [How to receive Bitcoin and send Bitcoin in Mixin Messenger](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md)
+1. [How to create bot in Mixin messenger and reply message to user](https://github.com/wenewzhang/mixin_labs-java-bot) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md)
+2. [How to receive Bitcoin and send Bitcoin in Mixin Messenger](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2-zhchs.md)
 3. [How to create a Bitcoin wallet based on Mixin Network API](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README3.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README3-zhchs.md)
 
 ## Install java on your OS
