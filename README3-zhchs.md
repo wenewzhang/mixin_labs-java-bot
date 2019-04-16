@@ -107,14 +107,18 @@ EOS的存币地址与其它的币有些不同，它由两部分组成： account
 
 EOS的资产余额返回结果如下:
 ```bash
-  Make your choose 3: Read EOS Balance & Address
-  You choice to : { type: '3: Read EOS Balance & Address' }
-  You wallet is : 0b10471b-1aed-3944-9eda-5ab947562761
-  EOS account name is  eoswithmixin  tag is  30f0c36057b9b22151173b309bd0d79c
-  EOS balance is  0
-  EOS price is (USD)  5.26225922
-   You select the : 0b10471b-1aed-3944-9eda-5ab947562761
-  You select the wallet 0b10471b-1aed-3944-9eda-5ab947562761
+{"type":"asset","asset_id":"6cfe566e-4aad-470b-8c9a-2fd35b49c68d",
+"chain_id":"6cfe566e-4aad-470b-8c9a-2fd35b49c68d",
+"symbol":"EOS","name":"EOS",
+"icon_url":"https://images.mixin.one/a5dtG-IAg2IO0Zm4HxqJoQjfz-5nf1HWZ0teCyOnReMd3pmB8oEdSAXWvFHt2AJkJj5YgfyceTACjGmXnI-VyRo=s128",
+"balance":"0","public_key":"",
+"account_name":"eoswithmixin","account_tag":"10ad0870e9595bdedb4334360a8d4165",
+"price_btc":"0.00105635","price_usd":"5.38549443","change_btc":"-0.014835576787888972",
+"change_usd":"-0.031082698851444927","asset_key":"eosio.token:EOS","confirmations":64,"capitalization":0}
+------------------------EOS------Information---------------------------
+The EOS wallet Name is eoswithmixin Tag is 10ad0870e9595bdedb4334360a8d4165
+The EOS wallet balance is 0
+-----------------------------------------------------------------------
 ```
 
 ### 存入比特币与读取比特币余额
@@ -166,6 +170,7 @@ EOS的资产余额返回结果如下:
 调用createAddress API, 将会返回一个address_id,下一步的提现操作会用到这个id。
 ```java
   private static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
+  private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
 
   MixinAPI mixinApiUser = generateAPI_FromCSV();
   JsonObject addrInfo = mixinApiUser.createWithdrawAddress(BTC_ASSET_ID,
@@ -184,21 +189,15 @@ EOS的资产余额返回结果如下:
 这里的 **14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C** 就是一个比特币钱包地址, 如下所示，提现费用是0.0025738 BTC, address_id  是"345855b5-56a5-4f3b-ba9e-d99601ef86c1".                                                   
 
 ```bash
-Make your choose 9: BTC withdraw
-You choice to : { type: '9: BTC withdraw' }
-You wallet is : 0b10471b-1aed-3944-9eda-5ab947562761
-{ type: 'address',
-  address_id: 'a513da38-a18a-4536-abe4-d1c29ca3a1a8',
-  asset_id: 'c6d0c728-2624-429b-8e0d-d9d19b6592fa',
-  public_key: '14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C',
-  label: 'BTC withdraw',
-  account_name: '',
-  account_tag: '',
-  fee: '0.00212232',
-  reserve: '0',
-  dust: '0.0001',
-  updated_at: '2019-04-04T02:20:42.552274992Z' }
-? Input you BTC amount:
+Make your choose:wb
+wb
+{"type":"address","address_id":"58860d12-cbdc-40ae-8a4a-b0fc72f418b3",
+"asset_id":"c6d0c728-2624-429b-8e0d-d9d19b6592fa","public_key":"14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C",
+"label":"hi","account_name":"","account_tag":"","fee":"0.00118846","reserve":"0","dust":"0.0001",
+"updated_at":"2019-04-16T06:12:15.686517454Z"}
+------------------------BTC---Withdrawal---Information---------------------------
+The BTC Witchdrawal address is 14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C
+The BTC withdraw fee  is 0.00118846
 ```
 
 
@@ -218,10 +217,6 @@ You wallet is : 0b10471b-1aed-3944-9eda-5ab947562761
   System.out.println("------------------------BTC---Withdrawal---Information---------------------------");
   System.out.println("The BTC Witchdrawal address is " + addrInfo.get("public_key").getAsString());
   System.out.println("The BTC withdraw fee  is " + addrInfo.get("fee").getAsString());
-  // JsonObject addrInfo2 = mixinApiUser.delAddress(addrInfo.get("address_id").getAsString(),"123456");
-  // System.out.println(addrInfo2);
-  // JsonObject addrInfo3 = mixinApiUser.getAddress(addrInfo.get("address_id").getAsString());
-  // System.out.println(addrInfo3);
   System.out.print("Input the BTC withdraw amount:");
   String eosAmount = System.console().readLine();
   JsonObject withdrawInfo = mixinApiUser.withdrawals(addrInfo.get("address_id").getAsString(),

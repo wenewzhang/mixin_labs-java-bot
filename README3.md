@@ -109,14 +109,18 @@ Create other asset wallet is same as create Bitcoin wallet, just read the asset.
 If you read EOS deposit address, the deposit address is composed of two parts: account_name and account tag. When you transfer EOS token to your account in Mixin network, you should fill both account name and memo. The memo content is value of 'account_tag'.
 Result of read EOS asset is:
 ```bash
-  Make your choose 3: Read EOS Balance & Address
-  You choice to : { type: '3: Read EOS Balance & Address' }
-  You wallet is : 0b10471b-1aed-3944-9eda-5ab947562761
-  EOS account name is  eoswithmixin  tag is  30f0c36057b9b22151173b309bd0d79c
-  EOS balance is  0
-  EOS price is (USD)  5.26225922
-   You select the : 0b10471b-1aed-3944-9eda-5ab947562761
-  You select the wallet 0b10471b-1aed-3944-9eda-5ab947562761
+{"type":"asset","asset_id":"6cfe566e-4aad-470b-8c9a-2fd35b49c68d",
+"chain_id":"6cfe566e-4aad-470b-8c9a-2fd35b49c68d",
+"symbol":"EOS","name":"EOS",
+"icon_url":"https://images.mixin.one/a5dtG-IAg2IO0Zm4HxqJoQjfz-5nf1HWZ0teCyOnReMd3pmB8oEdSAXWvFHt2AJkJj5YgfyceTACjGmXnI-VyRo=s128",
+"balance":"0","public_key":"",
+"account_name":"eoswithmixin","account_tag":"10ad0870e9595bdedb4334360a8d4165",
+"price_btc":"0.00105635","price_usd":"5.38549443","change_btc":"-0.014835576787888972",
+"change_usd":"-0.031082698851444927","asset_key":"eosio.token:EOS","confirmations":64,"capitalization":0}
+------------------------EOS------Information---------------------------
+The EOS wallet Name is eoswithmixin Tag is 10ad0870e9595bdedb4334360a8d4165
+The EOS wallet balance is 0
+-----------------------------------------------------------------------
 ```
 
 ### Deposit Bitcoin and read balance
@@ -171,6 +175,7 @@ Pre-request: Withdrawal address is added and know the Bitcoin withdrawal fee
 Call createAddress, the ID of address will be returned in result of API and is required soon.
 ```java
   private static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
+  private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
 
   MixinAPI mixinApiUser = generateAPI_FromCSV();
   JsonObject addrInfo = mixinApiUser.createWithdrawAddress(BTC_ASSET_ID,
@@ -188,21 +193,15 @@ Call createAddress, the ID of address will be returned in result of API and is r
 
 The **14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C** is a Bitcoin wallet address, Output like below, fee is 0.0025738 BTC, The API result contains the withdrawal address ID.                                                   
 ```bash
-Make your choose 9: BTC withdraw
-You choice to : { type: '9: BTC withdraw' }
-You wallet is : 0b10471b-1aed-3944-9eda-5ab947562761
-{ type: 'address',
-  address_id: 'a513da38-a18a-4536-abe4-d1c29ca3a1a8',
-  asset_id: 'c6d0c728-2624-429b-8e0d-d9d19b6592fa',
-  public_key: '14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C',
-  label: 'BTC withdraw',
-  account_name: '',
-  account_tag: '',
-  fee: '0.00212232',
-  reserve: '0',
-  dust: '0.0001',
-  updated_at: '2019-04-04T02:20:42.552274992Z' }
-? Input you BTC amount:
+Make your choose:wb
+wb
+{"type":"address","address_id":"58860d12-cbdc-40ae-8a4a-b0fc72f418b3",
+"asset_id":"c6d0c728-2624-429b-8e0d-d9d19b6592fa","public_key":"14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C",
+"label":"hi","account_name":"","account_tag":"","fee":"0.00118846","reserve":"0","dust":"0.0001",
+"updated_at":"2019-04-16T06:12:15.686517454Z"}
+------------------------BTC---Withdrawal---Information---------------------------
+The BTC Witchdrawal address is 14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C
+The BTC withdraw fee  is 0.00118846
 ```
 
 
@@ -222,10 +221,6 @@ Submit the withdrawal request to Mixin Network, the withdrawAddress.address_id i
   System.out.println("------------------------BTC---Withdrawal---Information---------------------------");
   System.out.println("The BTC Witchdrawal address is " + addrInfo.get("public_key").getAsString());
   System.out.println("The BTC withdraw fee  is " + addrInfo.get("fee").getAsString());
-  // JsonObject addrInfo2 = mixinApiUser.delAddress(addrInfo.get("address_id").getAsString(),"123456");
-  // System.out.println(addrInfo2);
-  // JsonObject addrInfo3 = mixinApiUser.getAddress(addrInfo.get("address_id").getAsString());
-  // System.out.println(addrInfo3);
   System.out.print("Input the BTC withdraw amount:");
   String eosAmount = System.console().readLine();
   JsonObject withdrawInfo = mixinApiUser.withdrawals(addrInfo.get("address_id").getAsString(),
