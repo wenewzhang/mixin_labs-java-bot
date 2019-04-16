@@ -1,5 +1,5 @@
 # 基于Mixin Network的 Java 比特币开发教程: 创建比特币钱包
-![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/Bitcoin_node.jpg)
+![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 我们已经创建过一个[回复消息](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md)的机器人和一个能自动[支付比特币](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2-zhchs.md)的机器人.
 
 ### 通过本教程的学习，你可以学到如下内容
