@@ -71,29 +71,13 @@ public class App {
           PromptMsg += "teb:Transfer EOS from Bot to Wallet\ntem:Transfer EOS from Wallet to Master\n";
           PromptMsg += "tub:Transfer USDT from Bot to Wallet\ntum:Transfer USDT from Wallet to Master\n";
           PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
-          PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\n";
+          PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\na: Read All Assets Infos\n";
           PromptMsg += "q: Exit \nMake your choose:";
           System.out.print(PromptMsg);
           String input = System.console().readLine();
           System.out.println(input);
           if ( input.equals("q") ) { System.exit(0); }
           if ( input.equals("1") ) {
-
-          // JsonArray assets = mixinApi.getAssets();
-          // assets.forEach((element) ->  {
-          //    JsonObject jsonObj = element.getAsJsonObject();
-          //    System.out.println(jsonObj.get("asset_id").getAsString() + " " +
-          //                       jsonObj.get("symbol").getAsString() + " " +
-          //                       jsonObj.get("balance").getAsString() );
-          // });
-          // JsonObject asset = mixinApi.getAsset(BTC_ASSET_ID);
-          // System.out.println(asset);
-
-          // JsonObject transInfo = mixinApi.transfer("965e5c6e-434c-3fa9-b780-c50f43cd955c",MASTER_UUID,"0.1","hi");
-          // System.out.println(transInfo);
-
-          // JsonObject vInfo = mixinApi.verifyPin(Config.PIN);
-          // System.out.println(vInfo);
 
           try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
@@ -157,11 +141,16 @@ public class App {
          System.out.println("------------------------BTC---Withdrawal---Information---------------------------");
          System.out.println("The BTC Witchdrawal address is " + addrInfo.get("public_key").getAsString());
          System.out.println("The BTC withdraw fee  is " + addrInfo.get("fee").getAsString());
+         // JsonObject addrInfo2 = mixinApiUser.delAddress(addrInfo.get("address_id").getAsString(),"123456");
+         // System.out.println(addrInfo2);
+         // JsonObject addrInfo3 = mixinApiUser.getAddress(addrInfo.get("address_id").getAsString());
+         // System.out.println(addrInfo3);
+         System.out.print("Input the BTC withdraw amount:");
+         String eosAmount = System.console().readLine();
+         JsonObject withdrawInfo = mixinApiUser.withdrawals(addrInfo.get("address_id").getAsString(),
+                                                        eosAmount,"","123456","memo");
+         System.out.println(withdrawInfo);
          System.out.println("-----------------------------------------------------------------------");
-         JsonObject addrInfo2 = mixinApiUser.delAddress(addrInfo.get("address_id").getAsString(),"123456");
-         System.out.println(addrInfo2);
-         JsonObject addrInfo3 = mixinApiUser.getAddress(addrInfo.get("address_id").getAsString());
-         System.out.println(addrInfo3);
         }
         if ( input.equals("we") ) {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
@@ -257,6 +246,18 @@ public class App {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
          JsonObject asset = mixinApiUser.verifyPin("123456");
          System.out.println(asset);
+        }
+        if ( input.equals("a") ) {
+          MixinAPI mixinApiUser = generateAPI_FromCSV();
+          JsonArray assets = mixinApiUser.getAssets();
+          System.out.println("------------------------All Assets Information---------------------------");
+          assets.forEach((element) ->  {
+             JsonObject jsonObj = element.getAsJsonObject();
+             System.out.println(jsonObj.get("asset_id").getAsString() + " " +
+                                jsonObj.get("symbol").getAsString() + " " +
+                                jsonObj.get("balance").getAsString() );
+          });
+          System.out.println("-----------------------------------------------------------------------");
         }
       }while ( true );
     }
