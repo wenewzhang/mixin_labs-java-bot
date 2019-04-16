@@ -174,6 +174,11 @@ public class App {
          System.out.println("The EOS wallet name is " + addrInfo.get("account_name").getAsString() + " " +
                             addrInfo.get("account_tag").getAsString());
          System.out.println("The EOS withdraw fee  is " + addrInfo.get("fee").getAsString());
+         System.out.print("Input the EOS withdraw amount:");
+         String eosAmount = System.console().readLine();
+         JsonObject withdrawInfo = mixinApiUser.withdrawals(addrInfo.get("address_id").getAsString(),
+                                                        eosAmount,"","123456","memo");
+         System.out.println(withdrawInfo);
          System.out.println("-----------------------------------------------------------------------");
         }
         if ( input.equals("tbb") ) {
