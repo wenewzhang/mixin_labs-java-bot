@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class App {
     public String getGreeting() {
@@ -46,15 +47,21 @@ public class App {
           printBytes(out);
           unpacker2.close();
 
-
+          System.out.println("decode gaFBxBDG0McoJiRCm44N2dGbZZL6");
           String btcEncode = "gaFBxBDG0McoJiRCm44N2dGbZZL6";
           byte[] encoded = Base64.getDecoder().decode(btcEncode);
           printBytes2(encoded);
           MessageUnpacker unpacker3 = MessagePack.newDefaultUnpacker(encoded);
-          ByteBuffer out2 = ByteBuffer.wrap(new byte[16]);
-          System.out.println(btcEncode);
+          ByteBuffer out2 = ByteBuffer.wrap(new byte[21]);
+          // System.out.println(btcEncode);
           unpacker3.readPayload(out2);
           printBytes(out2);
+          // byte [] subArray = Arrays.copyOfRange(out2, 5, 21);
+          out2.position(5);
+          // ByteBuffer portion = out2.slice();
+          // printBytes(portion);
+          UUID getUUID = ByteBufferAsUuid( out2.slice());
+          System.out.println(getUUID);
           unpacker3.close();
           // xtDHKCYkQpuODdnRm2WS+g==
 
@@ -95,7 +102,12 @@ public class App {
       long secondLong = bb.getLong();
       return new UUID(firstLong, secondLong);
     }
-
+    public static UUID ByteBufferAsUuid(ByteBuffer bb) {
+      // ByteBuffer bb = ByteBuffer.wrap(bytes);
+      long firstLong = bb.getLong();
+      long secondLong = bb.getLong();
+      return new UUID(firstLong, secondLong);
+    }
     public static byte[] asBytes(UUID uuid) {
       ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
       bb.putLong(uuid.getMostSignificantBits());
