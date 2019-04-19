@@ -180,6 +180,11 @@ public class App {
              System.out.println("-----------------------------------------------------------------------");
           } else System.out.println("-----------------------------------------------------------------------");
         }
+        if ( input.equals("7") ) {
+          MixinAPI mixinApiUser = generateAPI_FromCSV();
+          JsonArray asset = mixinApiUser.getSnapshots(USDT_ASSET_ID,3,"2019-04-19T06:53:22.593529Z","ASC");
+          System.out.println(asset);
+        }
         //snapshots buy usdt sell btc
         //2019-04-19T06:53:20.186821325Z
         if ( input.equals("8") ) {
