@@ -189,14 +189,34 @@ public class App {
         //2019-04-19T06:53:20.186821325Z
         if ( input.equals("8") ) {
          JsonArray res = FetchExinOneMarketInfos(USDT_ASSET_ID);
-         System.out.println("---------------ExinCore---------USDT----Market------Information--------");
-         System.out.println(res);
+         System.out.println("--exchange_asset--exchange_asset_symbol/base_asset_symbol--price--minimum--maximum--exchanges--");
+         // System.out.println(res);
+         res.forEach((element) ->  {
+            JsonObject jsonObj = element.getAsJsonObject();
+            System.out.println(jsonObj.get("exchange_asset").getAsString() + " " +
+                               jsonObj.get("exchange_asset_symbol").getAsString() + "/" +
+                               jsonObj.get("base_asset_symbol").getAsString() + " " +
+                               jsonObj.get("price").getAsString() + " " +
+                               jsonObj.get("minimum_amount").getAsString() + " " +
+                               jsonObj.get("maximum_amount").getAsString() + " " +
+                               jsonObj.get("exchanges").getAsString() );
+         });
          System.out.println("-----------------------------------------------------------------------");
         }
         if ( input.equals("9") ) {
          JsonArray res = FetchExinOneMarketInfos(BTC_ASSET_ID);
-         System.out.println("---------------ExinCore---------BTC----Market------Information--------");
-         System.out.println(res);
+         System.out.println("-exchange_asset-base_asset_symbol-price-minimum_amount-maximum_amount-exchanges--");
+         // System.out.println(res);
+         res.forEach((element) ->  {
+            JsonObject jsonObj = element.getAsJsonObject();
+            System.out.println(jsonObj.get("exchange_asset").getAsString() + " " +
+                               jsonObj.get("exchange_asset_symbol").getAsString() + "/" +
+                               jsonObj.get("base_asset_symbol").getAsString() + " " +
+                               jsonObj.get("price").getAsString() + " " +
+                               jsonObj.get("minimum_amount").getAsString() + " " +
+                               jsonObj.get("maximum_amount").getAsString() + " " +
+                               jsonObj.get("exchanges").getAsString() );
+         });
          System.out.println("-----------------------------------------------------------------------");
         }
         if ( input.equals("wb") ) {
@@ -359,21 +379,18 @@ public class App {
         if (!response.isSuccessful()) {
           throw new IOException("Unexpected code " + response);
         }
-        processJsonObjectWithDataOrError(response.body().string());
+        return processJsonObjectWithDataOrError(response.body().string());
       } catch(Exception e) { e.printStackTrace(); }
       return null;
   }
   public static JsonArray processJsonObjectWithDataOrError(String res) {
     JsonParser parser = new JsonParser();
     JsonElement jsonTree = parser.parse(res);
-    System.out.println(jsonTree);
     if ( jsonTree.isJsonObject() ) {
       if ( jsonTree.getAsJsonObject().get("data") != null ) {
-         System.out.println("here");
          return  jsonTree.getAsJsonObject().get("data").getAsJsonArray();
       }
     }
-    System.out.println("here2");
     return null;
   }
   public static UUID decodeUUID(String btcEncode) {
