@@ -20,6 +20,7 @@ import org.msgpack.value.Value;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -34,44 +35,9 @@ public class App {
         System.out.println(new App().getGreeting());
         UUID btcUUID = UUID.fromString("c6d0c728-2624-429b-8e0d-d9d19b6592fa");
         try {
+          System.out.println(encodeUUID(btcUUID));
+          System.out.println(decodeUUID("gaFBxBDG0McoJiRCm44N2dGbZZL6"));
 
-          MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
-          packer.writePayload(asBytes(btcUUID));
-          packer.close();
-          byte[] packedData = packer.toByteArray();
-          String encodeBtcUUID = Base64.getEncoder().encodeToString(packedData);
-          System.out.println(encodeBtcUUID);
-          MessageUnpacker unpacker2 = MessagePack.newDefaultUnpacker(packer.toByteArray());
-          ByteBuffer out = ByteBuffer.wrap(new byte[16]);
-          unpacker2.readPayload(out);
-          printBytes(out);
-          unpacker2.close();
-
-          System.out.println("decode gaFBxBDG0McoJiRCm44N2dGbZZL6");
-          String btcEncode = "gaFBxBDG0McoJiRCm44N2dGbZZL6";
-          byte[] encoded = Base64.getDecoder().decode(btcEncode);
-          printBytes2(encoded);
-          MessageUnpacker unpacker3 = MessagePack.newDefaultUnpacker(encoded);
-          ByteBuffer out2 = ByteBuffer.wrap(new byte[21]);
-          // System.out.println(btcEncode);
-          unpacker3.readPayload(out2);
-          printBytes(out2);
-          // byte [] subArray = Arrays.copyOfRange(out2, 5, 21);
-          out2.position(5);
-          // ByteBuffer portion = out2.slice();
-          // printBytes(portion);
-          UUID getUUID = ByteBufferAsUuid( out2.slice());
-          System.out.println(getUUID);
-          unpacker3.close();
-          // xtDHKCYkQpuODdnRm2WS+g==
-
-          // MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
-          // packer.packString(btcUuid);
-          // packer.close();
-          // byte[] packedData = packer.toByteArray();
-          // String encodeBtcUUID = Base64.getEncoder().encodeToString(packedData);
-          // System.out.println(encodeBtcUUID);
-          //2SRjNmQwYzcyOC0yNjI0LTQyOWItOGUwZC1kOWQxOWI2NTkyZmE=
           MessageBufferPacker packer2 = MessagePack.newDefaultBufferPacker();
           packer2
                   .packInt(1)
@@ -115,29 +81,47 @@ public class App {
       return bb.array();
     }
     public static void printBytes(ByteBuffer bb) {
-      // for (int i=0, len=bytes.length; i<len; i++) {
-      //    // System.out.println(bytes[i]);// = Byte.parseByte(byteValues[i].trim());
-      //    if ( bytes[i] > 0 ) {
-      //      System.out.println(bytes[i]);
-      //    } else { System.out.println(bytes[i]+256);}
-      // }
-      // ByteBuffer bb = ByteBuffer.wrap(bytes);
       bb.rewind();
       System.out.println("Byte Buffer");
       while (bb.hasRemaining())
-        System.out.println(bb.position() + " -> " + bb.get());
+        System.out.println(bb.position() + "->" + bb.get() + " ");
+      System.out.println("");
     }
     public static void printBytes2(byte[] bytes) {
       for (int i=0, len=bytes.length; i<len; i++) {
-         // System.out.println(bytes[i]);// = Byte.parseByte(byteValues[i].trim());
          if ( bytes[i] > 0 ) {
            System.out.println(bytes[i]);
          } else { System.out.println(bytes[i]+256);}
       }
-      // ByteBuffer bb = ByteBuffer.wrap(bytes);
-      // bb.rewind();
-      // System.out.println("Byte Buffer");
-      // while (bb.hasRemaining())
-      //   System.out.println(bb.position() + " -> " + bb.get());
     }
+    public static UUID decodeUUID(String btcEncode) {
+      try {
+        byte[] encoded = Base64.getDecoder().decode(btcEncode);
+        MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(encoded);
+        ByteBuffer out = ByteBuffer.wrap(new byte[21]);
+        unpacker.readPayload(out);
+        out.position(5);
+        UUID getUUID = ByteBufferAsUuid( out.slice());
+        unpacker.close();
+        return getUUID;
+      } catch (Exception e) { e.printStackTrace(); }
+        return null;
+    }
+    public static String encodeUUID(UUID uuid) {
+      try {
+        byte[] byteUuid = asBytes(uuid);
+        MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
+        packer.writePayload(byteUuid);
+        packer.close();
+        byte[] packedData = packer.toByteArray();
+        byte[] prex = { (byte)129, (byte)161, 65, (byte)196, 16 };
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        output.write(prex);
+        output.write(packedData);
+        byte[] out = output.toByteArray();
+        return Base64.getEncoder().encodeToString(out);
+      } catch (Exception e) { e.printStackTrace(); }
+        return null;
+    }
+
 }
