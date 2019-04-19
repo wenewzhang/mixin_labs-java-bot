@@ -45,6 +45,11 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.io.Console;
 import java.nio.file.StandardOpenOption;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class App {
 
@@ -131,6 +136,18 @@ public class App {
          System.out.println("The EOS wallet Name is " + asset.get("account_name").getAsString() +
                             " Tag is " + asset.get("account_tag").getAsString());
          System.out.println("The EOS wallet balance is " + asset.get("balance").getAsString());
+         System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("8") ) {
+         JsonArray res = FetchExinOneMarketInfos(USDT_ASSET_ID);
+         System.out.println("---------------ExinCore---------USDT----Market------Information--------");
+         System.out.println(res);
+         System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("9") ) {
+         JsonArray res = FetchExinOneMarketInfos(BTC_ASSET_ID);
+         System.out.println("---------------ExinCore---------BTC----Market------Information--------");
+         System.out.println(res);
          System.out.println("-----------------------------------------------------------------------");
         }
         if ( input.equals("wb") ) {
@@ -281,4 +298,33 @@ public class App {
      } catch(Exception e) { e.printStackTrace(); }
      return null;
    }
+   private static JsonArray FetchExinOneMarketInfos(String url) {
+     OkHttpClient client = new OkHttpClient();
+     String baseUrl = "https://exinone.com/exincore/markets?base_asset=";
+     String fullUrl = baseUrl + url;
+     Request request = new Request.Builder()
+                                .url(fullUrl)
+                                .build();
+     try {
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+          throw new IOException("Unexpected code " + response);
+        }
+        processJsonObjectWithDataOrError(response.body().string());
+      } catch(Exception e) { e.printStackTrace(); }
+      return null;
+  }
+  public static JsonArray processJsonObjectWithDataOrError(String res) {
+    JsonParser parser = new JsonParser();
+    JsonElement jsonTree = parser.parse(res);
+    System.out.println(jsonTree);
+    if ( jsonTree.isJsonObject() ) {
+      if ( jsonTree.getAsJsonObject().get("data") != null ) {
+         System.out.println("here");
+         return  jsonTree.getAsJsonObject().get("data").getAsJsonArray();
+      }
+    }
+    System.out.println("here2");
+    return null;
+  }
 }
