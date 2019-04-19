@@ -30,6 +30,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.5")
     implementation("org.bouncycastle:bcprov-jdk16:1.46")
     implementation("org.apache.commons:commons-csv:1.6")
+    implementation("org.msgpack:msgpack-core:0.8.16")
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
 }

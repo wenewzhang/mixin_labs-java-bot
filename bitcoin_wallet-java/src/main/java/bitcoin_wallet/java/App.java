@@ -30,7 +30,7 @@ import mixin.java.sdk.PrivateKeyReader;
 import java.util.Base64;
 import java.security.Key;
 import java.io.FileNotFoundException;
-// import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
 import java.io.IOException;
 // import java.security.NoSuchAlgorithmException;
 
@@ -43,6 +43,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.UUID;
 import java.io.Console;
 import java.nio.file.StandardOpenOption;
 import okhttp3.MediaType;
@@ -50,6 +51,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import org.msgpack.core.MessagePack;
+import org.msgpack.core.MessagePack.PackerConfig;
+import org.msgpack.core.MessagePack.UnpackerConfig;
+import org.msgpack.core.MessageBufferPacker;
+import org.msgpack.core.MessageFormat;
+import org.msgpack.core.MessagePacker;
+import org.msgpack.core.MessageUnpacker;
 
 public class App {
 
@@ -138,6 +147,41 @@ public class App {
          System.out.println("The EOS wallet balance is " + asset.get("balance").getAsString());
          System.out.println("-----------------------------------------------------------------------");
         }
+        if ( input.equals("5") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         UUID usdtUUID         =  UUID.fromString(USDT_ASSET_ID);
+         String memoTarget     = encodeUUID(usdtUUID);
+         System.out.println("------------------------USDT-BTC-EXCHANGE----------------------------");
+         System.out.println(memoTarget);
+         JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
+         System.out.println(asset);
+         System.out.println(asset.get("balance").getAsFloat());
+         if ( (asset.get("balance").getAsFloat() * 10000) >= 1 ) {
+             JsonObject transInfo = mixinApiUser.transfer(BTC_ASSET_ID, EXIN_BOT,
+                                                        "0.0001",memoTarget);
+             System.out.println("------------------------BTC Transfer To EXCHANGE Information----------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          } else System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("6") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         UUID btcUUID          =  UUID.fromString(BTC_ASSET_ID);
+         String memoTarget     = encodeUUID(btcUUID);
+         System.out.println(memoTarget);
+         System.out.println("-------------------------BTC-USDT-EXCHANGE----------------------------");
+         JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() >= 1 ) {
+             JsonObject transInfo = mixinApiUser.transfer(USDT_ASSET_ID, EXIN_BOT,
+                                                        "1",memoTarget);
+             System.out.println("------------------------USDT-BTC  EXCHANGE Information----------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          } else System.out.println("-----------------------------------------------------------------------");
+        }
+        //snapshots buy usdt sell btc
+        //2019-04-19T06:53:20.186821325Z
         if ( input.equals("8") ) {
          JsonArray res = FetchExinOneMarketInfos(USDT_ASSET_ID);
          System.out.println("---------------ExinCore---------USDT----Market------Information--------");
@@ -326,5 +370,46 @@ public class App {
     }
     System.out.println("here2");
     return null;
+  }
+  public static UUID decodeUUID(String btcEncode) {
+    try {
+      byte[] encoded = Base64.getDecoder().decode(btcEncode);
+      MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(encoded);
+      ByteBuffer out = ByteBuffer.wrap(new byte[21]);
+      unpacker.readPayload(out);
+      out.position(5);
+      UUID getUUID = ByteBufferAsUuid( out.slice());
+      unpacker.close();
+      return getUUID;
+    } catch (Exception e) { e.printStackTrace(); }
+      return null;
+  }
+  public static String encodeUUID(UUID uuid) {
+    try {
+      byte[] byteUuid = asBytes(uuid);
+      MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
+      packer.writePayload(byteUuid);
+      packer.close();
+      byte[] packedData = packer.toByteArray();
+      byte[] prex = { (byte)129, (byte)161, 65, (byte)196, 16 };
+      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      output.write(prex);
+      output.write(packedData);
+      byte[] out = output.toByteArray();
+      return Base64.getEncoder().encodeToString(out);
+    } catch (Exception e) { e.printStackTrace(); }
+      return null;
+  }
+  public static UUID ByteBufferAsUuid(ByteBuffer bb) {
+    // ByteBuffer bb = ByteBuffer.wrap(bytes);
+    long firstLong = bb.getLong();
+    long secondLong = bb.getLong();
+    return new UUID(firstLong, secondLong);
+  }
+  public static byte[] asBytes(UUID uuid) {
+    ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+    bb.putLong(uuid.getMostSignificantBits());
+    bb.putLong(uuid.getLeastSignificantBits());
+    return bb.array();
   }
 }
