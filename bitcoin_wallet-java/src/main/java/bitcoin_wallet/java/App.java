@@ -86,7 +86,7 @@ public class App {
           PromptMsg += "tub:Transfer USDT from Bot to Wallet\ntum:Transfer USDT from Wallet to Master\n";
           PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
           PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\na: Read All Assets Infos\n";
-          PromptMsg += "q: Exit \nMake your choose:";
+          PromptMsg += "q: Exit \nMake your choose(eg: q for Exit!): ";
           System.out.print(PromptMsg);
           String input = System.console().readLine();
           System.out.println(input);
@@ -182,8 +182,23 @@ public class App {
         }
         if ( input.equals("7") ) {
           MixinAPI mixinApiUser = generateAPI_FromCSV();
-          JsonArray asset = mixinApiUser.getSnapshots(USDT_ASSET_ID,3,"2019-04-19T06:53:22.593529Z","ASC");
-          System.out.println(asset);
+          String transDatetime  = "";
+          String assetUUID      = "";
+          if ( mixinApiUser.getClientID().equals("091651f2-19c3-34f0-b45e-724ff203d921") ) {
+            transDatetime = "2019-04-19T06:53:22.593529Z";
+            assetUUID     = USDT_ASSET_ID;
+          } else {
+            System.out.print("Input the transaction Date time (eg:2019-04-19T06:53:22.593529Z):");
+            transDatetime = System.console().readLine();
+          }
+          JsonArray snapshots = mixinApiUser.getSnapshots(assetUUID,3,transDatetime,"ASC");
+          // System.out.println(snapshots);
+          snapshots.forEach((element) ->  {
+             JsonObject jsonObj = element.getAsJsonObject();
+             if ( jsonObj.get("amount").getAsFloat() > 0 && jsonObj.get("data") != null ) {
+               System.out.println(jsonObj.get("data").getAsString() );
+             }
+          });
         }
         //snapshots buy usdt sell btc
         //2019-04-19T06:53:20.186821325Z
@@ -337,6 +352,7 @@ public class App {
           MixinAPI mixinApiUser = generateAPI_FromCSV();
           JsonArray assets = mixinApiUser.getAssets();
           System.out.println("------------------------All Assets Information---------------------------");
+          System.out.println(assets);
           assets.forEach((element) ->  {
              JsonObject jsonObj = element.getAsJsonObject();
              System.out.println(jsonObj.get("asset_id").getAsString() + " " +
