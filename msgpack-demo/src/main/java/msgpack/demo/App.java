@@ -16,6 +16,8 @@ import org.msgpack.value.ExtensionValue;
 import org.msgpack.value.FloatValue;
 import org.msgpack.value.IntegerValue;
 import org.msgpack.value.Value;
+import org.msgpack.value.MapValue;
+import org.msgpack.value.ValueFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.Map;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
@@ -141,10 +144,31 @@ public class App {
         JsonElement jsonTree = parser.parse(memoVal.toJson());
         JsonObject memoObj = jsonTree.getAsJsonObject();
         // return jsonTree.getAsJsonObject()
-        System.out.print(memoObj.get("C").getAsString() + " " +
+        System.out.println(memoObj.get("C").getAsString() + " " +
                          memoObj.get("P").getAsString() + " " +
                          memoObj.get("F").getAsString() + " " +
                          memoObj.get("T").getAsString());
+        //TODO:the decode result doesn't correct
+        byte[] byteFA = memoObj.get("FA").getAsString().getBytes();
+        System.out.println(asUuid(byteFA));
+
+        MapValue mapValue = memoVal.asMapValue();
+        for (Map.Entry<Value, Value> entry : mapValue.entrySet()) {
+			       System.out.println(entry.getValue());
+		    }
+        Map<Value, Value> map = memoVal.asMapValue().map();
+        System.out.println(map.size());
+        System.out.println(map.get(ValueFactory.newString("C")).asIntegerValue());
+        System.out.println(map.get(ValueFactory.newString("P")).asStringValue());
+        System.out.println(map.get(ValueFactory.newString("F")).asStringValue());
+        System.out.println(map.get(ValueFactory.newString("T")).asStringValue());
+        // if ( memoVal.asMapValue().containsKey("C")) { System.out.println("YES");}
+        //
+        // BufferUnpacker upk = MessagePack.createBufferUnpacker(encoded);
+        // // read delivery header.
+        // // byte type = upk.readByte();
+        // // Sequence number for outgoing request messages.
+        // final int sno = upk.readInt();
         // unpacker.readPayload(out);
         // printBytes(out);
         unpacker.close();
