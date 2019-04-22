@@ -16,6 +16,7 @@ import org.msgpack.value.ExtensionValue;
 import org.msgpack.value.FloatValue;
 import org.msgpack.value.IntegerValue;
 import org.msgpack.value.Value;
+import org.msgpack.value.BinaryValue;
 import org.msgpack.value.MapValue;
 import org.msgpack.value.ValueFactory;
 
@@ -162,6 +163,10 @@ public class App {
         System.out.println(map.get(ValueFactory.newString("P")).asStringValue());
         System.out.println(map.get(ValueFactory.newString("F")).asStringValue());
         System.out.println(map.get(ValueFactory.newString("T")).asStringValue());
+        ByteBuffer AssetBinValue = map.get(ValueFactory.newString("FA")).asRawValue().asByteBuffer();
+        System.out.println(ByteBufferAsUuid(AssetBinValue));
+        ByteBuffer TraceBinValue = map.get(ValueFactory.newString("O")).asRawValue().asByteBuffer();
+        System.out.println(ByteBufferAsUuid(TraceBinValue));
         // if ( memoVal.asMapValue().containsKey("C")) { System.out.println("YES");}
         //
         // BufferUnpacker upk = MessagePack.createBufferUnpacker(encoded);
