@@ -59,7 +59,9 @@ public class App {
           unpacker.close();
 
           System.out.println(String.format("id:%d, name:%s, phone:[%s]", id, name, phones));
-
+          // String EnMemo = "hqFDzQPooVCnNTI0OC45OKFGqTAuMDAxMDQ5OKJGQcQQgVsLGidkNzaPqkLWlPpiCqFUoVKhT8QQeJyt3MrqSGOpbqzFXy5JUw==";
+          String EnMemo = "hqFDzQPooVCmNS4zOTE3oUapMC4wMDUzOTE4okZBxBCBWwsaJ2Q3No+qQtaU+mIKoVShUqFPxBCbKSnU5adI8YV7+1WrrygY";
+          decodeMemo(EnMemo);
         } catch(Exception e) { e.printStackTrace(); }
     }
     public static UUID asUuid(byte[] bytes) {
@@ -123,5 +125,16 @@ public class App {
       } catch (Exception e) { e.printStackTrace(); }
         return null;
     }
-
+    public static void decodeMemo(String memo) {
+      try {
+        byte[] encoded = Base64.getDecoder().decode(memo);
+        int Len = encoded.length;
+        MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(encoded);
+        // ByteBuffer out = ByteBuffer.wrap(new byte[Len]);
+        System.out.println(unpacker.unpackValue());
+        // unpacker.readPayload(out);
+        // printBytes(out);
+        unpacker.close();
+      } catch (Exception e) { e.printStackTrace(); }
+    }
 }
