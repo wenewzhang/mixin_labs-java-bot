@@ -44,6 +44,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.Map;
 import java.io.Console;
 import java.nio.file.StandardOpenOption;
 import okhttp3.MediaType;
@@ -59,6 +60,10 @@ import org.msgpack.core.MessageBufferPacker;
 import org.msgpack.core.MessageFormat;
 import org.msgpack.core.MessagePacker;
 import org.msgpack.core.MessageUnpacker;
+import org.msgpack.value.Value;
+import org.msgpack.value.BinaryValue;
+import org.msgpack.value.MapValue;
+import org.msgpack.value.ValueFactory;
 
 public class App {
 
@@ -197,6 +202,26 @@ public class App {
              JsonObject jsonObj = element.getAsJsonObject();
              if ( jsonObj.get("amount").getAsFloat() > 0 && jsonObj.get("data") != null ) {
                System.out.println(jsonObj.get("data").getAsString() );
+               try {
+               byte[] encoded = Base64.getDecoder().decode(jsonObj.get("data").getAsString());
+               MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(encoded);
+               Value memoVal = unpacker.unpackValue();
+               if ( memoVal.isMapValue()) {
+                 Map<Value, Value> map = memoVal.asMapValue().map();
+                 System.out.println(map.size());
+                 if ( map.get(ValueFactory.newString("C")).asIntegerValue().asInt() == 1000 ) {
+                   System.out.println("Exchange successful" + " Code: " +
+                                      map.get(ValueFactory.newString("C")).asIntegerValue());
+                   System.out.println("Price is " + map.get(ValueFactory.newString("P")).asStringValue());
+                   System.out.println("Fee is " + map.get(ValueFactory.newString("F")).asStringValue());
+                   System.out.println("Type is " + map.get(ValueFactory.newString("T")).asStringValue());
+                   ByteBuffer AssetBinValue = map.get(ValueFactory.newString("FA")).asRawValue().asByteBuffer();
+                   System.out.println("Fee is asset UUID is  " + ByteBufferAsUuid(AssetBinValue));
+                   ByteBuffer TraceBinValue = map.get(ValueFactory.newString("O")).asRawValue().asByteBuffer();
+                   System.out.println("The trace id is " + ByteBufferAsUuid(TraceBinValue));
+                }
+               }
+              } catch(Exception e) { e.printStackTrace(); }
              }
           });
         }
