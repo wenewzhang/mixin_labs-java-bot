@@ -24,13 +24,17 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     implementation("com.google.guava:guava:27.0.1-jre")
     implementation("commons-codec:commons-codec:1.11")
-    implementation("com.auth0:java-jwt:3.5.0")
+    implementation("com.auth0:java-jwt:3.8.0")
     compile(files("libs/mixin-java-sdk.jar"))
     implementation("com.squareup.okhttp3:okhttp:3.12.1")
+    implementation("com.squareup.okio:okio:2.2.2")
     implementation("com.google.code.gson:gson:2.8.5")
     implementation("org.bouncycastle:bcprov-jdk16:1.46")
     implementation("org.apache.commons:commons-csv:1.6")
     implementation("org.msgpack:msgpack-core:0.8.16")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.8")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.9.8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.3.30")
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
 }

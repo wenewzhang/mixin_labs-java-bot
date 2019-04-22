@@ -12,7 +12,7 @@ ExinCore 也不知道你是谁，它只知道你的UUID.
 你先需要创建一个机器人, 方法在 [教程一](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md).
 
 #### 安装依赖包
-正如教程一里我们介绍过的， 我们需要依赖 **mixin-java-sdk**, 你应该先安装过它了， 这儿我们再安装其它的软件包.
+正如教程一里我们介绍过的， 我们需要依赖 [**mixin-java-sdk**](https://github.com/wenewzhang/mixin-java-sdk/releases), 你应该先安装过它了， 这儿我们再安装其它的软件包.
 下载地址: [mvnrepository](https://mvnrepository.com/)
 build.gradle.kts的dependencies区块，加入如下依赖的包：
 ```java
@@ -245,8 +245,8 @@ JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
 ## 源代码执行
 编译执行，即可开始交易了.
 
-**gradle build**  编译项目.
-**java -cp .:build/libs/bitcoin_wallet-java.jar:libs/* bitcoin_wallet.java.App** 运行项目.
+- **gradle build**  编译项目.
+- **java -cp .:build/libs/bitcoin_wallet-java.jar:libs/* bitcoin_wallet.java.App** 运行项目.
 
 注意：不能使用gradle run来运行，因为我们使用的**System.console().readLine()**不被Gradle支持，只能使用**java -cp**
 来运行！

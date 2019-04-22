@@ -12,7 +12,7 @@ ExinCore don't know who you are because ExinCore only know your client's uuid.
 You should  have created a bot based on Mixin Network. Create one by reading [Java Bitcoin tutorial](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README.md).
 
 #### Install required packages
-As you know, we introduce you the **mixin-java-sdk** in [chapter 1](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README.md), assume it has installed before, let's install others here.
+As you know, we introduce you the [**mixin-java-sdk**](https://github.com/wenewzhang/mixin-java-sdk/releases) in [chapter 1](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README.md), assume it has installed before, let's install others here.
 Add dependent packages to build.gradle.kts.
 ```java
   implementation("com.google.guava:guava:27.0.1-jre")
@@ -240,8 +240,8 @@ JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
 
 ## Source code usage
 Build it and then run it.
-**Gradle build**  build project.
-**java -cp .:build/libs/bitcoin_wallet-java.jar:libs/* bitcoin_wallet.java.App** run it.
+- **Gradle build**  build project.
+- **java -cp .:build/libs/bitcoin_wallet-java.jar:libs/* bitcoin_wallet.java.App** run it.
 
 Caution：DO NOT use **gradle run** to run it, because **System.console().readLine()** doesn't supported by Gradle, use **java -cp** instead.
 
