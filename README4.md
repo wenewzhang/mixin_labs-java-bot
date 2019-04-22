@@ -241,7 +241,7 @@ JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
 ## Source code usage
 Build it and then run it.
 - **gradle build**  build project.
-- **java -cp ** run it.
+- **java -cp** run it.
 ```bash
 java -cp .:build/libs/bitcoin_wallet-java.jar:libs/* bitcoin_wallet.java.App
 ```

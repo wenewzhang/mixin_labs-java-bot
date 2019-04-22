@@ -246,7 +246,7 @@ JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
 编译执行，即可开始交易了.
 
 - **gradle build**  编译项目.
-- **java -cp ** 运行项目.
+- **java -cp** 运行项目.
 ```bash
 java -cp .:build/libs/bitcoin_wallet-java.jar:libs/* bitcoin_wallet.java.App
 ```
