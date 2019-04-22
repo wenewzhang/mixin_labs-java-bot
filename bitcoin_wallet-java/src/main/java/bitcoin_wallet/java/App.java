@@ -198,6 +198,7 @@ public class App {
           }
           JsonArray snapshots = mixinApiUser.getSnapshots(assetUUID,3,transDatetime,"ASC");
           // System.out.println(snapshots);
+          System.out.println("-------------------------get-Snapshots---------------------------------------------");
           snapshots.forEach((element) ->  {
              JsonObject jsonObj = element.getAsJsonObject();
              if ( jsonObj.get("amount").getAsFloat() > 0 && jsonObj.get("data") != null ) {
@@ -208,7 +209,6 @@ public class App {
                Value memoVal = unpacker.unpackValue();
                if ( memoVal.isMapValue()) {
                  Map<Value, Value> map = memoVal.asMapValue().map();
-                 System.out.println(map.size());
                  if ( map.get(ValueFactory.newString("C")).asIntegerValue().asInt() == 1000 ) {
                    System.out.println("Exchange successful" + " Code: " +
                                       map.get(ValueFactory.newString("C")).asIntegerValue());
@@ -224,6 +224,7 @@ public class App {
               } catch(Exception e) { e.printStackTrace(); }
              }
           });
+          System.out.println("---------------------end-of-get-Snapshots---------------------------------------------");
         }
         //snapshots buy usdt sell btc
         //2019-04-19T06:53:20.186821325Z

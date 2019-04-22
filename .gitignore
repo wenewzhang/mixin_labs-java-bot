@@ -18,3 +18,7 @@ mixin_labs-java-bot.iml
 src/main/java/mixin_labs/java/bot/Config.java
 src/main/resources/rsa_private_key.txt
 ./src/main/java/mixin_labs/java/bot/Config.java
+msgpack-demo/build
+msgpack-demo/gradle
+msgpack-demo/.gradle
+
