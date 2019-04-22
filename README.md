@@ -9,6 +9,7 @@ Full Mixin network resource [index](https://github.com/awesome-mixin-network/ind
 1. [How to create bot in Mixin messenger and reply message to user](https://github.com/wenewzhang/mixin_labs-java-bot) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md)
 2. [How to receive Bitcoin and send Bitcoin in Mixin Messenger](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2-zhchs.md)
 3. [How to create a Bitcoin wallet based on Mixin Network API](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README3.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README3-zhchs.md)
+4. [How to trade bitcoin through Java](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4-zhchs.md)
 
 ## Install java on your OS
 On macOS, download java jdk from [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html),double click jdk-11.0.2_osx-x64_bin.dmg, then click on JDK 11.0.2.pkg in popup window, follow the instruction to install java, java could be installed in /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/ directory, add this path to environment variable $PATH
