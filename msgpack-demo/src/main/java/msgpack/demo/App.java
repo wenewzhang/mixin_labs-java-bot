@@ -25,6 +25,11 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
+import com.google.gson.Gson;
 
 public class App {
     public String getGreeting() {
@@ -131,7 +136,15 @@ public class App {
         int Len = encoded.length;
         MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(encoded);
         // ByteBuffer out = ByteBuffer.wrap(new byte[Len]);
-        System.out.println(unpacker.unpackValue());
+        Value memoVal = unpacker.unpackValue();
+        JsonParser parser = new JsonParser();
+        JsonElement jsonTree = parser.parse(memoVal.toJson());
+        JsonObject memoObj = jsonTree.getAsJsonObject();
+        // return jsonTree.getAsJsonObject()
+        System.out.print(memoObj.get("C").getAsString() + " " +
+                         memoObj.get("P").getAsString() + " " +
+                         memoObj.get("F").getAsString() + " " +
+                         memoObj.get("T").getAsString());
         // unpacker.readPayload(out);
         // printBytes(out);
         unpacker.close();
