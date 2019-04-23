@@ -91,7 +91,7 @@ public class App {
           PromptMsg += "tub:Transfer USDT from Bot to Wallet\ntum:Transfer USDT from Wallet to Master\n";
           PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
           PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\na: Read All Assets Infos\n";
-          PromptMsg += "q: Exit \nMake your choose(eg: q for Exit!): ";
+          PromptMsg += "o: Ocean.One Exchange\nq: Exit \nMake your choose(eg: q for Exit!): ";
           System.out.print(PromptMsg);
           String input = System.console().readLine();
           System.out.println(input);
@@ -387,7 +387,20 @@ public class App {
           });
           System.out.println("-----------------------------------------------------------------------");
         }
-      }while ( true );
+        if ( input.equals("o") ) {
+          do {
+            String OceanMsg;
+            OceanMsg  = "1: Order of BTC/USDT\n2: Read Bitcoin balance & address \n3: Read USDT balance & address\n4: Read EOS balance & address\n";
+            System.out.print(OceanMsg);
+            String subinput = System.console().readLine();
+            System.out.println(subinput);
+            if ( subinput.equals("q") ) { break; }
+            if ( subinput.equals("1") ) {
+              FetchOceanMarketInfos(EOS_ASSET_ID,USDT_ASSET_ID);
+            }
+          } while ( true );
+        }
+      } while ( true );
     }
     private static MixinAPI generateAPI_FromCSV() {
       try {
@@ -425,6 +438,27 @@ public class App {
       } catch(Exception e) { e.printStackTrace(); }
       return null;
   }
+  private static JsonObject FetchOceanMarketInfos(String targetAssetID, String baseAssetID) {
+    OkHttpClient client = new OkHttpClient();
+    String baseUrl = "https://events.ocean.one/markets/%s-%s/book ";
+    String fullUrl = String.format(baseUrl,targetAssetID,baseAssetID);
+    // String fullUrl = baseUrl + url;
+    Request request = new Request.Builder()
+                               .url(fullUrl)
+                               .build();
+    try {
+       Response response = client.newCall(request).execute();
+       if (!response.isSuccessful()) {
+         throw new IOException("Unexpected code " + response);
+       }
+       System.out.println(response.body().string());
+       JsonParser parser = new JsonParser();
+       JsonElement jsonTree = parser.parse(response.body().string());
+       if ( jsonTree.isJsonObject() ) { return jsonTree.getAsJsonObject();}
+       return null;
+     } catch(Exception e) { e.printStackTrace(); }
+     return null;
+ }
   public static JsonArray processJsonObjectWithDataOrError(String res) {
     JsonParser parser = new JsonParser();
     JsonElement jsonTree = parser.parse(res);
