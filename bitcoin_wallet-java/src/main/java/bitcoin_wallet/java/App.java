@@ -71,6 +71,19 @@ public class App {
     private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
     private static final String EOS_ASSET_ID     = "6cfe566e-4aad-470b-8c9a-2fd35b49c68d";
     private static final String USDT_ASSET_ID    = "815b0b1a-2764-3736-8faa-42d694fa620a";
+    private static final String ETC_ASSET_ID     = "2204c1ee-0ea2-4add-bb9a-b3719cfff93a";
+    private static final String XRP_ASSET_ID     = "23dfb5a5-5d7b-48b6-905f-3970e3176e27";
+    private static final String XEM_ASSET_ID     = "27921032-f73e-434e-955f-43d55672ee31";
+    private static final String ETH_ASSET_ID     = "43d61dcd-e413-450d-80b8-101d5e903357";
+    private static final String DASH_ASSET_ID    = "6472e7e3-75fd-48b6-b1dc-28d294ee1476";
+    private static final String DOGE_ASSET_ID    = "6770a1e5-6086-44d5-b60f-545f9d9e8ffd";
+    private static final String LTC_ASSET_ID     = "76c802a2-7c88-447f-a93e-c29c9e5dd9c8";
+    private static final String SIA_ASSET_ID     = "990c4c29-57e9-48f6-9819-7d986ea44985";
+    private static final String ZEN_ASSET_ID     = "a2c5d22b-62a2-4c13-b3f0-013290dbac60";
+    private static final String ZEC_ASSET_ID     = "c996abc9-d94e-4494-b1cf-2a3fd3ac5714";
+    private static final String BCH_ASSET_ID     = "fd11b6e3-0b87-41f1-a41f-f0e9b49e5bf0";
+    private static final String XIN_ASSET_ID     = "c94ac88f-4671-3976-b60a-09064f1811e8";
+    private static final String CNB_ASSET_ID     = "965e5c6e-434c-3fa9-b780-c50f43cd955c";
     private static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
     private static final String MASTER_UUID      = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
     private static final String WALLET_FILANAME  = "./mybitcoin_wallet.csv";
@@ -390,13 +403,40 @@ public class App {
         if ( input.equals("o") ) {
           do {
             String OceanMsg;
-            OceanMsg  = "1: Order of BTC/USDT\n2: Read Bitcoin balance & address \n3: Read USDT balance & address\n4: Read EOS balance & address\n";
+            OceanMsg  = "1: Orders of BTC/USDT\n2: Orders of EOS/USDT \n3: Orders of XIN/USDT \n4: Orders of XIN/BTC\n";
+            OceanMsg  += "5: Orders of EOS/BTC\n6: Orders of SC/BTC \n7: Orders of EOS/XIN \n8: Orders of ETH/XIN\n";
+            OceanMsg  += "9: Orders of SC/XIN\n";
+
             System.out.print(OceanMsg);
             String subinput = System.console().readLine();
             System.out.println(subinput);
             if ( subinput.equals("q") ) { break; }
             if ( subinput.equals("1") ) {
+              FetchOceanMarketInfos(BTC_ASSET_ID,USDT_ASSET_ID);
+            }
+            if ( subinput.equals("2") ) {
               FetchOceanMarketInfos(EOS_ASSET_ID,USDT_ASSET_ID);
+            }
+            if ( subinput.equals("3") ) {
+              FetchOceanMarketInfos(XIN_ASSET_ID,USDT_ASSET_ID);
+            }
+            if ( subinput.equals("4") ) {
+              FetchOceanMarketInfos(XIN_ASSET_ID,BTC_ASSET_ID);
+            }
+            if ( subinput.equals("5") ) {
+              FetchOceanMarketInfos(EOS_ASSET_ID,BTC_ASSET_ID);
+            }
+            if ( subinput.equals("6") ) {
+              FetchOceanMarketInfos(SIA_ASSET_ID,BTC_ASSET_ID);
+            }
+            if ( subinput.equals("7") ) {
+              FetchOceanMarketInfos(EOS_ASSET_ID,XIN_ASSET_ID);
+            }
+            if ( subinput.equals("8") ) {
+              FetchOceanMarketInfos(ETH_ASSET_ID,XIN_ASSET_ID);
+            }
+            if ( subinput.equals("9") ) {
+              FetchOceanMarketInfos(SIA_ASSET_ID,XIN_ASSET_ID);
             }
           } while ( true );
         }
@@ -438,11 +478,12 @@ public class App {
       } catch(Exception e) { e.printStackTrace(); }
       return null;
   }
-  private static JsonObject FetchOceanMarketInfos(String targetAssetID, String baseAssetID) {
+  private static void FetchOceanMarketInfos(String targetAssetID, String baseAssetID) {
     OkHttpClient client = new OkHttpClient();
     String baseUrl = "https://events.ocean.one/markets/%s-%s/book ";
     String fullUrl = String.format(baseUrl,targetAssetID,baseAssetID);
     // String fullUrl = baseUrl + url;
+    System.out.println(fullUrl);
     Request request = new Request.Builder()
                                .url(fullUrl)
                                .build();
@@ -451,13 +492,34 @@ public class App {
        if (!response.isSuccessful()) {
          throw new IOException("Unexpected code " + response);
        }
-       System.out.println(response.body().string());
+       String res = response.body().string();
+       // System.out.println(res);
        JsonParser parser = new JsonParser();
-       JsonElement jsonTree = parser.parse(response.body().string());
-       if ( jsonTree.isJsonObject() ) { return jsonTree.getAsJsonObject();}
-       return null;
+       JsonElement jsonTree = parser.parse(res);
+       JsonObject orders;
+       orders =  jsonTree.getAsJsonObject();
+       JsonArray asksOrders = orders.get("data").getAsJsonObject().get("data").getAsJsonObject().get("asks").getAsJsonArray();
+       JsonArray bidsOrders = orders.get("data").getAsJsonObject().get("data").getAsJsonObject().get("bids").getAsJsonArray();
+       // System.out.println(orders.get("data").getAsJsonObject().get("data").getAsJsonObject().get("bids").getAsJsonArray());
+       System.out.println("--Side--Price--Amount--Funds---");
+       asksOrders.forEach((element) ->  {
+          JsonObject jsonObj = element.getAsJsonObject();
+          System.out.println(jsonObj.get("side").getAsString() + " " +
+                             jsonObj.get("price").getAsString() + " " +
+                             jsonObj.get("amount").getAsString() + " " +
+                             jsonObj.get("funds").getAsString() );
+       });
+       bidsOrders.forEach((element) ->  {
+          JsonObject jsonObj = element.getAsJsonObject();
+          System.out.println(jsonObj.get("side").getAsString() + " " +
+                             jsonObj.get("price").getAsString() + " " +
+                             jsonObj.get("amount").getAsString() + " " +
+                             jsonObj.get("funds").getAsString() );
+       });
+       System.out.println("----endo--of--btc/usdt----");
+       return;
      } catch(Exception e) { e.printStackTrace(); }
-     return null;
+     return;
  }
   public static JsonArray processJsonObjectWithDataOrError(String res) {
     JsonParser parser = new JsonParser();
