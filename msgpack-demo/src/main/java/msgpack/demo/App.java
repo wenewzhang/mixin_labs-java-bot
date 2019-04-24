@@ -19,6 +19,9 @@ import org.msgpack.value.Value;
 import org.msgpack.value.BinaryValue;
 import org.msgpack.value.MapValue;
 import org.msgpack.value.ValueFactory;
+// import org.msgpack.value.MessagePackFormatFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +32,7 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.HashMap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
@@ -74,6 +78,15 @@ public class App {
           System.out.println("begein of OceanBuyMemo");
           String OceanBuyMemo = "hKFToUKhQcQQxtDHKCYkQpuODdnRm2WS+qFQpDUwMDChVKFM";
           decodeOceanBuyMemo(OceanBuyMemo);
+
+          Map<String, Object> obj = new HashMap<String, Object>();
+          ObjectMapper objectMapper = new ObjectMapper(new JsonFactory());
+          obj.put("S", "B");
+          obj.put("P", "5000");
+          obj.put("A", asBytes(btcUUID));
+          obj.put("T", "L");
+          byte[] bs = objectMapper.writeValueAsBytes(obj);
+          System.out.println(Base64.getEncoder().encodeToString(bs));
         } catch(Exception e) { e.printStackTrace(); }
     }
     public static UUID asUuid(byte[] bytes) {
@@ -191,7 +204,10 @@ public class App {
         Value memoVal = unpacker.unpackValue();
 
         System.out.println(memoVal.getValueType());
-
+        MapValue mapValue = memoVal.asMapValue();
+        for (Map.Entry<Value, Value> entry : mapValue.entrySet()) {
+			       System.out.println(entry.getKey() + " " + entry.getValue());
+		    }
         Map<Value, Value> map = memoVal.asMapValue().map();
         System.out.println(map.size());
         System.out.println(map.get(ValueFactory.newString("S")).asStringValue());
