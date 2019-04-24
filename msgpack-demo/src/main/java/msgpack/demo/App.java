@@ -71,6 +71,9 @@ public class App {
           // String EnMemo = "hqFDzQPooVCnNTI0OC45OKFGqTAuMDAxMDQ5OKJGQcQQgVsLGidkNzaPqkLWlPpiCqFUoVKhT8QQeJyt3MrqSGOpbqzFXy5JUw==";
           String EnMemo = "hqFDzQPooVCmNS4zOTE3oUapMC4wMDUzOTE4okZBxBCBWwsaJ2Q3No+qQtaU+mIKoVShUqFPxBCbKSnU5adI8YV7+1WrrygY";
           decodeMemo(EnMemo);
+          System.out.println("begein of OceanBuyMemo");
+          String OceanBuyMemo = "hKFToUKhQcQQxtDHKCYkQpuODdnRm2WS+qFQpDUwMDChVKFM";
+          decodeOceanBuyMemo(OceanBuyMemo);
         } catch(Exception e) { e.printStackTrace(); }
     }
     public static UUID asUuid(byte[] bytes) {
@@ -176,6 +179,28 @@ public class App {
         // final int sno = upk.readInt();
         // unpacker.readPayload(out);
         // printBytes(out);
+        unpacker.close();
+      } catch (Exception e) { e.printStackTrace(); }
+    }
+    public static void decodeOceanBuyMemo(String memo) {
+      try {
+        byte[] encoded = Base64.getDecoder().decode(memo);
+        int Len = encoded.length;
+        MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(encoded);
+        // ByteBuffer out = ByteBuffer.wrap(new byte[Len]);
+        Value memoVal = unpacker.unpackValue();
+
+        System.out.println(memoVal.getValueType());
+
+        Map<Value, Value> map = memoVal.asMapValue().map();
+        System.out.println(map.size());
+        System.out.println(map.get(ValueFactory.newString("S")).asStringValue());
+        System.out.println(map.get(ValueFactory.newString("P")).asStringValue());
+        System.out.println(map.get(ValueFactory.newString("T")).asStringValue());
+
+        ByteBuffer AssetBinValue = map.get(ValueFactory.newString("A")).asRawValue().asByteBuffer();
+        System.out.println(ByteBufferAsUuid(AssetBinValue));
+
         unpacker.close();
       } catch (Exception e) { e.printStackTrace(); }
     }
