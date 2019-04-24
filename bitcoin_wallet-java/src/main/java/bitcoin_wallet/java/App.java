@@ -68,7 +68,9 @@ import org.msgpack.value.ValueFactory;
 public class App {
 
     private static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
+    private static final String OCEANONE_BOT     = "aaff5bef-42fb-4c9f-90e0-29f69176b7d4";
     private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
+    // private static final String BTC_ASSET_ID     = "965e5c6e-434c-3fa9-b780-c50f43cd955c";
     private static final String EOS_ASSET_ID     = "6cfe566e-4aad-470b-8c9a-2fd35b49c68d";
     private static final String USDT_ASSET_ID    = "815b0b1a-2764-3736-8faa-42d694fa620a";
     private static final String ETC_ASSET_ID     = "2204c1ee-0ea2-4add-bb9a-b3719cfff93a";
@@ -86,11 +88,12 @@ public class App {
     private static final String CNB_ASSET_ID     = "965e5c6e-434c-3fa9-b780-c50f43cd955c";
     private static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
     private static final String MASTER_UUID      = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
+    // private static final String MASTER_UUID      = "369db92b-5319-366c-a7ce-738e7e8e8fd6";
     private static final String WALLET_FILANAME  = "./mybitcoin_wallet.csv";
     private static final String EOS_THIRD_EXCHANGE_NAME
-                                                = "huobideposit";
+                                                 = "huobideposit";
     private static final String EOS_THIRD_EXCHANGE_TAG
-                                                = "1872050";
+                                                 = "1872050";
     public static void main(String[] args) {
         MixinAPI mixinApi = new MixinAPI(Config.CLIENT_ID, Config.CLIENT_SECRET,
                                          Config.PIN, Config.SESSION_ID, Config.PIN_TOKEN,
@@ -102,6 +105,7 @@ public class App {
           PromptMsg += "tbb:Transfer BTC from Bot to Wallet\ntbm:Transfer BTC from Wallet to Master\n";
           PromptMsg += "teb:Transfer EOS from Bot to Wallet\ntem:Transfer EOS from Wallet to Master\n";
           PromptMsg += "tub:Transfer USDT from Bot to Wallet\ntum:Transfer USDT from Wallet to Master\n";
+          PromptMsg += "tcb:Transfer CNB from Bot to Wallet\ntcm:Transfer CNB from Wallet to Master\n";
           PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
           PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\na: Read All Assets Infos\n";
           PromptMsg += "o: Ocean.One Exchange\nq: Exit \nMake your choose(eg: q for Exit!): ";
@@ -334,6 +338,30 @@ public class App {
              System.out.println("-----------------------------------------------------------------------");
           }
         }
+        if ( input.equals("tcb") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApi.getAsset(CNB_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApi.transfer(CNB_ASSET_ID,mixinApiUser.getClientID(),
+                                                      asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------BTC Transfer from Bot Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
+        if ( input.equals("tbm") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.getAsset(CNB_ASSET_ID);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApiUser.transfer(CNB_ASSET_ID, MASTER_UUID,
+                                                        asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------BTC Transfer To Master Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
         if ( input.equals("teb") ) {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
          JsonObject asset = mixinApi.getAsset(EOS_ASSET_ID);
@@ -405,7 +433,8 @@ public class App {
             String OceanMsg;
             OceanMsg  = "1: Orders of BTC/USDT\n2: Orders of EOS/USDT \n3: Orders of XIN/USDT \n4: Orders of XIN/BTC\n";
             OceanMsg  += "5: Orders of EOS/BTC\n6: Orders of SC/BTC \n7: Orders of EOS/XIN \n8: Orders of ETH/XIN\n";
-            OceanMsg  += "9: Orders of SC/XIN\n";
+            OceanMsg  += "9: Orders of SC/XIN\nb1: Buy BTC pay USDT\ns1: Sell BTC get USDT\n";
+            OceanMsg  += "c: Cancel the order\nq: Exit\n";
 
             System.out.print(OceanMsg);
             String subinput = System.console().readLine();
@@ -437,6 +466,72 @@ public class App {
             }
             if ( subinput.equals("9") ) {
               FetchOceanMarketInfos(SIA_ASSET_ID,XIN_ASSET_ID);
+            }
+            if ( subinput.equals("b1") ) {
+              System.out.print("Please input the BTC price base USDT: ");
+              String pinput = System.console().readLine();
+              System.out.println(pinput);
+              String buyMemo = GenerateOrderMemo("B",BTC_ASSET_ID,pinput);
+              MixinAPI mixinApiUser = generateAPI_FromCSV();
+              // UUID usdtUUID         =  UUID.fromString(USDT_ASSET_ID);
+              // String memoTarget     = encodeUUID(usdtUUID);
+              System.out.println("------------------Ocean.one-USDT-BTC-EXCHANGE----------------------------");
+              System.out.println(buyMemo);
+              JsonObject asset = mixinApiUser.getAsset(USDT_ASSET_ID);
+              System.out.println(asset);
+              System.out.println(asset.get("balance").getAsFloat());
+              if ( asset.get("balance").getAsFloat()  > 0 ) {
+                  JsonObject transInfo = mixinApiUser.transfer(USDT_ASSET_ID, OCEANONE_BOT,
+                                                             asset.get("balance").getAsString(),
+                                                             buyMemo);
+                  System.out.println("------------------------BTC Transfer To EXCHANGE Information----------------------");
+                  System.out.println(transInfo);
+                  System.out.println("-----------------------------------------------------------------------");
+               } else System.out.println("----------------Not enough USDT--------------------------------------------");
+            }
+            if ( subinput.equals("s1") ) {
+              System.out.print("Please input the BTC price base USDT: ");
+              String pinput = System.console().readLine();
+              System.out.println(pinput);
+              String buyMemo = GenerateOrderMemo("A",USDT_ASSET_ID,pinput);
+              MixinAPI mixinApiUser = generateAPI_FromCSV();
+              // UUID usdtUUID         =  UUID.fromString(USDT_ASSET_ID);
+              // String memoTarget     = encodeUUID(usdtUUID);
+              System.out.println("------------------Ocean.one-USDT-BTC-EXCHANGE----------------------------");
+              System.out.println(buyMemo);
+              JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
+              System.out.println(asset);
+              System.out.println(asset.get("balance").getAsFloat());
+              if ( asset.get("balance").getAsFloat()  > 0 ) {
+                  JsonObject transInfo = mixinApiUser.transfer(BTC_ASSET_ID, OCEANONE_BOT,
+                                                             asset.get("balance").getAsString(),
+                                                             buyMemo);
+                  System.out.println("------------------------BTC Transfer To EXCHANGE Information----------------------");
+                  System.out.println(transInfo);
+                  System.out.println("-----------------------------------------------------------------------");
+               } else System.out.println("----------------Not enough BTC--------------------------------------------");
+            }
+            if ( subinput.equals("c") ) {
+              System.out.print("Please input order id(trace id): ");
+              String pinput = System.console().readLine();
+              System.out.println(pinput);
+              String OrderMemo = GenerateOrderCancelMemo(pinput);
+              MixinAPI mixinApiUser = generateAPI_FromCSV();
+              // UUID usdtUUID         =  UUID.fromString(USDT_ASSET_ID);
+              // String memoTarget     = encodeUUID(usdtUUID);
+              System.out.println("------------------Ocean.one-USDT-BTC-EXCHANGE----------------------------");
+              System.out.println(OrderMemo);
+              JsonObject asset = mixinApiUser.getAsset(CNB_ASSET_ID);
+              System.out.println(asset);
+              System.out.println(asset.get("balance").getAsFloat());
+              if ( asset.get("balance").getAsFloat()  > 0 ) {
+                  JsonObject transInfo = mixinApiUser.transfer(CNB_ASSET_ID, OCEANONE_BOT,
+                                                             "0.00001",
+                                                             OrderMemo);
+                  System.out.println("------------------------BTC Transfer To EXCHANGE Information----------------------");
+                  System.out.println(transInfo);
+                  System.out.println("-----------------------------------------------------------------------");
+               } else System.out.println("----------------Not enough CNB--------------------------------------------");
             }
           } while ( true );
         }
@@ -571,5 +666,29 @@ public class App {
     bb.putLong(uuid.getMostSignificantBits());
     bb.putLong(uuid.getLeastSignificantBits());
     return bb.array();
+  }
+  public static String GenerateOrderMemo(String Side, String myUuid, String Price) {
+    try {
+      MessageBufferPacker m = MessagePack.newDefaultBufferPacker();
+      UUID AssetUUID  =  UUID.fromString(myUuid);
+      Value map = ValueFactory.newMap(ValueFactory.newString("S"), ValueFactory.newString(Side),
+                                      ValueFactory.newString("A"), ValueFactory.newBinary(asBytes(AssetUUID)),
+                                      ValueFactory.newString("P"), ValueFactory.newString(Price),
+                                      ValueFactory.newString("T"), ValueFactory.newString("L") );
+      m.packValue(map);
+      return Base64.getEncoder().encodeToString(m.toByteArray());
+    } catch (Exception e) { e.printStackTrace(); }
+      return "";
+  }
+  public static String GenerateOrderCancelMemo(String myUuid) {
+    try {
+      MessageBufferPacker m = MessagePack.newDefaultBufferPacker();
+      UUID AssetUUID  =  UUID.fromString(myUuid);
+      Value map = ValueFactory.newMap(
+                                      ValueFactory.newString("O"), ValueFactory.newBinary(asBytes(AssetUUID)) );
+      m.packValue(map);
+      return Base64.getEncoder().encodeToString(m.toByteArray());
+    } catch (Exception e) { e.printStackTrace(); }
+      return "";
   }
 }
