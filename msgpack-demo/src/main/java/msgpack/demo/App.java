@@ -87,6 +87,31 @@ public class App {
           obj.put("T", "L");
           byte[] bs = objectMapper.writeValueAsBytes(obj);
           System.out.println(Base64.getEncoder().encodeToString(bs));
+
+          // MessagePack m= new MessagePack();
+          MessageBufferPacker m = MessagePack.newDefaultBufferPacker();
+          // m.packValue(obj);
+          // byte[] b = m.write(obj);
+          Value map = ValueFactory.newMap(ValueFactory.newString("S"), ValueFactory.newString("B"),
+                                          ValueFactory.newString("A"), ValueFactory.newBinary(asBytes(btcUUID)),
+                                          ValueFactory.newString("P"), ValueFactory.newString("5000"),
+                                          ValueFactory.newString("T"), ValueFactory.newString("L") );
+          m.packValue(map);
+          printBytes2(m.toByteArray());
+          String mapMemo = Base64.getEncoder().encodeToString(m.toByteArray());
+          System.out.println(mapMemo);
+
+          decodeMapValue(mapMemo);
+          decodeMapValue(OceanBuyMemo);
+          // MapValue msgpackMap = value.asMapValue();
+          // // ObjectMapper objectMapper = new ObjectMapper(new JsonFactory());
+          // obj2.put("S", "B");
+          // obj2.put("P", "5000");
+          // obj2.put("A", asBytes(btcUUID));
+          // obj2.put("T", "L");
+          // byte[] b2s = objectMapper.writeValueAsBytes(obj2);
+          // System.out.println(Base64.getEncoder().encodeToString(bs2));
+
         } catch(Exception e) { e.printStackTrace(); }
     }
     public static UUID asUuid(byte[] bytes) {
@@ -217,6 +242,23 @@ public class App {
         ByteBuffer AssetBinValue = map.get(ValueFactory.newString("A")).asRawValue().asByteBuffer();
         System.out.println(ByteBufferAsUuid(AssetBinValue));
 
+        unpacker.close();
+      } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public static void decodeMapValue(String memo) {
+      try {
+        byte[] encoded = Base64.getDecoder().decode(memo);
+        int Len = encoded.length;
+        MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(encoded);
+        // ByteBuffer out = ByteBuffer.wrap(new byte[Len]);
+        Value memoVal = unpacker.unpackValue();
+
+        System.out.println(memoVal.getValueType());
+        MapValue mapValue = memoVal.asMapValue();
+        for (Map.Entry<Value, Value> entry : mapValue.entrySet()) {
+             System.out.println(entry.getKey() + " " + entry.getValue());
+        }
         unpacker.close();
       } catch (Exception e) { e.printStackTrace(); }
     }
