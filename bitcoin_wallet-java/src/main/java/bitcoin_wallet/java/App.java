@@ -106,7 +106,7 @@ public class App {
           PromptMsg += "teb:Transfer EOS from Bot to Wallet\ntem:Transfer EOS from Wallet to Master\n";
           PromptMsg += "tub:Transfer USDT from Bot to Wallet\ntum:Transfer USDT from Wallet to Master\n";
           PromptMsg += "tcb:Transfer CNB from Bot to Wallet\ntcm:Transfer CNB from Wallet to Master\n";
-          PromptMsg += "5: pay 0.0001 BTC buy USDT\n6: pay $1 USDT buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
+          PromptMsg += "5: Pay 0.0001 BTC to ExinCore buy USDT\n6: Pay $1 USDT to ExinCore buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
           PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\na: Read All Assets Infos\n";
           PromptMsg += "o: Ocean.One Exchange\nq: Exit \nMake your choose(eg: q for Exit!): ";
           System.out.print(PromptMsg);
@@ -471,6 +471,11 @@ public class App {
               System.out.print("Please input the BTC price base USDT: ");
               String pinput = System.console().readLine();
               System.out.println(pinput);
+
+              System.out.print("Please input the USDT amount: ");
+              String aminput = System.console().readLine();
+              System.out.println(aminput);
+              float amountf = Float.valueOf(aminput.trim()).floatValue();
               String buyMemo = GenerateOrderMemo("B",BTC_ASSET_ID,pinput);
               MixinAPI mixinApiUser = generateAPI_FromCSV();
               // UUID usdtUUID         =  UUID.fromString(USDT_ASSET_ID);
@@ -480,9 +485,9 @@ public class App {
               JsonObject asset = mixinApiUser.getAsset(USDT_ASSET_ID);
               System.out.println(asset);
               System.out.println(asset.get("balance").getAsFloat());
-              if ( asset.get("balance").getAsFloat()  > 0 ) {
+              if ( asset.get("balance").getAsFloat()  >= 1 && asset.get("balance").getAsFloat() >= amountf ) {
                   JsonObject transInfo = mixinApiUser.transfer(USDT_ASSET_ID, OCEANONE_BOT,
-                                                             asset.get("balance").getAsString(),
+                                                             aminput,
                                                              buyMemo);
                   System.out.println("------------------------BTC Transfer To EXCHANGE Information----------------------");
                   System.out.println(transInfo);
@@ -493,6 +498,12 @@ public class App {
               System.out.print("Please input the BTC price base USDT: ");
               String pinput = System.console().readLine();
               System.out.println(pinput);
+
+              System.out.print("Please input the BTC amount: ");
+              String aminput = System.console().readLine();
+              System.out.println(aminput);
+              float amountf = Float.valueOf(aminput.trim()).floatValue();
+
               String buyMemo = GenerateOrderMemo("A",USDT_ASSET_ID,pinput);
               MixinAPI mixinApiUser = generateAPI_FromCSV();
               // UUID usdtUUID         =  UUID.fromString(USDT_ASSET_ID);
@@ -502,9 +513,9 @@ public class App {
               JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
               System.out.println(asset);
               System.out.println(asset.get("balance").getAsFloat());
-              if ( asset.get("balance").getAsFloat()  > 0 ) {
+              if ( asset.get("balance").getAsFloat()  > 0 && asset.get("balance").getAsFloat() >= amountf ) {
                   JsonObject transInfo = mixinApiUser.transfer(BTC_ASSET_ID, OCEANONE_BOT,
-                                                             asset.get("balance").getAsString(),
+                                                             aminput,
                                                              buyMemo);
                   System.out.println("------------------------BTC Transfer To EXCHANGE Information----------------------");
                   System.out.println(transInfo);
