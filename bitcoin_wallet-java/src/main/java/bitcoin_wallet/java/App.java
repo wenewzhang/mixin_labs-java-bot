@@ -431,13 +431,15 @@ public class App {
         if ( input.equals("o") ) {
           do {
             String OceanMsg;
-            OceanMsg  = "1: Orders-Book of BTC/USDT\nb1: Buy BTC pay USDT\ns1: Sell BTC get USDT\n";
-            OceanMsg  += "2: Orders of EOS/USDT \nb2: Buy EOS pay USDT\ns2: Sell EOS get USDT\n";
-            OceanMsg  += "3: Orders of XIN/USDT \nb3: Buy XIN pay USDT\ns3: Sell XIN get USDT\n";
-            OceanMsg  += "4: Orders of XIN/BTC\nb4: Buy XIN pay BTC\ns4: Sell XIN get BTC\n";
-            OceanMsg  += "5: Orders of EOS/BTC\nb4: Buy EOS pay BTC\ns4: Sell EOS get BTC\n";
-            OceanMsg  += "6: Orders of SC/BTC \n7: Orders of EOS/XIN \n8: Orders of ETH/XIN\n";
-            OceanMsg  += "9: Orders of SC/XIN\n";
+            OceanMsg  =  "1:  Orders-Book of BTC/USDT\nb1: Buy BTC pay USDT\ns1: Sell BTC get USDT\n";
+            OceanMsg  += "2:  Orders-Book of EOS/USDT \nb2: Buy EOS pay USDT\ns2: Sell EOS get USDT\n";
+            OceanMsg  += "3:  Orders-Book of XIN/USDT \nb3: Buy XIN pay USDT\ns3: Sell XIN get USDT\n";
+            OceanMsg  += "4:  Orders-Book of XIN/BTC\nb4: Buy XIN pay BTC\ns4: Sell XIN get BTC\n";
+            OceanMsg  += "5:  Orders-Book of EOS/BTC\nb4: Buy EOS pay BTC\ns4: Sell EOS get BTC\n";
+            OceanMsg  += "6:  Orders-Book of SC/BTC \nb6: Buy SC pay BTC\ns6: Sell SC get BTC\n";
+            OceanMsg  += "7:  Orders-Book of EOS/XIN\nb7: Buy EOS pay XIN\ns7: Sell EOS get XIN\n";
+            OceanMsg  += "8:  Orders-Book of ETH/XIN\nb8: Buy ETH pay XIN\ns8: Sell EOS get XIN\n";
+            OceanMsg  += "9:  Orders-Book of SC/XIN\nb9: Buy SC pay XIN\ns9: Sell SC get XIN\n";
             OceanMsg  += "c: Cancel the order\nq: Exit\n";
 
             System.out.print(OceanMsg);
@@ -459,23 +461,65 @@ public class App {
             if ( subinput.equals("3") ) {
               FetchOceanMarketInfos(XIN_ASSET_ID,USDT_ASSET_ID);
             }
+            if ( subinput.equals("s3") ) {
+              MakeTheSellOrder(XIN_ASSET_ID,USDT_ASSET_ID);
+            }
+            if ( subinput.equals("b3") ) {
+              MakeTheBuyOrder(XIN_ASSET_ID,USDT_ASSET_ID);
+            }
             if ( subinput.equals("4") ) {
               FetchOceanMarketInfos(XIN_ASSET_ID,BTC_ASSET_ID);
+            }
+            if ( subinput.equals("s4") ) {
+              MakeTheSellOrder(XIN_ASSET_ID,BTC_ASSET_ID);
+            }
+            if ( subinput.equals("b4") ) {
+              MakeTheBuyOrder(XIN_ASSET_ID,BTC_ASSET_ID);
             }
             if ( subinput.equals("5") ) {
               FetchOceanMarketInfos(EOS_ASSET_ID,BTC_ASSET_ID);
             }
+            if ( subinput.equals("s5") ) {
+              MakeTheSellOrder(EOS_ASSET_ID,BTC_ASSET_ID);
+            }
+            if ( subinput.equals("b5") ) {
+              MakeTheBuyOrder(EOS_ASSET_ID,BTC_ASSET_ID);
+            }
             if ( subinput.equals("6") ) {
               FetchOceanMarketInfos(SIA_ASSET_ID,BTC_ASSET_ID);
+            }
+            if ( subinput.equals("s6") ) {
+              MakeTheSellOrder(SIA_ASSET_ID,BTC_ASSET_ID);
+            }
+            if ( subinput.equals("b6") ) {
+              MakeTheBuyOrder(SIA_ASSET_ID,BTC_ASSET_ID);
             }
             if ( subinput.equals("7") ) {
               FetchOceanMarketInfos(EOS_ASSET_ID,XIN_ASSET_ID);
             }
+            if ( subinput.equals("s7") ) {
+              MakeTheSellOrder(EOS_ASSET_ID,XIN_ASSET_ID);
+            }
+            if ( subinput.equals("b7") ) {
+              MakeTheBuyOrder(EOS_ASSET_ID,XIN_ASSET_ID);
+            }
             if ( subinput.equals("8") ) {
               FetchOceanMarketInfos(ETH_ASSET_ID,XIN_ASSET_ID);
             }
+            if ( subinput.equals("s8") ) {
+              MakeTheSellOrder(ETH_ASSET_ID,XIN_ASSET_ID);
+            }
+            if ( subinput.equals("b8") ) {
+              MakeTheBuyOrder(ETH_ASSET_ID,XIN_ASSET_ID);
+            }
             if ( subinput.equals("9") ) {
               FetchOceanMarketInfos(SIA_ASSET_ID,XIN_ASSET_ID);
+            }
+            if ( subinput.equals("s9") ) {
+              MakeTheSellOrder(SIA_ASSET_ID,XIN_ASSET_ID);
+            }
+            if ( subinput.equals("b9") ) {
+              MakeTheBuyOrder(SIA_ASSET_ID,XIN_ASSET_ID);
             }
             if ( subinput.equals("b1") ) {
               System.out.print("Please input the BTC price base USDT: ");
