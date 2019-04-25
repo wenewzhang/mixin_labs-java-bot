@@ -431,9 +431,13 @@ public class App {
         if ( input.equals("o") ) {
           do {
             String OceanMsg;
-            OceanMsg  = "1: Orders of BTC/USDT\n2: Orders of EOS/USDT \n3: Orders of XIN/USDT \n4: Orders of XIN/BTC\n";
-            OceanMsg  += "5: Orders of EOS/BTC\n6: Orders of SC/BTC \n7: Orders of EOS/XIN \n8: Orders of ETH/XIN\n";
-            OceanMsg  += "9: Orders of SC/XIN\nb1: Buy BTC pay USDT\ns1: Sell BTC get USDT\n";
+            OceanMsg  = "1: Orders-Book of BTC/USDT\nb1: Buy BTC pay USDT\ns1: Sell BTC get USDT\n";
+            OceanMsg  += "2: Orders of EOS/USDT \nb2: Buy EOS pay USDT\ns2: Sell EOS get USDT\n";
+            OceanMsg  += "3: Orders of XIN/USDT \nb3: Buy XIN pay USDT\ns3: Sell XIN get USDT\n";
+            OceanMsg  += "4: Orders of XIN/BTC\nb4: Buy XIN pay BTC\ns4: Sell XIN get BTC\n";
+            OceanMsg  += "5: Orders of EOS/BTC\nb4: Buy EOS pay BTC\ns4: Sell EOS get BTC\n";
+            OceanMsg  += "6: Orders of SC/BTC \n7: Orders of EOS/XIN \n8: Orders of ETH/XIN\n";
+            OceanMsg  += "9: Orders of SC/XIN\n";
             OceanMsg  += "c: Cancel the order\nq: Exit\n";
 
             System.out.print(OceanMsg);
@@ -445,6 +449,12 @@ public class App {
             }
             if ( subinput.equals("2") ) {
               FetchOceanMarketInfos(EOS_ASSET_ID,USDT_ASSET_ID);
+            }
+            if ( subinput.equals("s2") ) {
+              MakeTheSellOrder(EOS_ASSET_ID,USDT_ASSET_ID);
+            }
+            if ( subinput.equals("b2") ) {
+              MakeTheBuyOrder(EOS_ASSET_ID,USDT_ASSET_ID);
             }
             if ( subinput.equals("3") ) {
               FetchOceanMarketInfos(XIN_ASSET_ID,USDT_ASSET_ID);
@@ -701,5 +711,62 @@ public class App {
       return Base64.getEncoder().encodeToString(m.toByteArray());
     } catch (Exception e) { e.printStackTrace(); }
       return "";
+  }
+  public static void MakeTheSellOrder(String AssetID, String BaseAssetID) {
+    System.out.print(String.format("Please input the %s price of %s: ",AssetID,BaseAssetID));
+    String pinput = System.console().readLine();
+    System.out.println(pinput);
+
+    System.out.print(String.format("Please input the %s amount: ",AssetID));
+    String aminput = System.console().readLine();
+    System.out.println(aminput);
+    float amountf = Float.valueOf(aminput.trim()).floatValue();
+
+    String OrderMemo = GenerateOrderMemo("A",BaseAssetID,pinput);
+    MixinAPI mixinApiUser = generateAPI_FromCSV();
+    // UUID usdtUUID         =  UUID.fromString(USDT_ASSET_ID);
+    // String memoTarget     = encodeUUID(usdtUUID);
+    System.out.println("------------------Ocean.one-EXCHANGE----------------------------");
+    System.out.println(OrderMemo);
+    JsonObject asset = mixinApiUser.getAsset(AssetID);
+    System.out.println(asset);
+    System.out.println(asset.get("balance").getAsFloat());
+    if ( asset.get("balance").getAsFloat()  > 0 && asset.get("balance").getAsFloat() >= amountf ) {
+        JsonObject transInfo = mixinApiUser.transfer(AssetID, OCEANONE_BOT,
+                                                     aminput,
+                                                     OrderMemo);
+        System.out.println(String.format("--------------%s Transfer To EXCHANGE Information---------",AssetID));
+        System.out.println(transInfo);
+        System.out.println(String.format("---Order is %s: ------",transInfo.get("").getAsString()));
+     } else System.out.println(String.format("----------------Not enough %s--------------------------",AssetID));
+  }
+
+  public static void MakeTheBuyOrder(String AssetID, String BaseAssetID) {
+    System.out.print(String.format("Please input the %s price of %s: ",AssetID,BaseAssetID));
+    String pinput = System.console().readLine();
+    System.out.println(pinput);
+
+    System.out.print(String.format("Please input the %s amount: ",BaseAssetID));
+    String aminput = System.console().readLine();
+    System.out.println(aminput);
+    float amountf = Float.valueOf(aminput.trim()).floatValue();
+
+    String OrderMemo = GenerateOrderMemo("B",AssetID,pinput);
+    MixinAPI mixinApiUser = generateAPI_FromCSV();
+    // UUID usdtUUID         =  UUID.fromString(USDT_ASSET_ID);
+    // String memoTarget     = encodeUUID(usdtUUID);
+    System.out.println("------------------Ocean.one--EXCHANGE----------------------------");
+    System.out.println(OrderMemo);
+    JsonObject asset = mixinApiUser.getAsset(BaseAssetID);
+    System.out.println(asset);
+    System.out.println(asset.get("balance").getAsFloat());
+    if ( asset.get("balance").getAsFloat()  > 0 && asset.get("balance").getAsFloat() >= amountf ) {
+        JsonObject transInfo = mixinApiUser.transfer(BaseAssetID, OCEANONE_BOT,
+                                                     aminput,
+                                                     OrderMemo);
+         System.out.println(String.format("--------------%s Transfer To EXCHANGE Information---------",BaseAssetID));
+         System.out.println(transInfo);
+         System.out.println(String.format("---Order is %s: ------",transInfo.get("").getAsString()));
+      } else System.out.println(String.format("----------------Not enough %s--------------------------",BaseAssetID));
   }
 }
