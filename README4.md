@@ -1,7 +1,7 @@
 # How to trade bitcoin through Java
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
-## Solution One: pay to ExinCore API
+## Solution One: Pay to ExinCore API
 [Exincore](https://github.com/exinone/exincore) provide a commercial trading API on Mixin Network.
 
 You pay USDT to ExinCore, ExinCore transfer Bitcoin to you on the fly with very low fee and fair price. Every transaction is anonymous to public but still can be verified on blockchain explorer. Only you and ExinCore know the details.
