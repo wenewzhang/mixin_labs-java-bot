@@ -2,11 +2,12 @@
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
 ## 方案二: 挂单Ocean.One交易所
-[Ocean.one](https://github.com/mixinNetwork/ocean.one) 基于Mixin Network的提供交易API.
-
-你可以支付USDT给Ocean.One, Ocean.One会以最低的价格，最优惠的交易费将你购买的比特币转给你, 每一币交易都是匿名的，并且可以在区块链上进行验证，交易的细节只有你与Ocean.One知道！
-
-Ocean.One 也不知道你是谁，它只知道你的UUID.
+[Ocean.one](https://github.com/mixinNetwork/ocean.one)是基于Mixin Network的去中心化交易所，它中心化交易所一样友好。
+你可以在OceanOne上交易任何资产，只需要将你的币转给OceanOne, 将交易信息写在交易的memo里，OceanOne会在市场里列出你的交易需求，
+交易成功后，会将目标币转入到你的MixinNetwork帐上，它有三大特点与优势：
+- 不需要在OceanOne注册
+- 不需要存币到交易所
+- 
 
 ### 预备知识:
 你先需要创建一个机器人, 方法在 [教程一](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md).

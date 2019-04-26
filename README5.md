@@ -4,7 +4,7 @@
 ## Solution Two: List your order on Ocean.One exchange
 [Ocean.one](https://github.com/mixinNetwork/ocean.one) is a decentralized exchange built on Mixin Network, it's almost the first time that a decentralized exchange gain the same user experience as a centralized one.
 
-You can list any asset on OceanOne. Pay the asset you want to sell to OceanOne account, write your request in payment memo, OceanOne will list your order to market. It send asset to your wallet after your order is matched. 
+You can list any asset on OceanOne. Pay the asset you want to sell to OceanOne account, write your request in payment memo, OceanOne will list your order to market. It send asset to your wallet after your order is matched.
 
 * No sign up required
 * No deposit required
@@ -199,7 +199,7 @@ hKFToUKhQcQQyUrIj0ZxOXa2CgkGTxgR6KFQojExoVShTA==
 ```
 ## Cancel the Order
 To cancel order, just pay any amount of any asset to OceanOne, and write trace_id into memo. Ocean.one take the trace_id as the order id, for example, **6cf37ca6-4efa-4e78-bea1-53c5c5d54d2b** is a order id,
-We can use it to cancel the order. 
+We can use it to cancel the order.
 ```java
 public static String GenerateOrderCancelMemo(String myUuid) {
   try {
@@ -285,4 +285,5 @@ Make your choose(eg: q for Exit!):
 - s9: Sell SC get XIN
 - c: Cancel the order
 - q: Exit
+
 [Full source code](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/bitcoin_wallet-java/src/main/java/bitcoin_wallet/java/App.java)
