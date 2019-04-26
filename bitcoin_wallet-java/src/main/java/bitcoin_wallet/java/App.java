@@ -68,7 +68,7 @@ import org.msgpack.value.ValueFactory;
 public class App {
 
     private static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
-    private static final String OCEANONE_BOT     = "aaff5bef-42fb-4c9f-90e0-29f69176b7d4";
+    private static final String OCEANONE_BOT     = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
     private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
     // private static final String BTC_ASSET_ID     = "965e5c6e-434c-3fa9-b780-c50f43cd955c";
     private static final String EOS_ASSET_ID     = "6cfe566e-4aad-470b-8c9a-2fd35b49c68d";
@@ -658,8 +658,12 @@ public class App {
        JsonElement jsonTree = parser.parse(res);
        JsonObject orders;
        orders =  jsonTree.getAsJsonObject();
-       JsonArray asksOrders = orders.get("data").getAsJsonObject().get("data").getAsJsonObject().get("asks").getAsJsonArray();
-       JsonArray bidsOrders = orders.get("data").getAsJsonObject().get("data").getAsJsonObject().get("bids").getAsJsonArray();
+       JsonArray asksOrders = orders.get("data").getAsJsonObject().
+                                     get("data").getAsJsonObject().
+                                     get("asks").getAsJsonArray();
+       JsonArray bidsOrders = orders.get("data").getAsJsonObject().
+                                     get("data").getAsJsonObject().
+                                     get("bids").getAsJsonArray();
        // System.out.println(orders.get("data").getAsJsonObject().get("data").getAsJsonObject().get("bids").getAsJsonArray());
        System.out.println("--Side--Price--Amount--Funds---");
        asksOrders.forEach((element) ->  {
@@ -781,7 +785,7 @@ public class App {
                                                      OrderMemo);
         System.out.println(String.format("--------------%s Transfer To EXCHANGE Information---------",AssetID));
         System.out.println(transInfo);
-        System.out.println(String.format("---Order is %s: ------",transInfo.get("").getAsString()));
+        System.out.println(String.format("---Order is %s: ------",transInfo.get("trace_id").getAsString()));
      } else System.out.println(String.format("----------------Not enough %s--------------------------",AssetID));
   }
 
@@ -810,7 +814,7 @@ public class App {
                                                      OrderMemo);
          System.out.println(String.format("--------------%s Transfer To EXCHANGE Information---------",BaseAssetID));
          System.out.println(transInfo);
-         System.out.println(String.format("---Order is %s: ------",transInfo.get("").getAsString()));
+         System.out.println(String.format("---Order is %s: ------",transInfo.get("trace_id").getAsString()));
       } else System.out.println(String.format("----------------Not enough %s--------------------------",BaseAssetID));
   }
 }
