@@ -76,17 +76,17 @@ public class App {
           String EnMemo = "hqFDzQPooVCmNS4zOTE3oUapMC4wMDUzOTE4okZBxBCBWwsaJ2Q3No+qQtaU+mIKoVShUqFPxBCbKSnU5adI8YV7+1WrrygY";
           decodeMemo(EnMemo);
           System.out.println("begein of OceanBuyMemo");
-          String OceanBuyMemo = "hKFToUKhQcQQxtDHKCYkQpuODdnRm2WS+qFQpDUwMDChVKFM";
+          String OceanBuyMemo = "hKFToUKhQcQQyUrIj0ZxOXa2CgkGTxgR6KFQojEyoVShTA==";
           decodeOceanBuyMemo(OceanBuyMemo);
 
-          Map<String, Object> obj = new HashMap<String, Object>();
-          ObjectMapper objectMapper = new ObjectMapper(new JsonFactory());
-          obj.put("S", "B");
-          obj.put("P", "5000");
-          obj.put("A", asBytes(btcUUID));
-          obj.put("T", "L");
-          byte[] bs = objectMapper.writeValueAsBytes(obj);
-          System.out.println(Base64.getEncoder().encodeToString(bs));
+          // Map<String, Object> obj = new HashMap<String, Object>();
+          // ObjectMapper objectMapper = new ObjectMapper(new JsonFactory());
+          // obj.put("S", "B");
+          // obj.put("P", "5000");
+          // obj.put("A", asBytes(btcUUID));
+          // obj.put("T", "L");
+          // byte[] bs = objectMapper.writeValueAsBytes(obj);
+          // System.out.println(Base64.getEncoder().encodeToString(bs));
 
           // MessagePack m= new MessagePack();
           MessageBufferPacker m = MessagePack.newDefaultBufferPacker();
