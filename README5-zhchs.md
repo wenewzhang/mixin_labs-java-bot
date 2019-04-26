@@ -1,28 +1,30 @@
-# How to trade bitcoin through Java
+# 通过 Java 买卖Bitcoin
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
-## Solution Two: List your order on Ocean.One exchange
-[Ocean.one](https://github.com/mixinNetwork/ocean.one) provide a commercial trading API on Mixin Network.
+## 方案二: 挂单Ocean.One交易所
+[Ocean.one](https://github.com/mixinNetwork/ocean.one) 基于Mixin Network的提供交易API.
 
-You pay USDT to Ocean.one, Ocean.one transfer Bitcoin to you on the fly with very low fee and fair price. Every transaction is anonymous to public but still can be verified on blockchain explorer. Only you and Ocean.one know the details.
+你可以支付USDT给Ocean.One, Ocean.One会以最低的价格，最优惠的交易费将你购买的比特币转给你, 每一币交易都是匿名的，并且可以在区块链上进行验证，交易的细节只有你与Ocean.One知道！
 
-Ocean.one don't know who you are because it only know your client's uuid.
+Ocean.One 也不知道你是谁，它只知道你的UUID.
 
-### Pre-request:
-You should  have created a bot based on Mixin Network. Create one by reading [Java Bitcoin tutorial](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README.md).
+### 预备知识:
+你先需要创建一个机器人, 方法在 [教程一](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md).
+
+#### 安装依赖包
+正如教程一里我们介绍过的， 我们需要依赖 [**mixin-java-sdk**](https://github.com/wenewzhang/mixin-java-sdk/releases), 你应该先安装过它了，zhang/mixin_labs-java-bot/blob/master/README.md).
 
 #### Install required packages
-[Chapter 4](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4.md), assume it has installed before.
+[第四课](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4-zhchs.md), 在上一课中已经安装好了.
 
-#### Deposit USDT or Bitcoin into your Mixin Network account and read balance
-The Ocean.one can exchange between Bitcoin, USDT, EOS, ETH etc. Here show you how to exchange between USDT and Bitcoin,
-Check the wallet's balance & address before you make order.
+#### 充币到 Mixin Network, 并读出它的余额.
+通过ExinCore API, 可以进行BTC, USDT, EOS, ETH 等等交易， 此处演示用 USDT购买BTC 或者 用BTC购买USDT。交易前，先检查一下钱包地址。
+完整的步骤如下:
+- 检查比特币或USDT的余额，钱包地址。并记下钱包地址。
+- 从第三方交易所或者你的冷钱包中，将币充到上述钱包地址。
+- 再检查一下币的余额，看到帐与否。(比特币的到帐时间是5个区块的高度，约100分钟)。
 
-- Check the address & balance, remember it Bitcoin wallet address.
-- Deposit Bitcoin to this Bitcoin wallet address.
-- Check Bitcoin balance after 100 minutes later.
-
-**By the way, Bitcoin & USDT 's address are the same.**
+比特币与USDT的充值地址是一样的。
 
 ```java
   private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
@@ -38,8 +40,8 @@ Check the wallet's balance & address before you make order.
   System.out.println("-----------------------------------------------------------------------");
 ```
 
-#### Read orders book from Ocean.one
-How to check the coin's price? You need understand what is the base coin. If you want buy Bitcoin and sell USDT, the USDT is the base coin. If you want buy USDT and sell Bitcoin, the Bitcoin is the base coin.
+#### 取得Ocean.one的市场价格信息
+如何来查询Ocean.one市场的价格信息呢？你要先了解你交易的基础币是什么，如果你想买比特币，卖出USDT,那么基础货币就是USDT;如果你想买USDT,卖出比特币，那么基础货币就是比特币.
 
 ```java
 if ( subinput.equals("1") ) {
@@ -94,11 +96,11 @@ private static void FetchOceanMarketInfos(String targetAssetID, String baseAsset
 }
 ```
 
-#### Create a memo to prepare order
-The chapter two: [Echo Bitcoin](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md) introduce transfer coins. But you need to let Ocean.one know which coin you want to buy.
-- **Side** "B" or "A", "B" for buy, "A" for Sell.
-- **AssetUUID** Assets UUID
-- **Price** If Side is "B", Price is AssetUUID; if Side is "A", Price is the asset which transfer to Ocean.one.
+#### 交易前，创建一个Memo!
+在第二章里,[基于Mixin Network的 Java 比特币开发教程: 机器人接受比特币并立即退还用户](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2-zhchs.md), 我们学习过转帐，这儿我们介绍如何告诉Ocean.one，我们给它转帐的目的是什么，信息全部放在memo里.
+- **Side** 方向,"B" 或者 "A", "B"是购买, "A"是出售.
+- **AssetUUID** 目标虚拟资产的UUID.
+- **Price** 价格，如果操作方向是"B", 价格就是AssetUUID的价格; 如果操作方向是"B", 价格就是转给Ocean.one币的价格.
 
 ```java
 public static String GenerateOrderMemo(String Side, String AssetUUID, String Price) {
@@ -116,8 +118,9 @@ public static String GenerateOrderMemo(String Side, String AssetUUID, String Pri
 }
 ```
 
-#### Pay BTC to API gateway with generated memo
-Transfer Bitcoin(BTC_ASSET_ID) to Ocean.one(OCEANONE_BOT), put you target asset uuid(USDT) in the memo.
+#### 出售BTC的例子
+转打算出售的BTC给Ocean.one(OCEANONE_BOT),将你打算换回来的目标虚拟资产的UUID放入memo.
+
 ```java
 private static final String OCEANONE_BOT     = "aaff5bef-42fb-4c9f-90e0-29f69176b7d4";
 private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
@@ -155,7 +158,7 @@ if ( subinput.equals("s1") ) {
    } else System.out.println("----------------Not enough BTC--------------------------------------------");
 }
 ```
-If you want sell USDT buy BTC, call it like below:
+如果你是打算买BTC,操作如下:
 ```java
 if ( subinput.equals("b1") ) {
   System.out.print("Please input the BTC price base USDT: ");
@@ -185,7 +188,7 @@ if ( subinput.equals("b1") ) {
    } else System.out.println("----------------Not enough USDT--------------------------------------------");
 }
 ```
-A success order output like below:
+一个成功的挂单如下：
 ```bash
 ------------------Ocean.one--EXCHANGE----------------------------
 hKFToUKhQcQQyUrIj0ZxOXa2CgkGTxgR6KFQojExoVShTA==
@@ -195,9 +198,8 @@ hKFToUKhQcQQyUrIj0ZxOXa2CgkGTxgR6KFQojExoVShTA==
 {"type":"transfer","snapshot_id":"f526fd18-c3d2-4a6d-a0f0-3a720e93c48e","opponent_id":"aaff5bef-42fb-4c9f-90e0-29f69176b7d4","asset_id":"815b0b1a-2764-3736-8faa-42d694fa620a","amount":"-2","trace_id":"6cf37ca6-4efa-4e78-bea1-53c5c5d54d2b","memo":"hKFToUKhQcQQyUrIj0ZxOXa2CgkGTxgR6KFQojExoVShTA==","created_at":"2019-04-26T01:56:00.803572612Z","counter_user_id":"0b4f49dc-8fb4-4539-9a89-fb3afc613747"}
 ---Order is 6cf37ca6-4efa-4e78-bea1-53c5c5d54d2b: ------
 ```
-## Cancel the Order
-Ocean.one take the trace_id as the order id, for example, **6cf37ca6-4efa-4e78-bea1-53c5c5d54d2b** is a order id,
-We can use it to cancel the order!
+#### 取消挂单
+Ocean.one将trace_id当做订单，比如上面的例子， **6cf37ca6-4efa-4e78-bea1-53c5c5d54d2b** 就是订单号，我们用他来取消订单。
 ```java
 public static String GenerateOrderCancelMemo(String myUuid) {
   try {
@@ -211,24 +213,26 @@ public static String GenerateOrderCancelMemo(String myUuid) {
     return "";
 }
 ```
-#### Read Bitcoin balance
+#### 通过读取资产余额，来确认到帐情况
 Check the wallet's balance.
 ```java
 MixinAPI mixinApiUser = generateAPI_FromCSV();
 JsonObject asset = mixinApiUser.getAsset(BTC_ASSET_ID);
 ```
 
-## Source code usage
-Build it and then run it.
-- **gradle build**  build project.
-- **java -cp** run it.
+## 源代码执行
+编译执行，即可开始交易了.
+
+- **gradle build**  编译项目.
+- **java -cp** 运行项目.
 ```bash
 java -cp .:build/libs/bitcoin_wallet-java.jar:libs/* bitcoin_wallet.java.App
 ```
 
-Caution：DO NOT use **gradle run** to run it, because **System.console().readLine()** doesn't supported by Gradle, use **java -cp** instead.
+注意：不能使用gradle run来运行，因为我们使用的**System.console().readLine()**不被Gradle支持，只能使用**java -cp**
+来运行！
 
-Commands list of this source code:
+本代码执行时的命令列表:
 
 - 1: Create Bitcoin Wallet and update PIN
 - 2: Read Bitcoin balance & address
@@ -282,4 +286,5 @@ Make your choose(eg: q for Exit!):
 - s9: Sell SC get XIN
 - c: Cancel the order
 - q: Exit
-[Full source code](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/bitcoin_wallet-java/src/main/java/bitcoin_wallet/java/App.java)
+
+[完整代码](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/bitcoin_wallet-java/src/main/java/bitcoin_wallet/java/App.java)
