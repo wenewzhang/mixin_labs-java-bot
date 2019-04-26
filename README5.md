@@ -99,7 +99,7 @@ private static void FetchOceanMarketInfos(String targetAssetID, String baseAsset
 #### Create a memo to prepare order
 The chapter two: [Echo Bitcoin](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md) introduce transfer coins. But you need to let Ocean.one know which coin you want to buy.
 - **Side** "B" or "A", "B" for buy, "A" for Sell.
-- **AssetUUID** Assets UUID
+- **AssetUUID** UUID of the asset you want to buy
 - **Price** If Side is "B", Price is AssetUUID; if Side is "A", Price is the asset which transfer to Ocean.one.
 
 ```java
@@ -198,8 +198,8 @@ hKFToUKhQcQQyUrIj0ZxOXa2CgkGTxgR6KFQojExoVShTA==
 ---Order is 6cf37ca6-4efa-4e78-bea1-53c5c5d54d2b: ------
 ```
 ## Cancel the Order
-Ocean.one take the trace_id as the order id, for example, **6cf37ca6-4efa-4e78-bea1-53c5c5d54d2b** is a order id,
-We can use it to cancel the order!
+To cancel order, just pay any amount of any asset to OceanOne, and write trace_id into memo. Ocean.one take the trace_id as the order id, for example, **6cf37ca6-4efa-4e78-bea1-53c5c5d54d2b** is a order id,
+We can use it to cancel the order. 
 ```java
 public static String GenerateOrderCancelMemo(String myUuid) {
   try {
