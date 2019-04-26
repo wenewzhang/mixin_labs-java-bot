@@ -2,11 +2,13 @@
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
 ## Solution Two: List your order on Ocean.One exchange
-[Ocean.one](https://github.com/mixinNetwork/ocean.one) provide a commercial trading API on Mixin Network.
+[Ocean.one](https://github.com/mixinNetwork/ocean.one) is a decentralized exchange built on Mixin Network, it's almost the first time that a decentralized exchange gain the same user experience as a centralized one.
 
-You pay USDT to Ocean.one, Ocean.one transfer Bitcoin to you on the fly with very low fee and fair price. Every transaction is anonymous to public but still can be verified on blockchain explorer. Only you and Ocean.one know the details.
+You can list any asset on OceanOne. Pay the asset you want to sell to OceanOne account, write your request in payment memo, OceanOne will list your order to market. It send asset to your wallet after your order is matched. 
 
-Ocean.one don't know who you are because it only know your client's uuid.
+* No sign up required
+* No deposit required
+* No listing process.
 
 ### Pre-request:
 You should  have created a bot based on Mixin Network. Create one by reading [Java Bitcoin tutorial](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README.md).
@@ -15,14 +17,13 @@ You should  have created a bot based on Mixin Network. Create one by reading [Ja
 [Chapter 4](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4.md), assume it has installed before.
 
 #### Deposit USDT or Bitcoin into your Mixin Network account and read balance
-The Ocean.one can exchange between Bitcoin, USDT, EOS, ETH etc. Here show you how to exchange between USDT and Bitcoin,
-Check the wallet's balance & address before you make order.
+The Ocean.one can match any order. Here we exchange between USDT and Bitcoin, Check the wallet's balance & address before you make order.
 
-- Check the address & balance, remember it Bitcoin wallet address.
+- Check the address & balance, find it's Bitcoin wallet address.
 - Deposit Bitcoin to this Bitcoin wallet address.
 - Check Bitcoin balance after 100 minutes later.
 
-**By the way, Bitcoin & USDT 's address are the same.**
+**Omni USDT address is same as Bitcoin address**
 
 ```java
   private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
@@ -40,6 +41,7 @@ Check the wallet's balance & address before you make order.
 
 #### Read orders book from Ocean.one
 How to check the coin's price? You need understand what is the base coin. If you want buy Bitcoin and sell USDT, the USDT is the base coin. If you want buy USDT and sell Bitcoin, the Bitcoin is the base coin.
+
 
 ```java
 if ( subinput.equals("1") ) {
@@ -116,7 +118,7 @@ public static String GenerateOrderMemo(String Side, String AssetUUID, String Pri
 }
 ```
 
-#### Pay BTC to API gateway with generated memo
+#### Pay BTC to OceanOne with generated memo
 Transfer Bitcoin(BTC_ASSET_ID) to Ocean.one(OCEANONE_BOT), put you target asset uuid(USDT) in the memo.
 ```java
 private static final String OCEANONE_BOT     = "aaff5bef-42fb-4c9f-90e0-29f69176b7d4";
