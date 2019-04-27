@@ -1,6 +1,7 @@
 # How to trade bitcoin through Java
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
+Solution One Instant exchange Exincore is introduced in [last chapter](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4.md), you can exchange many crypto asset at market price and receive your asset in 1 seconds. If you want to trade asset at limited price, or trade asset is not supported by ExinCore now, OceanOne is the answer.
 ## Solution Two: List your order on Ocean.One exchange
 [Ocean.one](https://github.com/mixinNetwork/ocean.one) is a decentralized exchange built on Mixin Network, it's almost the first time that a decentralized exchange gain the same user experience as a centralized one.
 
