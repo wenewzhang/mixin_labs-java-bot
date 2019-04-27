@@ -7,7 +7,7 @@
 交易成功后，会将目标币转入到你的MixinNetwork帐上，它有三大特点与优势：
 - 不需要在OceanOne注册
 - 不需要存币到交易所
-- 
+- 支持所有Mixin Network上能够转账的资产，所有的ERC20 EOS代币。
 
 ### 预备知识:
 你先需要创建一个机器人, 方法在 [教程一](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md).
@@ -19,7 +19,7 @@
 [第四课](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4-zhchs.md), 在上一课中已经安装好了.
 
 #### 充币到 Mixin Network, 并读出它的余额.
-通过ExinCore API, 可以进行BTC, USDT, EOS, ETH 等等交易， 此处演示用 USDT购买BTC 或者 用BTC购买USDT。交易前，先检查一下钱包地址。
+此处演示用 USDT购买BTC 或者 用BTC购买USDT。交易前，先检查一下钱包地址。
 完整的步骤如下:
 - 检查比特币或USDT的余额，钱包地址。并记下钱包地址。
 - 从第三方交易所或者你的冷钱包中，将币充到上述钱包地址。
