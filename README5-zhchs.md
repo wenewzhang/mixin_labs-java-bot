@@ -2,7 +2,7 @@
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 上一章介绍了[Exincore](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4-zhchs.md)，你可以1秒完成资产的市价买卖。如果你想限定价格买卖，或者买卖一些exincore不支持的资产，你需要OceanOne。
 ## 方案二: 挂单Ocean.One交易所
-[Ocean.one](https://github.com/mixinNetwork/ocean.one)是基于Mixin Network的去中心化交易所，它中心化交易所一样友好。
+[Ocean.one](https://github.com/mixinNetwork/ocean.one)是基于Mixin Network的去中心化交易所，它性能一流。
 你可以在OceanOne上交易任何资产，只需要将你的币转给OceanOne, 将交易信息写在交易的memo里，OceanOne会在市场里列出你的交易需求，
 交易成功后，会将目标币转入到你的MixinNetwork帐上，它有三大特点与优势：
 - 不需要在OceanOne注册
