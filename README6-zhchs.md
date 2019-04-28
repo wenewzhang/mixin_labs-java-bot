@@ -1,7 +1,7 @@
-# 基于ERC-20技术的币零成本上OceanOne
+# 在OceanOne上交易任意代币
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
-在[上一课](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README5.md)中，我们介绍了如何在OceanOne做交易，OceanOne支持任何与ERC-20兼容的币，不需要任何额外的费用，这儿介绍如何将一个全新的ERC-20币挂上OceanOne交易！
+在[上一课](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README5.md)中，我们介绍了如何在OceanOne交易比特币。OceanOne支持交易任何Mixin Network上的token，包括ERC20和EOS token，不需要任何手续和费用，直接挂单即可。下面介绍如何将将一个ERC-20币挂上OceanOne交易！
 
 ### 预备知识:
 先将任意数量的币存入你的钱包，然后使用**getAssets** API读取它的UUID.
