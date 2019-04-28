@@ -1,13 +1,13 @@
 # 通过 Java 买卖Bitcoin
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
-
+上一章介绍了[Exincore](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4-zhchs.md)，你可以1秒完成资产的市价买卖。如果你想限定价格买卖，或者买卖一些exincore不支持的资产，你需要OceanOne。
 ## 方案二: 挂单Ocean.One交易所
 [Ocean.one](https://github.com/mixinNetwork/ocean.one)是基于Mixin Network的去中心化交易所，它中心化交易所一样友好。
 你可以在OceanOne上交易任何资产，只需要将你的币转给OceanOne, 将交易信息写在交易的memo里，OceanOne会在市场里列出你的交易需求，
 交易成功后，会将目标币转入到你的MixinNetwork帐上，它有三大特点与优势：
 - 不需要在OceanOne注册
 - 不需要存币到交易所
-- 
+- 支持所有Mixin Network上能够转账的资产，所有的ERC20 EOS代币。
 
 ### 预备知识:
 你先需要创建一个机器人, 方法在 [教程一](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md).
@@ -19,7 +19,7 @@
 [第四课](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4-zhchs.md), 在上一课中已经安装好了.
 
 #### 充币到 Mixin Network, 并读出它的余额.
-通过ExinCore API, 可以进行BTC, USDT, EOS, ETH 等等交易， 此处演示用 USDT购买BTC 或者 用BTC购买USDT。交易前，先检查一下钱包地址。
+此处演示用 USDT购买BTC 或者 用BTC购买USDT。交易前，先检查一下钱包地址。
 完整的步骤如下:
 - 检查比特币或USDT的余额，钱包地址。并记下钱包地址。
 - 从第三方交易所或者你的冷钱包中，将币充到上述钱包地址。
