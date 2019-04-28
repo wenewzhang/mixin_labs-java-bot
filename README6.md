@@ -1,7 +1,7 @@
-# How to trade ERC-20 compliant coins on OceanOne through Java
+# How to list any ERC20 token on OceanOne through Java
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
-OceanOne is introduced in [last chapter](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README5.md), you can order Bitcoin. All kinds of crypto asset on Mixin Network can be listed on OceanOne. That means Any ERC-20 compliant token and EOS token. Here show you how to list a brand new ERC-20 compliant coin!
+OceanOne is introduced in [last chapter](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README5.md), you can trade Bitcoin. All kinds of crypto asset on Mixin Network can be listed on OceanOne.All ERC20 token and EOS token can be listed. Following example will show you how to list a ERC20 token.
 
 There is a [ERC20 token](https://etherscan.io/token/0xc409b5696c5f9612e194a582e14c8cd41ecdbc67) called Benz. It is deposited into Mixin Network. You can search all transaction history from [Mixin Network browser](https://mixin.one/snapshots/2b9c216c-ef60-398d-a42a-eba1b298581d )
 
