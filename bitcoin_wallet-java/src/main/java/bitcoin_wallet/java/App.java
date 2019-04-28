@@ -86,6 +86,7 @@ public class App {
     private static final String BCH_ASSET_ID     = "fd11b6e3-0b87-41f1-a41f-f0e9b49e5bf0";
     private static final String XIN_ASSET_ID     = "c94ac88f-4671-3976-b60a-09064f1811e8";
     private static final String CNB_ASSET_ID     = "965e5c6e-434c-3fa9-b780-c50f43cd955c";
+    private static final String ERC20_BENZ       = "2b9c216c-ef60-398d-a42a-eba1b298581d";
     private static final String BTC_WALLET_ADDR  = "14T129GTbXXPGXXvZzVaNLRFPeHXD1C25C";
     private static final String MASTER_UUID      = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
     // private static final String MASTER_UUID      = "369db92b-5319-366c-a7ce-738e7e8e8fd6";
@@ -106,8 +107,9 @@ public class App {
           PromptMsg += "teb:Transfer EOS from Bot to Wallet\ntem:Transfer EOS from Wallet to Master\n";
           PromptMsg += "tub:Transfer USDT from Bot to Wallet\ntum:Transfer USDT from Wallet to Master\n";
           PromptMsg += "tcb:Transfer CNB from Bot to Wallet\ntcm:Transfer CNB from Wallet to Master\n";
+          PromptMsg += "trb:Transfer ERC20 from Bot to Wallet\ntrm:Transfer ERC20 from Wallet to Master\n";
           PromptMsg += "5: Pay 0.0001 BTC to ExinCore buy USDT\n6: Pay $1 USDT to ExinCore buy BTC\n7: Read Snapshots\n8: Fetch market price(USDT)\n9: Fetch market price(BTC)\n";
-          PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\na: Read All Assets Infos\n";
+          PromptMsg += "v: Verify Wallet Pin\nwb: Withdraw BTC\nwe: WitchDraw EOS\nab: Read Bot Assets\naw: Read Wallet Assets\n";
           PromptMsg += "o: Ocean.One Exchange\nq: Exit \nMake your choose(eg: q for Exit!): ";
           System.out.print(PromptMsg);
           String input = System.console().readLine();
@@ -410,12 +412,36 @@ public class App {
              System.out.println("-----------------------------------------------------------------------");
           }
         }
+        if ( input.equals("trb") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApi.getAsset(ERC20_BENZ);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApi.transfer(ERC20_BENZ,mixinApiUser.getClientID(),
+                                                      asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------USDT Transfer from Bot Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
+        if ( input.equals("trm") ) {
+         MixinAPI mixinApiUser = generateAPI_FromCSV();
+         JsonObject asset = mixinApiUser.getAsset(ERC20_BENZ);
+         System.out.println(asset);
+         if ( asset.get("balance").getAsFloat() > 0 ) {
+             JsonObject transInfo = mixinApiUser.transfer(ERC20_BENZ, MASTER_UUID,
+                                                        asset.get("balance").getAsString(),"hi");
+             System.out.println("------------------------USDT Transfer To Master Information---------------------------");
+             System.out.println(transInfo);
+             System.out.println("-----------------------------------------------------------------------");
+          }
+        }
         if ( input.equals("v") ) {
          MixinAPI mixinApiUser = generateAPI_FromCSV();
          JsonObject asset = mixinApiUser.verifyPin("123456");
          System.out.println(asset);
         }
-        if ( input.equals("a") ) {
+        if ( input.equals("aw") ) {
           MixinAPI mixinApiUser = generateAPI_FromCSV();
           JsonArray assets = mixinApiUser.getAssets();
           System.out.println("------------------------All Assets Information---------------------------");
@@ -424,6 +450,20 @@ public class App {
              JsonObject jsonObj = element.getAsJsonObject();
              System.out.println(jsonObj.get("asset_id").getAsString() + " " +
                                 jsonObj.get("symbol").getAsString() + " " +
+                                jsonObj.get("balance").getAsString() );
+          });
+          System.out.println("-----------------------------------------------------------------------");
+        }
+        if ( input.equals("ab") ) {
+          // MixinAPI mixinApiUser = generateAPI_FromCSV();
+          JsonArray assets = mixinApi.getAssets();
+          System.out.println("--------------------The-Bot-All Assets Information---------------------------");
+          System.out.println(assets);
+          assets.forEach((element) ->  {
+             JsonObject jsonObj = element.getAsJsonObject();
+             System.out.println(jsonObj.get("asset_id").getAsString() + " " +
+                                jsonObj.get("symbol").getAsString() + " " +
+                                jsonObj.get("public_key").getAsString() + " " +
                                 jsonObj.get("balance").getAsString() );
           });
           System.out.println("-----------------------------------------------------------------------");
@@ -440,6 +480,7 @@ public class App {
             OceanMsg  += "7:  Orders-Book of EOS/XIN\nb7: Buy EOS pay XIN\ns7: Sell EOS get XIN\n";
             OceanMsg  += "8:  Orders-Book of ETH/XIN\nb8: Buy ETH pay XIN\ns8: Sell EOS get XIN\n";
             OceanMsg  += "9:  Orders-Book of SC/XIN\nb9: Buy SC pay XIN\ns9: Sell SC get XIN\n";
+            OceanMsg  += "x:  Orders-Book of ERC20/USDT\nx1: Buy ERC20 pay USDT\nx2: Sell ERC20 get USDT\n";
             OceanMsg  += "c: Cancel the order\nq: Exit\n";
 
             System.out.print(OceanMsg);
@@ -520,6 +561,15 @@ public class App {
             }
             if ( subinput.equals("b9") ) {
               MakeTheBuyOrder(SIA_ASSET_ID,XIN_ASSET_ID);
+            }
+            if ( subinput.equals("x") ) {
+              FetchOceanMarketInfos(ERC20_BENZ,USDT_ASSET_ID);
+            }
+            if ( subinput.equals("x2") ) {
+              MakeTheSellOrder(ERC20_BENZ,USDT_ASSET_ID);
+            }
+            if ( subinput.equals("x1") ) {
+              MakeTheBuyOrder(ERC20_BENZ,USDT_ASSET_ID);
             }
             if ( subinput.equals("b1") ) {
               System.out.print("Please input the BTC price base USDT: ");
