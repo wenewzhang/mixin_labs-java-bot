@@ -6,8 +6,13 @@ OceanOne is introduced in [last chapter](https://github.com/wenewzhang/mixin_lab
 ### Pre-request:
 Deposit some coin to your wallet, and then use **getAssets** API fetch the asset UUID which Mixin Network gave it.
 
-### Get the ERC-20 coin UUID
-The **asset_id** is the UUID, the public_key is the wallet address, the symbol is coin name, Eg: Benz.
+### Get the ERC-20 compliant coin UUID
+The **getAssets** API return json data, for example:
+
+- **asset_id** UUID of this coin
+- **public_key** The wallet address for this coin
+- **symbol**  Coin name, Eg: Benz.
+
 ```java
 if ( input.equals("aw") ) {
   MixinAPI mixinApiUser = generateAPI_FromCSV();
