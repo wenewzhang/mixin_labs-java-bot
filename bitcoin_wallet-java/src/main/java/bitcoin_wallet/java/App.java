@@ -68,7 +68,7 @@ import org.msgpack.value.ValueFactory;
 public class App {
 
     private static final String EXIN_BOT         = "61103d28-3ac2-44a2-ae34-bd956070dab1";
-    private static final String OCEANONE_BOT     = "0b4f49dc-8fb4-4539-9a89-fb3afc613747";
+    private static final String OCEANONE_BOT     = "aaff5bef-42fb-4c9f-90e0-29f69176b7d4";
     private static final String BTC_ASSET_ID     = "c6d0c728-2624-429b-8e0d-d9d19b6592fa";
     // private static final String BTC_ASSET_ID     = "965e5c6e-434c-3fa9-b780-c50f43cd955c";
     private static final String EOS_ASSET_ID     = "6cfe566e-4aad-470b-8c9a-2fd35b49c68d";
@@ -450,6 +450,7 @@ public class App {
              JsonObject jsonObj = element.getAsJsonObject();
              System.out.println(jsonObj.get("asset_id").getAsString() + " " +
                                 jsonObj.get("symbol").getAsString() + " " +
+                                jsonObj.get("public_key").getAsString() + " " +
                                 jsonObj.get("balance").getAsString() );
           });
           System.out.println("-----------------------------------------------------------------------");
@@ -563,13 +564,13 @@ public class App {
               MakeTheBuyOrder(SIA_ASSET_ID,XIN_ASSET_ID);
             }
             if ( subinput.equals("x") ) {
-              FetchOceanMarketInfos(ERC20_BENZ,USDT_ASSET_ID);
+              FetchOceanMarketInfos(ERC20_BENZ,XIN_ASSET_ID);
             }
             if ( subinput.equals("x2") ) {
-              MakeTheSellOrder(ERC20_BENZ,USDT_ASSET_ID);
+              MakeTheSellOrder(ERC20_BENZ,XIN_ASSET_ID);
             }
             if ( subinput.equals("x1") ) {
-              MakeTheBuyOrder(ERC20_BENZ,USDT_ASSET_ID);
+              MakeTheBuyOrder(ERC20_BENZ,XIN_ASSET_ID);
             }
             if ( subinput.equals("b1") ) {
               System.out.print("Please input the BTC price base USDT: ");
