@@ -1,4 +1,4 @@
-# How to list any ERC20 token on OceanOne through Java
+# How to list any ERC20 token on decentralized market through Java
 ![cover](https://github.com/wenewzhang/mixin_labs-java-bot/raw/master/bitcoin_wallet-java/mixin-bitcoin-java.jpg)
 
 OceanOne is introduced in [last chapter](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README5.md), you can trade Bitcoin. All kinds of crypto asset on Mixin Network can be listed on OceanOne.All ERC20 token and EOS token can be listed. Following example will show you how to list a ERC20 token.
