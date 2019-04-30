@@ -9,7 +9,7 @@ Full Mixin network resource [index](https://github.com/awesome-mixin-network/ind
 1. [How to create bot in Mixin messenger and reply message to user](https://github.com/wenewzhang/mixin_labs-java-bot) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README-zhchs.md)
 2. [How to receive Bitcoin and send Bitcoin in Mixin Messenger](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README2-zhchs.md)
 3. [How to create a Bitcoin wallet based on Mixin Network API](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README3.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README3-zhchs.md)
-4. [How to trade bitcoin through Java: Pay to ExinCore API](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4-zhchs.md)
+4. [How to trade bitcoin through Java: Pay to ExinCore](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README4-zhchs.md)
 5. [How to trade bitcoin through Java: List your order on Ocean.One](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README5.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README5-zhchs.md)
 6. [How to trade ERC-20 compliant coins on OceanOne through Java](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README6.md) | [Chinese](https://github.com/wenewzhang/mixin_labs-java-bot/blob/master/README6-zhchs.md)
 
